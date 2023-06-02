@@ -1,9 +1,12 @@
 import React, { Component } from "react";
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 export class UpdateAssignTask extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            AssignTask: {},
             TopicName: '',
             ErrorTopicName: null,
             Description: '',
@@ -21,21 +24,42 @@ export class UpdateAssignTask extends Component {
             EndDate: '',
             Genre: [],
             User: [],
-            A: {}
         }
     }
 
     refreshList() {
-        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id=6")
+        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id=10")
             .then(response => response.json())
             .then(data => {
-                this.setState({ TopicName: data.title });
+                this.setState({ AssignTask: data, TopicName:data.title, Description: data.description, StartDate: data.startDate, EndDate:data.endDate, WriterId: data.WriterId, ReporterId: data.ReporterId, GenreId: data.GenreId });
             });
-            console.log(this.state.TopicName);
+        fetch("https://localhost:7248/api/Genre/GetAllGenre")
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ Genre: data });
+            });
+
+        fetch("https://localhost:7248/api/User/GetAllUser")
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ User: data });
+            });
     }
+
+    onChangeTopicName = (e) => {
+        if (e.target.value == '') {
+            this.setState({ ErrorTopicName: 'Topic Name is not empty' });
+        } else if (e.target.value.length < 5 || e.target.value.length > 50) {
+            this.setState({ ErrorTopicName: 'Topic Name is between 5 to 50' });
+        } else {
+            this.setState({ ErrorTopicName: null });
+        }
+        this.setState({ TopicName: e.target.value })
+    };
 
     componentDidMount() {
         this.refreshList();
+        
     }
 
     updateClick() {
@@ -46,11 +70,14 @@ export class UpdateAssignTask extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                EmployeeId: this.state.EmployeeId,
-                EmployeeName: this.state.EmployeeName,
-                Department: this.state.Department,
-                DateOfJoining: this.state.DateOfJoining,
-                PhotoFileName: this.state.PhotoFileName
+                title: this.state.TopicName,
+                description: this.state.Description,
+                leaderId: 2,
+                writerId: this.state.WriterId,
+                reporterId: this.state.ReporterId,
+                genreId: this.state.GenreId,
+                startDate: this.state.StartDate,
+                endDate: this.state.EndDate
             })
         })
             .then(res => res.json())
@@ -62,6 +89,99 @@ export class UpdateAssignTask extends Component {
             })
     }
     render() {
-        return <div></div>
+        var {TopicName, Description,  StartDate, EndDate, AssignTask, Genre, User, GenreId, ReporterId, WriterId } = this.state;
+       
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-8">
+                        <section className="panel tasks-widget">
+                            <header className="panel-heading">
+                                <h2>Add Topic</h2>
+                            </header>
+                        </section>
+                        <div className="panel-body">
+                            <form>
+                                <div className="form-group">
+                                    <label className="control-label">Topic Name:</label>
+                                    <input name="ProductPrice" className="form-control" value={TopicName} onChange={(e) => this.onChangeTopicName(e)} />
+                                    {/* {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>} */}
+                                </div>
+
+                                <div className="form-group">
+                                    <label className="control-label">Topic Description:</label>
+                                    <div className="App">
+                                        <CKEditor
+                                            editor={ClassicEditor}
+                                            data={Description}
+                                            onReady={editor => {
+                                                console.log('Editor is ready to use!', editor);
+                                            }}
+                                            onChange={(event, editor) => {
+                                                const data = editor.getData();
+                                                this.setState({ Description: data })
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="form-group">
+                                    <label className="control-label">Topic Categories:</label> <br></br>
+                                    <select className="form-select"
+                                        onChange={(e) => this.setState({GenreId: e.target.value})
+                                        } 
+                                        value={GenreId}
+                                    >
+                                        {Genre.map(gen => <option value={gen.id} key={gen.id}>
+                                            {gen.genreName}
+                                        </option>)}
+                                    </select>
+                                    {/* {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>} */}
+                                </div>
+                                <div className="form-group">
+                                    <label className="control-label">Assign To Writer:</label>
+                                    <select className="form-select"
+                                        onChange={(e) => this.setState({ WriterId: e.target.value })}
+                                        value={WriterId}
+                                    >
+                                        {User.map(u => u.roleId == 4 &&
+                                            <option value={u.id} key={u.id} >
+                                                {u.fullName}
+                                            </option>
+                                        )}
+                                    </select>
+                                    {/* {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>} */}
+                                </div>
+                                <div className="form-group">
+                                    <label className="control-label">Assign To Reporter:</label>
+                                    <select className="form-select"
+                                        onChange={(e) => this.setState({ReporterId: e.target.value})}
+                                        value={ReporterId}
+                                    >
+                                        {User.map(u => u.roleId == 5 &&
+                                            <option value={u.id} key={u.id} >
+                                                {u.fullName}
+                                            </option>
+                                        )}
+                                    </select>
+                                    {/* {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>} */}
+                                </div>
+                                <div className="form-group">
+                                    <label className="control-label">Create Date:</label>
+                                    <input type="datetime-local" className="form-control" value={StartDate} onChange={(e) => this.setState({StartDate: e.target.value})} />
+                                    {/* {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>} */}
+                                </div>
+                                <div className="form-group">
+                                    <label className="control-label">EndDate:</label>
+                                    <input type="datetime-local" className="form-control" value={EndDate} onChange={(e) =>  this.setState({EndDate: e.target.value})}/>
+                                    {/* {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>} */}
+                                </div> <br />
+                                <button type="submit" className="btn btn-info" onClick={() => this.updateClick()}>Update AssignTask</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
     }
 }
