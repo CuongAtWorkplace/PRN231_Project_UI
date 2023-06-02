@@ -1,5 +1,7 @@
 import './Chart.scss'
+import React, {Component} from "react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+
 
 const data = [
   {
@@ -46,8 +48,9 @@ const data = [
   },
 ];
 
+export class Chart extends Component {
 
-const chart = () => {
+render(){
   return (
     <div className='chart'>
       <div>
@@ -76,4 +79,4 @@ const chart = () => {
   )
 }
 
-export default chart
+}
