@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { toast} from 'react-toastify';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
@@ -6,6 +7,7 @@ export class UpdateAssignTask extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            AssignTaskId: 0,
             AssignTask: {},
             TopicName: '',
             ErrorTopicName: null,
@@ -28,10 +30,10 @@ export class UpdateAssignTask extends Component {
     }
 
     refreshList() {
-        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id=10")
+        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id=14")
             .then(response => response.json())
             .then(data => {
-                this.setState({ AssignTask: data, TopicName:data.title, Description: data.description, StartDate: data.startDate, EndDate:data.endDate, WriterId: data.WriterId, ReporterId: data.ReporterId, GenreId: data.GenreId });
+                this.setState({AssignTask: data, AssignTaskId: data.id, TopicName:data.title, Description: data.description, StartDate: data.startDate, EndDate:data.endDate, WriterId: data.WriterId, ReporterId: data.ReporterId, GenreId: data.GenreId });
             });
         fetch("https://localhost:7248/api/Genre/GetAllGenre")
             .then(response => response.json())
@@ -70,6 +72,7 @@ export class UpdateAssignTask extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                id: this.state.AssignTaskId,
                 title: this.state.TopicName,
                 description: this.state.Description,
                 leaderId: 2,
@@ -80,13 +83,13 @@ export class UpdateAssignTask extends Component {
                 endDate: this.state.EndDate
             })
         })
-            .then(res => res.json())
-            .then((result) => {
-                alert(result);
-                this.refreshList();
-            }, (error) => {
-                alert('Failed');
-            })
+        .then(res => res.json())
+        .then((result) => {
+            toast.success("Update successfull. Congratulation!!!")
+            this.refreshList();
+        }, (error) => {
+            toast.error("Update failed. Try Again!!!")
+        })
     }
     render() {
         var {TopicName, Description,  StartDate, EndDate, AssignTask, Genre, User, GenreId, ReporterId, WriterId } = this.state;
@@ -97,7 +100,7 @@ export class UpdateAssignTask extends Component {
                     <div className="col-md-8">
                         <section className="panel tasks-widget">
                             <header className="panel-heading">
-                                <h2>Add Topic</h2>
+                                <h2>Update Topic</h2>
                             </header>
                         </section>
                         <div className="panel-body">
@@ -176,7 +179,7 @@ export class UpdateAssignTask extends Component {
                                     <input type="datetime-local" className="form-control" value={EndDate} onChange={(e) =>  this.setState({EndDate: e.target.value})}/>
                                     {/* {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>} */}
                                 </div> <br />
-                                <button type="submit" className="btn btn-info" onClick={() => this.updateClick()}>Update AssignTask</button>
+                                <button type="button" className="btn btn-info" onClick={() => this.updateClick()}>Update AssignTask</button>
                             </form>
                         </div>
                     </div>
