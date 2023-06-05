@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./widget.scss"
+import "./widget.css"
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';

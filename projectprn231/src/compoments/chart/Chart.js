@@ -1,4 +1,4 @@
-import './Chart.scss'
+import './Chart.css'
 import React, {Component} from "react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 

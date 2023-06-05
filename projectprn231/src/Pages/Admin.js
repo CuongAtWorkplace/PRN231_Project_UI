@@ -1,9 +1,9 @@
-import NavBar from '../Component/NavBar/NavBar'
-import SideBar from '../Component/SideBar/SideBar'
-import Widget from '../Component/widget/Widget'
-import Feature from '../Component/features/Feature'
-import Chart from '../Component/chart/Chart'
-import './home.scss'
+import { NavBar } from '../compoments/NavBar/NavBar'
+import { SideBar } from '../compoments/SideBar/SideBar'
+import { Widget }  from '../compoments/widget/Widget'
+import { Feature }from '../compoments/features/Feature'
+import { Chart } from '../compoments/chart/Chart'
+import './home.css'
 
 const Admin = () => {
     return (

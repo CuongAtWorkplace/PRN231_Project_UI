@@ -1,4 +1,4 @@
-import "./sidebar.scss"
+import "./sidebar.css"
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
