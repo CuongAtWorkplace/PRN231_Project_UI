@@ -1,4 +1,4 @@
-import "./navbar.scss"
+import "./navbar.css"
 import React, { Component } from "react";
 import SearchIcon from '@mui/icons-material/Search';
 import LanguageIcon from '@mui/icons-material/Language';
