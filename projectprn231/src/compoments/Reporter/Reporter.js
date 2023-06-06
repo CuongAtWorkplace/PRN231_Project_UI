@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { toast } from 'react-toastify';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
@@ -16,23 +17,38 @@ export class Reporter extends Component {
             CreateBy: '',
             OrderBy: '',
             CreateDate: '',
-            IsChecked: 0
+            IsChecked: 0, 
+            FileName: null
         }
     }
 
-    // getCurrentDate = () => {
-    //     var today = new Date();
-    //     var currentDate = (today.getMonth()+1)+'/'+today.getDate()+'/'+today.getFullYear()+" "+today.getHours() + ":" + today.getMinutes() +' AM';
-    // }
-
-    // componentDidMount() {
-    //     this.getCurrentDate();
-    // }
-
-    onChangeTitleName = (e) => {
-
+    handleFile(event) {
+        this.setState({
+            FileName: event.target.files[0]
+        })
+        console.log(this.state.FileName);
     }
 
+    SubmitFile() {
+        const formData = new FormData();
+        formData.append('files', this.state.FileName);
+        fetch("https://localhost:7248/api/ReportTask/UploadFile?TaskId=3", {
+            method: 'POST',
+            body: formData
+
+        }).then(res => res.json())
+        .then((result) => {
+            this.refreshList();
+            toast.success("Import Successfull. Congratulation!!!")  
+        }, (error) => {
+            toast.error("Import failed. Try Again!!!");
+        })
+    }
+
+    createAssignTask() {
+        this.SubmitFile();
+    }
+ 
     render() {
         const { Title, Description, Content, CreateDate, IsChecked } = this.state;
 
@@ -97,14 +113,14 @@ export class Reporter extends Component {
                             </div>
                             <div>
                                 <label className="control-lable">Import File: </label>
-                                <input className="form-control" type="file"></input>
+                                <input className="form-control" type="file" onChange={(e) => this.handleFile(e)}></input>
                             </div><br/>
                             <div className="form-group">
                                 <label className="control-label">IsChecked:</label>
                                 {console.log(IsChecked)}
                                 {IsChecked == 1 ? < ><input type="radio" checked/>Pass <input type="radio"/>Not Pass</> : < ><input type="radio"/>Pass <input type="radio" checked/>Not Pass</> }
                             </div> <br/>
-                            <button type="submit" className="btn btn-info" onClick={() => this.createAssignTask()}>Add Assign</button>
+                            <button type="button" className="btn btn-info" onClick={() => this.createAssignTask()}>Add Assign</button>
                         </div>
                     </div>
                 </div>
