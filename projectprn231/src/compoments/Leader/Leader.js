@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { toast} from 'react-toastify';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
@@ -10,17 +11,20 @@ export class Leader extends Component {
             ErrorTopicName: null,
             Description: '',
             LeaderName: '',
-            GenreName: 'Kinh Doanh',
+            GenreName: '',
             WriterName: '',
             ReporterName: '',
-            ErrorDeadline: '',
             LeaderId: 0,
             GenreId: 0,
-            LeaderId: 0,
+            ErrorGenre: null,
             WriterId: 0,
+            ErrorWriter: null,
             ReporterId: 0,
+            ErrorReporter: null,
             StartDate: '',
+            ErrorStartDate: null,
             EndDate: '',
+            ErrorEndDate: null,
             Genre: [],
             User: [],
         }
@@ -65,10 +69,10 @@ export class Leader extends Component {
         })
             .then(res => res.json())
             .then((result) => {
-                alert(result);
+                toast.success("Insert successfull. Congratulation!!!")
                 this.refreshList();
             }, (error) => {
-                alert('Failed');
+                toast.error("Insert failed. Try Again!!!")
             })
     }
 
@@ -121,7 +125,7 @@ export class Leader extends Component {
                                 </div>
 
                                 <div className="form-group">
-                                    <label className="control-label">Topic Categories:</label> <br></br>
+                                    <label className="control-label">Topic Genre:</label> <br></br>
                                     <select className="form-select"
                                         onChange={(e) => this.setState({GenreId: e.target.value})
                                         } 
@@ -131,7 +135,7 @@ export class Leader extends Component {
                                             {gen.genreName}
                                         </option>)}
                                     </select>
-                                    {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>}
+                                    {GenreId == 0 ? <p style={{ color: 'red' }}>Genre is not empty</p> : <></>}
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Assign To Writer:</label>
@@ -145,7 +149,7 @@ export class Leader extends Component {
                                             </option>
                                         )}
                                     </select>
-                                    {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>}
+                                    {WriterId == 0 ? <p style={{ color: 'red' }}>Writer have no assign</p> : <></>}
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Assign To Reporter:</label>
@@ -159,20 +163,19 @@ export class Leader extends Component {
                                             </option>
                                         )}
                                     </select>
-                                    {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>}
+                                    {ReporterId == 0 ? <p style={{ color: 'red' }}>Reporter have no assign</p> : <></>}
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Create Date:</label>
                                     <input type="date" className="form-control" value={StartDate} onChange={(e) => this.setState({StartDate: e.target.value})}/>
-                                    {console.log(StartDate)}
-                                    {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>}
+                                    {StartDate != '' ? <p>StartDate is not empty</p> : <></>}
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">EndDate:</label>
                                     <input type="date" className="form-control" value={EndDate} onChange={(e) =>  this.setState({EndDate: e.target.value})}/>
-                                    {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>}
+                                    {EndDate != '' ? <p>EndDate is not empty </p> : <></>}
                                 </div> <br />
-                                <button type="submit" className="btn btn-info" onClick={() => this.createAssignTask()}>Add Assign</button>
+                                <button type="button" className="btn btn-info" onClick={() => this.createAssignTask()}>Add Assign</button>
                             </form>
                         </div>
                     </div>
