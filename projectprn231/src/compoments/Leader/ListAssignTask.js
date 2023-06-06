@@ -47,7 +47,7 @@ export class ListAssignTask extends Component {
         this.refreshList();
     }
 
-    addClick 🙁) => {
+    addClick = () => {
     }
 
     render() {

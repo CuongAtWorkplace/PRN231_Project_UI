@@ -2,7 +2,7 @@ import React, {Component, useEffect} from "react";
 import parse from 'html-react-parser';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-//abc
+
 
 export class Writer extends Component {
     constructor(props) {
