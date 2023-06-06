@@ -1,4 +1,8 @@
-import React, {Component} from "react";
+import React, {Component, useEffect} from "react";
+import parse from 'html-react-parser';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 
 export class Writer extends Component {
     constructor(props) {
@@ -11,8 +15,32 @@ export class Writer extends Component {
             ErrorDescription: null,
             NewsDetail: '',
             ErrorNewsDetail: null,
-            Comment: ''
+            ImageCover: '', 
+            CreateDate: '',
+            TaskId: 0, 
+            Comment: '', 
+            AssignTaskRequire: {}, 
+            DescriptionTask:'', 
+            LeaderName: '', 
+            ReporterName: '', 
+            GenreName: ''
         }
+    }
+
+    refreshList() {
+        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id=13")
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ AssignTaskRequire: data, DescriptionTask: data.description, LeaderName: data.leader.fullName, ReporterName: data.reporter.fullName, GenreName: data.genre.genreName });
+            });
+    }
+
+    componentDidMount() {
+        this.refreshList();
+    }
+
+    useEffect() {
+        
     }
 
     onChangeTopicName = (e) => {
@@ -25,17 +53,6 @@ export class Writer extends Component {
         }
         this.setState({ TopicName: e.target.value })
     }
-
-    // onChangeNewsDetail = (event, editor) => {
-    //     if (event.target.value == '') {
-    //         this.setState({ ErrorNewsDetail: 'Topic Name is not empty' });
-    //     } else if (event.target.value.length < 5 || event.target.value.length > 5000) {
-    //         this.setState({ ErrorNewsDetail: 'Topic Name is between 5 to 50' });
-    //     } else {
-    //         this.setState({ ErrorNewsDetail: null });
-    //     }
-    //     this.setState({ NewsDetail: event.target.value, data: editor.getData() });
-    // }
 
     onChangeCommnet = (e) => {
         this.setState({ Comment: e.target.value });
@@ -53,7 +70,9 @@ export class Writer extends Component {
     }
 
     render() {
-        const { TopicName, ErrorTopicName, NewsDetail, Comment, Description, ErrorDescription } = this.state;
+        const { TopicName, ErrorTopicName, NewsDetail, Comment, Description, ErrorDescription, AssignTaskRequire, DescriptionTask, LeaderName, ReporterName, GenreName, ImageCover} = this.state;
+
+        console.log(AssignTaskRequire);
         return (
             <div className="container">
                 <div className="row">
@@ -66,8 +85,14 @@ export class Writer extends Component {
                         <div class="panel-body">
                             <form>
                                 <h3>News Requirement</h3>
-                                <div style={{ border: '1px solid black', backgroundColor: 'white', height:30 }}>
-
+                                <div style={{ border: '1px solid black', backgroundColor: 'white' }}>
+                                   <p><b>Title:</b> {AssignTaskRequire.title}</p>
+                                   <p><b>Description:</b> {parse(DescriptionTask)}</p>
+                                   <p><b>Genre: </b> {GenreName}</p>
+                                   <p><b>Assgin by: </b>{LeaderName}</p>
+                                   <p><b>Reporter: </b>{ReporterName}</p>
+                                   <p><b>Start Date:</b> {AssignTaskRequire.startDate}</p>
+                                   <p style={{color:'red'}}><b>End Date:</b> {AssignTaskRequire.endDate}</p>
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">News Name:</label>
@@ -94,26 +119,21 @@ export class Writer extends Component {
                                                 const data = editor.getData();
                                                 this.setState({ NewsDetail: data })
                                             }}
-                                        // onBlur={(event, editor) => {
-                                        //     //console.log('Blur.', editor);
-                                        // }}
-                                        // onFocus={(event, editor) => {
-                                        //     console.log('Focus.', editor);
-                                        // }}
-                                        //onChange={(event, editor) => this.onChangeNewsDetail(event, editor)}
                                         />
                                     </div>
                                 </div>
-                                <div>
+                                <div className="form-group">
+                                    <label class="control-label">Image Cover: </label>
+                                    <input class="form-control" type="file"/>
+                                    {ImageCover != '' ? <div style={{border: '1px solid black', width: 120, height: 130}} ></div> : null } 
+                                </div>
+                                <div className="form-group">
                                     <label className="control-label">Comment:</label>
                                     <input name="ProductPrice" value={Comment} class="form-control" onChange={(e) => this.onChangeCommnet(e)} />
                                 </div> <br />
 
-                                <button type="submit" className="btn btn-info" onclick="alert(confirm('Do you want to submit to leader?'))">Add Assign</button>
-                                {/* <div className="form-group">
-                                    <label className="control-label">Result</label>
-                                    <div>{parse(NewsDetail)}</div>
-                                </div> */}
+                                <button type="button" className="btn btn-info" onclick="alert(confirm('Do you want to submit to leader?'))">Add Assign</button>
+                                
                             </form>
                         </div>
                     </div>
