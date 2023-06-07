@@ -9,39 +9,12 @@ import { ViewTaskDetail } from './compoments/Leader/ViewTaskDetail';
 //import { Reporter } from './compoments/Reporter/Reporter';
 import { ImportFile } from './compoments/TestFile/ImportFile';
 import { ToastContainer} from 'react-toastify';
-import { Login } from './compoments/Login/Login';
 import 'react-toastify/dist/ReactToastify.css';
-
-
+import {Table} from './compoments/table/Table'
+import { CommentBrowseTable } from './compoments/table/CommentBrowseTable';
 function App() {
   return (
-    //<Leader/>
-    //<UpdateAssignTask/>
-    //<Reporter/>
-    <>
-      {/* <ListGenre /> */}
-      {/* <Leader/> */}
-      {/* <UpdateAssignTask/> */}
-      {/* <ListAssignTask/> */}
-      {/* <ViewTaskDetail/> */}
-      {/* <Writer/> */}
-      <Reporter/>
-      {/* <ImportFile/> */}
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-    </>
-
-
+    <CommentBrowseTable/>
   );
 }
 
