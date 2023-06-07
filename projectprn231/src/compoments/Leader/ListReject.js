@@ -227,7 +227,7 @@ export class ListReject extends Component {
                                     User's Reject
                                 </th>
                                 <th>
-                                    Options
+                                    Result
                                 </th>
                             </tr>
                         </thead>
@@ -238,6 +238,7 @@ export class ListReject extends Component {
                                     <td>{gen.task.title}</td>
                                     <td>{gen.reason}</td>
                                     <td>{gen.userId}</td>
+                                    <td style={{color: 'green'}}><b>Accepted</b></td>
                                     {/* <td>{gen.reject.name}</td> */}
                                 </tr>
                             )}
