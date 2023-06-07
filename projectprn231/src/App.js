@@ -12,12 +12,12 @@ import { ImportFile } from './compoments/TestFile/ImportFile';
 import { ListReportTask } from './compoments/Reporter/ListReportTask';
 import { ListReject } from './compoments/Leader/ListReject';
 import { ToastContainer} from 'react-toastify';
-import { Login } from './compoments/Login/Login';
 import 'react-toastify/dist/ReactToastify.css';
-
-
+import {Table} from './compoments/table/Table'
+import { CommentBrowseTable } from './compoments/table/CommentBrowseTable';
 function App() {
   return (
+
     //<Leader/>
     //<UpdateAssignTask/>
     //<Reporter/>
