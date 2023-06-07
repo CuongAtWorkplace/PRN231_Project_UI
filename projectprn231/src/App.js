@@ -11,6 +11,7 @@ import { ImportFile } from './compoments/TestFile/ImportFile';
 //import {SideBar} from '/compoments/SideBar/SideBar'
 import { ListReportTask } from './compoments/Reporter/ListReportTask';
 import { ListReject } from './compoments/Leader/ListReject';
+import { ListWritingTask } from './compoments/Writer/ListWritingTask';
 import { ToastContainer} from 'react-toastify';
 import { Login } from './compoments/Login/Login';
 import 'react-toastify/dist/ReactToastify.css';
@@ -33,6 +34,7 @@ function App() {
       {/* <SideBar/> */}
       {/* <ListReportTask/> */}
       <ListReject/>
+      {/* <ListWritingTask/> */}
       <ToastContainer
         position="top-right"
         autoClose={5000}

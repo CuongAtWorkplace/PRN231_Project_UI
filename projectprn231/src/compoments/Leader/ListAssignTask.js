@@ -17,20 +17,6 @@ export class ListAssignTask extends Component {
         }
     }
 
-    // refreshList() {
-    //     fetch("https://localhost:7248/api/Genre/GetAllGenre")
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             this.setState({ Genre: data });
-    //         });
-
-    //     fetch("https://localhost:7248/api/User/GetAllUser")
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             this.setState({ User: data });
-    //         });
-    // }
-
     componentDidMount() {
         this.refreshList();
     }
@@ -222,8 +208,6 @@ export class ListAssignTask extends Component {
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         )
