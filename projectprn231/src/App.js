@@ -29,11 +29,11 @@ function App() {
       {/* <ListAssignTask/> */}
       {/* <ViewTaskDetail/> */}
       {/* <Writer/> */}
-      {/* <Reporter/> */}
+      <Reporter/>
       {/* <ImportFile/> */}
       {/* <SideBar/> */}
       {/* <ListReportTask/> */}
-      <ListReject/>
+      {/* <ListReject/> */}
       {/* <ListWritingTask/> */}
       <ToastContainer
         position="top-right"
