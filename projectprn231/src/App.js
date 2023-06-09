@@ -11,6 +11,7 @@ import { ImportFile } from './compoments/TestFile/ImportFile';
 //import {SideBar} from '/compoments/SideBar/SideBar'
 import { ListReportTask } from './compoments/Reporter/ListReportTask';
 import { ListReject } from './compoments/Leader/ListReject';
+import { ListWritingTask } from './compoments/Writer/ListWritingTask';
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Table} from './compoments/table/Table'
@@ -19,7 +20,36 @@ import { Admin_Comment } from './Pages/Admin_Comment';
 function App() {
   return (
 
-    <Admin_Comment/>
+
+    //<Leader/>
+    //<UpdateAssignTask/>
+    //<Reporter/>
+    <>
+      {/* <ListGenre /> */}
+      {/* <Leader/> */}
+      {/* <UpdateAssignTask/> */}
+      {/* <ListAssignTask/> */}
+      {/* <ViewTaskDetail/> */}
+      {/* <Writer/> */}
+      <Reporter/>
+      {/* <ImportFile/> */}
+      {/* <SideBar/> */}
+      {/* <ListReportTask/> */}
+      {/* <ListReject/> */}
+      {/* <ListWritingTask/> */}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+    </>
 
 
   );
