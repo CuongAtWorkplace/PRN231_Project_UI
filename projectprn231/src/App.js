@@ -16,8 +16,10 @@ import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Table} from './compoments/table/Table'
 import { CommentBrowseTable } from './compoments/table/CommentBrowseTable';
+import { Admin_Comment } from './Pages/Admin_Comment';
 function App() {
   return (
+
 
     //<Leader/>
     //<UpdateAssignTask/>
