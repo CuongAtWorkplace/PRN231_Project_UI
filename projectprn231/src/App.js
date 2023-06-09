@@ -15,37 +15,11 @@ import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Table} from './compoments/table/Table'
 import { CommentBrowseTable } from './compoments/table/CommentBrowseTable';
+import { Admin_Comment } from './Pages/Admin_Comment';
 function App() {
   return (
 
-    //<Leader/>
-    //<UpdateAssignTask/>
-    //<Reporter/>
-    <>
-      {/* <ListGenre /> */}
-      {/* <Leader/> */}
-      {/* <UpdateAssignTask/> */}
-      {/* <ListAssignTask/> */}
-      {/* <ViewTaskDetail/> */}
-      {/* <Writer/> */}
-      {/* <Reporter/> */}
-      {/* <ImportFile/> */}
-      {/* <SideBar/> */}
-      {/* <ListReportTask/> */}
-      <ListReject/>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-    </>
+    <Admin_Comment/>
 
 
   );
