@@ -18,92 +18,92 @@ export class SideBar extends Component {
         return (
             <div className="layout">
 
-            <div className="sidebar">
-                <div className="top">
-                    <span className="logo">
-                        Sbotop
-                    </span>
-                </div>
-                <hr />
-                <div className="center">
-                    <ul>
-                        <p className="Title">Main</p>
-                        <li>
-                            <DashboardIcon className="icon" />
-                            <span>Dashboard</span>
-                        </li>
-                        <p className="Title">Lists</p>
-                        <li>
-                            <InsertEmoticonIcon className="icon" />
-                            <span>User</span>
-                        </li>
-                        <li>
-                            <ProductionQuantityLimitsIcon className="icon" />
-                            <span>Product</span>
-                        </li>
-
-                        <li>
-                            <NewspaperIcon className="icon" />
-                            <span>News</span>
-                        </li>
-                        <p className="Title">Name</p>
-
-                        <li>
-                            <LogoutIcon className="icon" />
-                            <span>Log out</span>
-                        </li>
-                    </ul>
-                </div>
-                <div className="bottom">
-
-                    <div className="colorOption"></div>
-                    <div className="colorOption"></div>
-                    <div className="colorOption"></div>
-
-                </div>
-
-            </div>
-
-            <div className="layout_sidebar">
-            <div className="navbar">
-                <div className="wrapper">
-                    <div className="search">
-                        <input type="text" placeholder="Search  ... " />
-                        <SearchIcon />
+                <div className="sidebar">
+                    <div className="top">
+                        <span className="logo">
+                            Sbotop
+                        </span>
                     </div>
+                    <hr />
+                    <div className="center">
+                        <ul>
+                            <p className="Title">Main</p>
+                            <li>
+                                <DashboardIcon className="icon" />
+                                <span>Dashboard</span>
+                            </li>
+                            <p className="Title">Lists</p>
+                            <li>
+                                <InsertEmoticonIcon className="icon" />
+                                <span>User</span>
+                            </li>
+                            <li>
+                                <ProductionQuantityLimitsIcon className="icon" />
+                                <span>Product</span>
+                            </li>
 
-                    <div className="items">
-                        <div className="items">
-                            <LanguageIcon className="icon" />
-                            English
-                        </div>
+                            <li>
+                                <NewspaperIcon className="icon" />
+                                <span>News</span>
+                            </li>
+                            <p className="Title">Name</p>
 
-                        <div className="item">
-                            <DarkModeIcon className="icon" />
-                        </div>
+                            <li>
+                                <LogoutIcon className="icon" />
+                                <span>Log out</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="bottom">
 
-                        <div className="item">
-                            <OpenWithIcon className="icon" />
-                        </div>
-                        <div className="item">
-                            <NotificationsNoneIcon className="icon" />
-                            <div className="counter">1</div>
-                        </div>
-                        <div className="item">
-                            <FormatListBulletedIcon className="icon" />
-                        </div>
+                        <div className="colorOption"></div>
+                        <div className="colorOption"></div>
+                        <div className="colorOption"></div>
 
-                        <div className="item">
-                        </div>
-                        <img src="https://th.bing.com/th/id/R.e900afd2d9b0b93857b0ffa8310f5247?rik=e6eWtgl4bA%2bbGg&pid=ImgRaw&r=0"
-                            alt=""
-                            className="userAvantar"
-                        />
                     </div>
 
                 </div>
-            </div>
-            </div>
+
+                <div className="layout_sidebar">
+                    <div className="navbar">
+                        <div className="wrapper">
+                            <div className="search">
+                                <input type="text" placeholder="Search  ... " />
+                                <SearchIcon />
+                            </div>
+
+                            <div className="items">
+                                <div className="items">
+                                    <LanguageIcon className="icon" />
+                                    English
+                                </div>
+
+                                <div className="item">
+                                    <DarkModeIcon className="icon" />
+                                </div>
+
+                                <div className="item">
+                                    <OpenWithIcon className="icon" />
+                                </div>
+                                <div className="item">
+                                    <NotificationsNoneIcon className="icon" />
+                                    <div className="counter">1</div>
+                                </div>
+                                <div className="item">
+                                    <FormatListBulletedIcon className="icon" />
+                                </div>
+
+                                <div className="item">
+                                </div>
+                                <img src="https://th.bing.com/th/id/R.e900afd2d9b0b93857b0ffa8310f5247?rik=e6eWtgl4bA%2bbGg&pid=ImgRaw&r=0"
+                                    alt=""
+                                    className="userAvantar"
+                                />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
