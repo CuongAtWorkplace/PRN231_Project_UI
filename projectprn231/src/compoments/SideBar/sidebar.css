@@ -4,10 +4,12 @@
 .layout_sidebar {
   flex: 6;
 }
-
+a {
+  text-decoration: none;
+}
 .sidebar {
     flex: 1;
-    min-height: 200vh;
+    min-height: 100vh;
     background-color: white;
     border-right: 0.5px solid lavender;
   }
@@ -108,6 +110,10 @@
     color: #555;
   }
   
+  .Content{
+    height: 100px;
+
+  }
   .navbar .wrapper {
     padding: 20px;
     display: flex;
