@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PacmanLoader from "react-spinners/PacmanLoader";
+import { Navigate} from 'react-router-dom';
 import "../../../src/App.css"
 import { toHaveAccessibleDescription } from "@testing-library/jest-dom/matchers";
 
@@ -76,7 +77,8 @@ export class Reporter extends Component {
                 updateDate: "2023-06-08T18:26:45.494Z",
                 isChecked: false,
                 userId: 6,
-                taskId: 13
+                taskId: 13, 
+                isRedirect:false
             })
         })
             .then(res => res.json())
@@ -127,6 +129,19 @@ export class Reporter extends Component {
 
     createAssignTask() {
         this.SubmitFile();
+    }
+
+    GotoHome() {
+        this.setState({
+            isRedirect: true
+        })
+
+        if (this.state.isRedirect) {
+            this.setState({
+                isRedirect: false
+            })
+            return <Navigate to="/home"/>
+        }
     }
 
     render() {
@@ -214,6 +229,7 @@ export class Reporter extends Component {
                                 {IsChecked == 1 ? < ><input type="radio" checked />Pass <input type="radio" />Not Pass</> : < ><input type="radio" />Pass <input type="radio" checked />Not Pass</>}
                             </div> <br />
                             <button type="button" className="btn btn-info" onClick={() => this.createReportTask()}>Add Assign</button>
+                            <button type="button" className="btn btn-success" onClick={() => this.GotoHome()}>Home</button>
                         </div>
                     </div>
                 </div>
