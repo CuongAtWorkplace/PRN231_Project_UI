@@ -1,3 +1,8 @@
+.TableLayout{
+    display: flex;
+    flex: 6;
+
+}
 .button-container {
     text-align: right;
   }

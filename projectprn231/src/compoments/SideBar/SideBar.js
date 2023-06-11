@@ -11,6 +11,11 @@ import OpenWithIcon from '@mui/icons-material/OpenWith';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import React, { Component } from "react";
+import { Table } from "../table/Table";
+import { Link, Route } from "react-router-dom";
+import { CommentBrowseTable } from "../table/CommentBrowseTable";
+import { ListReportTask } from "../Reporter/ListReportTask";
+
 
 export class SideBar extends Component {
 
@@ -33,19 +38,29 @@ export class SideBar extends Component {
                                 <span>Dashboard</span>
                             </li>
                             <p className="Title">Lists</p>
+
+                            <a href="/listReport">
+
                             <li>
                                 <InsertEmoticonIcon className="icon" />
                                 <span>User</span>
                             </li>
-                            <li>
-                                <ProductionQuantityLimitsIcon className="icon" />
-                                <span>Product</span>
-                            </li>
+                            </a>
+                            <a href="/table">
+                                <li>
+                                    <ProductionQuantityLimitsIcon className="icon" />
+                                    <span>Product</span>
+                                </li>
+
+                            </a>
+
+                            <a href="/comment">
 
                             <li>
                                 <NewspaperIcon className="icon" />
                                 <span>News</span>
                             </li>
+                            </a>
                             <p className="Title">Name</p>
 
                             <li>
@@ -103,6 +118,13 @@ export class SideBar extends Component {
 
 
                         </div>
+                    </div>
+
+                    <div className="Content">
+                        <Route path="/table" component={Table} />
+                        <Route path="/comment" component={CommentBrowseTable} />
+                        <Route path="/listReport" component={ListReportTask} />
+
                     </div>
                 </div>
             </div>
