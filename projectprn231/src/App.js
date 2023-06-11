@@ -24,7 +24,7 @@ import { Admin_Home } from './Pages/Admin_Home';
 import { Admin_UserManagement } from './Pages/Admin_UserManagement';
 function App() {
   return (
-   <SideBar/>
+   <NavBar/>
   );
 }
 
