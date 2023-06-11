@@ -37,7 +37,6 @@ export class Table extends Component {
           rows={this.state.rows}
           columns={columns}
           pageSize={5}
-          checkboxSelection
         />
       </div>
     );

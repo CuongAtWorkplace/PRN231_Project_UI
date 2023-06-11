@@ -1,7 +1,7 @@
 import './App.css';
 import { Leader } from './compoments/Leader/Leader';
 import { UpdateAssignTask } from './compoments/Leader/UpdateAssigTask';
-import { Reporter } from './compoments/Reporter/Reporter';
+//import { Reporter } from './compoments/Reporter/Reporter';
 import { ListGenre } from './compoments/Leader/ListGenre';
 import { ListAssignTask } from './compoments/Leader/ListAssignTask';
 import { Writer } from './compoments/Writer/Writer';
@@ -21,8 +21,12 @@ import { Navigate} from 'react-router-dom';
 import { Table } from '../src/Pages/Admin'
 import { CommentBrowseTable } from './compoments/table/CommentBrowseTable';
 import { Admin_Comment } from './Pages/Admin_Comment';
+import { Chart } from './compoments/chart/Chart';
+import { Admin_Home } from './Pages/Admin_Home';
+import { Admin_UserManagement } from './Pages/Admin_UserManagement';
 function App() {
   return (
+
 
 
     //<Leader/>
