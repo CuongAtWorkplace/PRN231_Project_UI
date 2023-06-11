@@ -1,7 +1,7 @@
 import './App.css';
 import { Leader } from './compoments/Leader/Leader';
 import { UpdateAssignTask } from './compoments/Leader/UpdateAssigTask';
-import { Reporter } from './compoments/Reporter/Reporter';
+//import { Reporter } from './compoments/Reporter/Reporter';
 import { ListGenre } from './compoments/Leader/ListGenre';
 import { ListAssignTask } from './compoments/Leader/ListAssignTask';
 import { Writer } from './compoments/Writer/Writer';
@@ -17,40 +17,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import {Table} from './compoments/table/Table'
 import { CommentBrowseTable } from './compoments/table/CommentBrowseTable';
 import { Admin_Comment } from './Pages/Admin_Comment';
+import { Chart } from './compoments/chart/Chart';
+import { Admin_Home } from './Pages/Admin_Home';
+import { Admin_UserManagement } from './Pages/Admin_UserManagement';
 function App() {
   return (
 
-
-    //<Leader/>
-    //<UpdateAssignTask/>
-    //<Reporter/>
-    <>
-      {/* <ListGenre /> */}
-      {/* <Leader/> */}
-      {/* <UpdateAssignTask/> */}
-      {/* <ListAssignTask/> */}
-      {/* <ViewTaskDetail/> */}
-      {/* <Writer/> */}
-      <Reporter/>
-      {/* <ImportFile/> */}
-      {/* <SideBar/> */}
-      {/* <ListReportTask/> */}
-      {/* <ListReject/> */}
-      {/* <ListWritingTask/> */}
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-    </>
-
+      <Admin_UserManagement/>
 
   );
 }
