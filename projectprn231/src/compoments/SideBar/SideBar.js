@@ -2,6 +2,7 @@ import "./sidebar.css"
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SearchIcon from '@mui/icons-material/Search';
@@ -15,7 +16,11 @@ import { Table } from "../table/Table";
 import { Link, Route } from "react-router-dom";
 import { CommentBrowseTable } from "../table/CommentBrowseTable";
 import { ListReportTask } from "../Reporter/ListReportTask";
-
+import { Dashboard } from "../table/DashBoard";
+import Admin from "../../Pages/Admin";
+import { Admin_Home } from "../../Pages/Admin_Home";
+import { Login } from "@mui/icons-material";
+import { Test } from "../TestFile/Test";
 
 export class SideBar extends Component {
 
@@ -33,33 +38,49 @@ export class SideBar extends Component {
                     <div className="center">
                         <ul>
                             <p className="Title">Main</p>
-                            <li>
-                                <DashboardIcon className="icon" />
-                                <span>Dashboard</span>
-                            </li>
+                            <a href="/dashboard">
+                                <li>
+                                    <DashboardIcon className="icon" />
+                                    <span>Dashboard</span>
+                                </li>
+                            </a>
                             <p className="Title">Lists</p>
 
-                            <a href="/listReport">
-
-                            <li>
-                                <InsertEmoticonIcon className="icon" />
-                                <span>User</span>
-                            </li>
-                            </a>
                             <a href="/table">
                                 <li>
-                                    <ProductionQuantityLimitsIcon className="icon" />
-                                    <span>Product</span>
+                                    <InsertEmoticonIcon className="icon" />
+                                    <span>User</span>
+                                </li>
+                            </a>
+                            <a href="/comment">
+                                <li>
+                                    <ModeCommentIcon className="icon" />
+                                    <span>Comment</span>
                                 </li>
 
                             </a>
 
                             <a href="/comment">
 
-                            <li>
-                                <NewspaperIcon className="icon" />
-                                <span>News</span>
-                            </li>
+                                <li>
+                                    <NewspaperIcon className="icon" />
+                                    <span>News</span>
+                                </li>
+                            </a>
+
+                            <a href="/listReport">
+
+                                <li>
+                                    <NewspaperIcon className="icon" />
+                                    <span>News</span>
+                                </li>
+                            </a>
+                            <a href="/Reporter">
+
+                                <li>
+                                    <NewspaperIcon className="icon" />
+                                    <span>Home</span>
+                                </li>
                             </a>
                             <p className="Title">Name</p>
 
@@ -124,7 +145,8 @@ export class SideBar extends Component {
                         <Route path="/table" component={Table} />
                         <Route path="/comment" component={CommentBrowseTable} />
                         <Route path="/listReport" component={ListReportTask} />
-
+                        <Route path="/dashboard" component={Dashboard} />
+                        <Route path="/Reporter" component={Test} />
                     </div>
                 </div>
             </div>

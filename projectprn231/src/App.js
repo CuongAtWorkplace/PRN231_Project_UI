@@ -7,11 +7,11 @@ import { Table } from './compoments/table/Table';
 
 function App() {
   return (
-<div>
-<BrowserRouter>
-      <SideBar />
-    </BrowserRouter>
-    </div>  );
+    <div>
+      <BrowserRouter>
+        <SideBar />
+      </BrowserRouter>
+    </div>);
 }
 
 export default App;

@@ -1,0 +1,187 @@
+.btn_class .add_btn{
+    /* Adding the rounded corners */
+    margin: 20px;
+    align-items: center;
+    appearance: none;
+    background-color: #3ebdfd;
+    background-image: linear-gradient(1deg, #4fd7fd, #14acf3 99%);
+    background-size: calc(100% + 20px) calc(100% + 20px);
+    border-radius: 100px;
+    border-width: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: CircularStd, sans-serif;
+    font-size: 1rem;
+    height: auto;
+    justify-content: center;
+    line-height: 1.5;
+    padding: 6px 20px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color .2s, background-position .2s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: top;
+    white-space: nowrap;
+    text-transform: lowercase; /* Chuyển chữ thành chữ thường */
+
+}
+
+.btn_class .ban_btn{
+    /* Adding the rounded corners */
+    margin: 20px;
+    align-items: center;
+    appearance: none;
+    background-color: #fd3e3e;
+    background-image: linear-gradient(1deg, #f55e5e, #f31414 99%);
+    background-size: calc(100% + 20px) calc(100% + 20px);
+    border-radius: 100px;
+    border-width: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: CircularStd, sans-serif;
+    font-size: 1rem;
+    height: auto;
+    justify-content: center;
+    line-height: 1.5;
+    padding: 6px 20px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color .2s, background-position .2s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: top;
+    white-space: nowrap;
+    text-transform: lowercase; /* Chuyển chữ thành chữ thường */
+
+}
+
+.submit_btn{
+    margin-top: 10px;
+    margin-left: 250px;
+    align-items: center;
+    appearance: none;
+    background-color: #3ee0fd;
+    background-image: linear-gradient(1deg, #4fd7fd, #14d5f3 99%);
+    background-size: calc(100% + 20px) calc(100% + 20px);
+    border-radius: 100px;
+    border-width: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: CircularStd, sans-serif;
+    font-size: 1rem;
+    height: auto;
+    justify-content: center;
+    line-height: 1.5;
+    padding: 6px 20px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color .2s, background-position .2s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: top;
+    white-space: nowrap;
+    text-transform: lowercase; /* Chuyển chữ thành chữ thường */
+}
+
+.form__group {
+    position: relative;
+    padding: 15px 0 0;
+    margin-top: 10px;
+    width: 50%;
+  }
+  
+  .form__field {
+    font-family: inherit;
+    width: 100%;
+    border: 0;
+    border-bottom: 2px solid #9b9b9b;
+    outline: 0;
+    font-size: 1.3rem;
+    color: #000; /* Màu chữ đã được thay đổi thành đen */
+    padding: 7px 0;
+    background: transparent;
+    transition: border-color 0.2s;
+  
+    &::placeholder {
+      color: transparent;
+    }
+  
+    &:placeholder-shown ~ .form__label {
+      font-size: 1.3rem;
+      cursor: text;
+      top: 20px;
+    }
+  }
+
+  
+  .form__field:focus {
+    ~ .form__label {
+      position: absolute;
+      top: 0;
+      display: block;
+      transition: 0.2s;
+      font-size: 1rem;
+      color: #11998e;
+      font-weight: 700;    
+    }
+    padding-bottom: 6px;  
+    font-weight: 700;
+    border-width: 3px;
+    border-image: linear-gradient(to right, #11998e, #38ef7d);
+    border-image-slice: 1;
+  }
+  
+  /* reset input */
+  .form__field:required,
+  .form__field:invalid {
+    box-shadow: none;
+  }
+.fieldName{
+   color: teal;
+   font-weight: 200;
+   font-size: small;
+}  
+
+.btn_class {
+    text-align: right;
+  }
+
+  .TableLayout{
+    margin-left: 20px;
+    display: flex;
+    flex: 6;
+    width: 95%; /* Đặt chiều ngang là 100% */
+
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 20px;
+}
+
+.left-column {
+  grid-column: 1 / 2;
+}
+
+.right-column {
+  margin-top: 150px;
+  grid-column: 2 / 3;
+}
+
