@@ -1,7 +1,30 @@
 import React, { Component } from "react";
-import './home.css'
+import "./home.css"
+
+
 export class Home extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            NewsHome: [],
+        }
+    }
+
+    refreshList(){
+        fetch("https://localhost:7248/api/News/getAllNews")
+        .then(response => response.json())
+        .then(data => {
+            this.setState({ NewsHome : data });
+        });
+    }
+
+    componentDidMount(){
+        this.refreshList();
+    }
+
     render() {
+        const{NewsHome} = this.state;
         return (
             <div className="App">
                 <div id="top">
@@ -46,46 +69,25 @@ export class Home extends Component {
                     <div id="main">
                         <div id="headlines">
                             <div id="main-headline">
+                                {NewsHome.map(item =>
+                                    <div>
+
+                                    
                                 <h2 class="heading">Featured Story</h2>
-                                <img src="img/blank.jpg" alt="" />
-                                <h1><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit</a></h1>
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png" alt="" />
+                                <h1><a href="#">{item.description}</a></h1>
                                 <p class="author">Name Here | <span>09.18.09</span></p>
-                                <p>Ut sed arcu nulla. In eget lectus vitae purus volutpat consectetur suscipit ut justo.</p>
+                                <p>{item.description}</p>
                                 <p><a href="#">Full story &raquo;</a></p>
                                 <h2 class="heading">Latest Video</h2>,
-                                {/*
-                            <!--<object width="400" height="300">
-                                <param name="movie" value="http://www.youtube.com/v/B0jhJA1Hjxk&amp;hl=en_US&amp;fs=1&" />
-                                <param name="allowFullScreen" value="true" />
-                                <param name="allowscriptaccess" value="never" />
-                                <embed src="http://www.youtube.com/v/B0jhJA1Hjxk&amp;hl=en_US&fs=1&amp;" type="application/x-shockwave-flash" allowscriptaccess="never" allowfullscreen="true" width="400" height="300" /></embed>
-                            </object>-->
-                            */}
-                                <h2><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit</a></h2>
+                                
+                                <h2><a href="#">{item.description}</a></h2>
                                 <p class="author"><span>09.18.09</span></p>
                                 <p><a href="#">More video &raquo;</a></p>
+                                </div>
+                                )}
                             </div>
-                            <div id="more-headlines">
-                                <h2 class="heading">Featured Stories</h2>
-                                <h2><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit</a></h2>
-                                <p class="author">Name Here | <span>09.18.09</span></p>
-                                <p>Ut sed arcu nulla. In eget lectus vitae purus volutpat consectetur suscipit ut justo.</p>
-                                <p><a href="#">Full article &raquo;</a></p>
-                                <h3><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit</a></h3>
-                                <p class="author">Name Here | <span>09.18.09</span></p>
-                                <p>Ut sed arcu nulla. In eget lectus vitae purus volutpat consectetur suscipit ut justo.</p>
-                                <p><a href="#">Full article &raquo;</a></p>
-                                <h3><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit</a></h3>
-                                <p class="author">Name Here | <span>09.18.09</span></p>
-                                <p>Ut sed arcu nulla. In eget lectus vitae purus volutpat consectetur suscipit ut justo.</p>
-                                <p><a href="#">Full article &raquo;</a></p>
-                                <h2 class="heading">Podcast</h2>
-                                <img src="img/microphone.png" alt="" class="righty" />
-                                <h4><a href="#">Lorem ipsum dolor sit amet, consectetur</a></h4>
-                                <p class="author"><span>09.18.09</span></p>
-                                <p>Ut sed arcu nulla. In eget lectus vitae purus volutpat consectetur suscipit ut justo.</p>
-                                <p><a href="#">More podcasts &raquo;</a></p>
-                            </div>
+                            
                         </div>
                     </div>
                     <div id="sidebars">
