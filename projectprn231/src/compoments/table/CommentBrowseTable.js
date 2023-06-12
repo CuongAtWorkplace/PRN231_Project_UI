@@ -5,17 +5,17 @@ import "./CommentTable.css"
 
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 20},
+  { field: 'id', headerName: 'ID', width: 100 },
   { field: 'fullName', headerName: 'Name', width: 200 },
-  { field: 'title', headerName: 'Title', width: 200 },
-  { field: 'content', headerName: 'Content', width: 150 },
+  { field: 'title', headerName: 'Title', width: 100 },
+  { field: 'content', headerName: 'Content', width: 200 },
   { field: 'createDate', headerName: 'Date', width: 300 },
 ];
 
 export class CommentBrowseTable extends Component {
   constructor(props) {
     super(props);
-    this.selectedRows=[];
+    this.selectedRows = [];
     this.state = {
       rows: [],
     };
@@ -28,7 +28,7 @@ export class CommentBrowseTable extends Component {
   handleCheckboxChange = (selectionModel) => {
     this.selectedRows = selectionModel;
     // Lặp qua từng ID trong mảng selectedRows và gọi phương thức updateCommentTrue
-    
+
   }
 
   updateSelectedRows = () => {
@@ -38,14 +38,14 @@ export class CommentBrowseTable extends Component {
     alert("ok");
     window.location.reload();
   }
-  deleteSelectedRows  = () => {
+  deleteSelectedRows = () => {
     this.selectedRows.forEach((id) => {
       this.updateCommentFalse(id);
     });
     alert("ok");
     window.location.reload();
   }
-  
+
   updateCommentTrue = (id) => {
     fetch(`https://localhost:7248/api/Comment/UpdateCommentTrue?Id=${id}`, {
       method: 'PUT',
@@ -115,21 +115,24 @@ export class CommentBrowseTable extends Component {
 
     return (
       <div>
-        <div style={{ height: 400, width: '100%' }}>
-          <DataGrid
-            rows={this.state.rows}
-            columns={columns}
-            pageSize={5}
-            checkboxSelection
-            onRowSelectionModelChange={this.handleCheckboxChange}
-          />
+        <h2>Comment Management </h2>
+
+        <div className='TableLayout'>
+          <div style={{ height: 400, width: '100%' }}>
+            <DataGrid
+              rows={this.state.rows}
+              columns={columns}
+              pageSize={5}
+              checkboxSelection
+              onRowSelectionModelChange={this.handleCheckboxChange}
+            />
+          </div>
         </div>
         <div class="button-container">
-        <Button className='btn1' onClick={this.updateSelectedRows}>Confirm</Button>
-        <Button className='btn2' onClick={this.deleteSelectedRows}>Delete</Button>
-        </div>
+            <Button className='btn1' onClick={this.updateSelectedRows}>Confirm</Button>
+            <Button className='btn2' onClick={this.deleteSelectedRows}>Delete</Button>
+          </div>
       </div>
-
     );
   }
 }
