@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
-import { Table } from "./Table";
-import { NavBar } from "./NavBar";
-import { SideBar } from "./SideBar";
-import './user.scss'
+import { Table } from "../compoments/table/Table";
+import { NavBar } from "../compoments/NavBar/NavBar";
+import { SideBar } from "../compoments/SideBar/SideBar";
+import './user.css'
 
 
 export class Admin_UserManagement extends Component {

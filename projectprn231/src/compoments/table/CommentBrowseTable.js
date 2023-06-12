@@ -1,13 +1,15 @@
 import { Button } from '@mui/base';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { Component } from "react";
+import "./CommentTable.css"
+
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 200 },
-  { field: 'title', headerName: 'Full Name', width: 200 },
-  { field: 'content', headerName: 'Password', width: 150 },
-  { field: 'createDate', headerName: 'Phone', width: 150 },
-  { field: 'fullName', headerName: 'Address', width: 200 },
+  { field: 'id', headerName: 'ID', width: 20},
+  { field: 'fullName', headerName: 'Name', width: 200 },
+  { field: 'title', headerName: 'Title', width: 200 },
+  { field: 'content', headerName: 'Content', width: 150 },
+  { field: 'createDate', headerName: 'Date', width: 300 },
 ];
 
 export class CommentBrowseTable extends Component {
@@ -35,10 +37,15 @@ export class CommentBrowseTable extends Component {
     });
     alert("ok");
     window.location.reload();
-
+  }
+  deleteSelectedRows  = () => {
+    this.selectedRows.forEach((id) => {
+      this.updateCommentFalse(id);
+    });
+    alert("ok");
+    window.location.reload();
   }
   
-
   updateCommentTrue = (id) => {
     fetch(`https://localhost:7248/api/Comment/UpdateCommentTrue?Id=${id}`, {
       method: 'PUT',
@@ -64,6 +71,30 @@ export class CommentBrowseTable extends Component {
       });
   }
 
+  updateCommentFalse = (id) => {
+    fetch(`https://localhost:7248/api/Comment/UpdateCommentFalse?Id=${id}`, {
+      method: 'PUT',
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Cập nhật trạng thái của comment đã được xác nhận thành true
+        // Ví dụ:
+        const updatedRows = this.state.rows.map(row => {
+          if (row.id === id) {
+            return {
+              ...row,
+              confirmed: true,
+            };
+          }
+          return row;
+        });
+
+        this.setState({ rows: updatedRows });
+      })
+      .catch(error => {
+        console.error('Error updating comment:', error);
+      });
+  }
 
   refreshList() {
     fetch("https://localhost:7248/api/Comment/GetCommentBrowseList")
@@ -93,7 +124,10 @@ export class CommentBrowseTable extends Component {
             onRowSelectionModelChange={this.handleCheckboxChange}
           />
         </div>
-        <Button onClick={this.updateSelectedRows}>Confirm</Button>
+        <div class="button-container">
+        <Button className='btn1' onClick={this.updateSelectedRows}>Confirm</Button>
+        <Button className='btn2' onClick={this.deleteSelectedRows}>Delete</Button>
+        </div>
       </div>
 
     );
