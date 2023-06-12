@@ -12,9 +12,16 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import React, { Component } from "react";
 import { Table } from "../table/Table";
-import { Link, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { CommentBrowseTable } from "../table/CommentBrowseTable";
 import { ListReportTask } from "../Reporter/ListReportTask";
+import { ToDoReportTask } from "../Reporter/ToDoReportTask";
+import { Reporter } from "../Reporter/Reporter";
+import { ListGenre } from '../Leader/ListGenre';
+import {ListReject} from "../Leader/ListReject"
+import { ListWritingTask } from "../Writer/ListWritingTask";
+import { ToDoWritingTask } from "../Writer/ToDoWritingTask";
+import { NewTest } from "../TestFile/NewTest";
 
 
 export class SideBar extends Component {
@@ -39,13 +46,56 @@ export class SideBar extends Component {
                             </li>
                             <p className="Title">Lists</p>
 
-                            <a href="/listReport">
+                            {/* Leader */}
+                            <a href="/listGenre">
 
-                            <li>
-                                <InsertEmoticonIcon className="icon" />
-                                <span>User</span>
-                            </li>
+                                <li>
+                                    <InsertEmoticonIcon className="icon" />
+                                    <span>Genre</span>
+                                </li>
                             </a>
+
+                            <a href="/listReject">
+
+                                <li>
+                                    <InsertEmoticonIcon className="icon" />
+                                    <span>List Reject</span>
+                                </li>
+                            </a>
+
+
+                            {/* Reporter */}
+                            <a href="/listReportTask">
+
+                                <li>
+                                    <InsertEmoticonIcon className="icon" />
+                                    <span>List AssignTask</span>
+                                </li>
+                            </a>
+
+                            <a href="/listTodoTask">
+                                <li>
+                                    <InsertEmoticonIcon className="icon" />
+                                    <span>List ToDoReportTask</span>
+                                </li>
+                            </a>
+
+                            {/* Writer */}
+                            <a href="/listTodoWriting">
+                                <li>
+                                    <InsertEmoticonIcon className="icon" />
+                                    <span>List ToDoWritingTask</span>
+                                </li>
+                            </a>
+
+                            <a href="/listWritingTask">
+                                <li>
+                                    <InsertEmoticonIcon className="icon" />
+                                    <span>List WritingTask</span>
+                                </li>
+                            </a>
+
+                            {/* Admin */}
                             <a href="/table">
                                 <li>
                                     <ProductionQuantityLimitsIcon className="icon" />
@@ -53,13 +103,31 @@ export class SideBar extends Component {
                                 </li>
 
                             </a>
+                            
+
+                            <a href="/reporter">
+
+                                <li>
+                                    <InsertEmoticonIcon className="icon" />
+                                    <span>Report</span>
+                                </li>
+                            </a>
+
+
 
                             <a href="/comment">
 
-                            <li>
-                                <NewspaperIcon className="icon" />
-                                <span>News</span>
-                            </li>
+                                <li>
+                                    <NewspaperIcon className="icon" />
+                                    <span>News</span>
+                                </li>
+                            </a>
+                            <a href="/newTest">
+
+                                <li>
+                                    <NewspaperIcon className="icon" />
+                                    <span>News</span>
+                                </li>
                             </a>
                             <p className="Title">Name</p>
 
@@ -123,8 +191,22 @@ export class SideBar extends Component {
                     <div className="Content">
                         <Route path="/table" component={Table} />
                         <Route path="/comment" component={CommentBrowseTable} />
-                        <Route path="/listReport" component={ListReportTask} />
 
+
+                        {/* Leader */}
+                        <Route />
+
+                        <Route path="/listGenre" component={ListGenre} />
+                        <Route path="/listReject" component={ListReject}/> 
+
+                        {/* Reporter */}
+
+                        <Route path="/listReportTask" component={ListReportTask}/>
+                        <Route path="/listTodoTask" component={ToDoReportTask} />
+
+                        {/* Writer */}
+                        <Route path="/listWritingTask" component={ListWritingTask}/>
+                        <Route path="/listTodoWriting" component={ToDoWritingTask}/>
                     </div>
                 </div>
             </div>

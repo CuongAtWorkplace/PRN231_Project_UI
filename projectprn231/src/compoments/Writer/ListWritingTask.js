@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import parse from 'html-react-parser';
 import { toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 export class ListWritingTask extends Component {
     constructor(props) {
@@ -26,7 +28,7 @@ export class ListWritingTask extends Component {
     }
 
     refreshList() {
-        fetch("https://localhost:7248/api/AssignTask/GetAllAssignTask")
+        fetch("https://localhost:7248/api/AssignTask/GetAllAssignTaskByWriterId?writerId=5")
             .then(response => response.json())
             .then(data => {
                 this.setState({ AssignTask: data});
@@ -159,18 +161,27 @@ export class ListWritingTask extends Component {
                                 <div className="modal-body">
                                     <div className="d-flex flex-row bd-highlight mb-3">
 
-                                        <div className="p-2 w-50 bd-highlight">
+                                        <div className="p-2 bd-highlight" style={{width: "100%"}}>
 
-                                            <div className="input-group mb-3">
+                                            {/* <div className="input-group">
                                                 <span className="input-group-text">Title</span>
                                                 <input type="text" className="form-control"
                                                     value={Title}/>
+                                            </div> */}
+
+                                            <div className="form-group mb-3">
+                                                <label className="control-label">Title:</label>
+                                                <input name="Title" className="form-control" value={Title}/>
                                             </div>
 
-                                            <div className="input-group mb-3">
-                                                <span className="input-group-text">Description</span>
-                                                <input type="text" className="form-control"
-                                                    value={Description}/>
+                                            <div className="form-group mb-3">
+                                                <label className="control-label">Description:</label>
+                                                <div className="App">
+                                                    <CKEditor
+                                                        editor={ClassicEditor}
+                                                        data={Description}
+                                                    />
+                                                </div>
                                             </div>
 
                                             <div className="input-group mb-3">
