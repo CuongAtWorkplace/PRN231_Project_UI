@@ -2,6 +2,7 @@ import "./sidebar.css"
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SearchIcon from '@mui/icons-material/Search';
@@ -15,6 +16,7 @@ import { Table } from "../table/Table";
 import { Route } from "react-router-dom";
 import { CommentBrowseTable } from "../table/CommentBrowseTable";
 import { ListReportTask } from "../Reporter/ListReportTask";
+
 import { ToDoReportTask } from "../Reporter/ToDoReportTask";
 import { Reporter } from "../Reporter/Reporter";
 import { ListGenre } from '../Leader/ListGenre';
@@ -22,6 +24,7 @@ import {ListReject} from "../Leader/ListReject"
 import { ListWritingTask } from "../Writer/ListWritingTask";
 import { ToDoWritingTask } from "../Writer/ToDoWritingTask";
 import { NewTest } from "../TestFile/NewTest";
+
 
 
 export class SideBar extends Component {
@@ -40,10 +43,12 @@ export class SideBar extends Component {
                     <div className="center">
                         <ul>
                             <p className="Title">Main</p>
-                            <li>
-                                <DashboardIcon className="icon" />
-                                <span>Dashboard</span>
-                            </li>
+                            <a href="/dashboard">
+                                <li>
+                                    <DashboardIcon className="icon" />
+                                    <span>Dashboard</span>
+                                </li>
+                            </a>
                             <p className="Title">Lists</p>
 
                             {/* Leader */}
@@ -192,7 +197,6 @@ export class SideBar extends Component {
                         <Route path="/table" component={Table} />
                         <Route path="/comment" component={CommentBrowseTable} />
 
-
                         {/* Leader */}
                         <Route />
 
@@ -207,6 +211,11 @@ export class SideBar extends Component {
                         {/* Writer */}
                         <Route path="/listWritingTask" component={ListWritingTask}/>
                         <Route path="/listTodoWriting" component={ToDoWritingTask}/>
+
+                        <Route path="/listReport" component={ListReportTask} />
+                        <Route path="/dashboard" component={Dashboard} />
+                        <Route path="/Reporter" component={Test} />
+
                     </div>
                 </div>
             </div>

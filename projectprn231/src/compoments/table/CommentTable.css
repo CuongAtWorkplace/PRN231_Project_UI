@@ -1,6 +1,8 @@
 .TableLayout{
+    margin-left: 20px;
     display: flex;
     flex: 6;
+    width: 95%; /* Đặt chiều ngang là 100% */
 
 }
 .button-container {
