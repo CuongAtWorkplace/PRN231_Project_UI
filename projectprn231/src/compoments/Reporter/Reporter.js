@@ -195,7 +195,6 @@ export class Reporter extends Component {
                                     <div className="form-group">
                                         <label className="control-label">CreateBy:</label>
                                         <input name="Title" className="form-control" />
-                                        {/* {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>} */}
                                     </div>
                                     <div className="form-group">
                                         <label className="control-label">CreateDate:</label>

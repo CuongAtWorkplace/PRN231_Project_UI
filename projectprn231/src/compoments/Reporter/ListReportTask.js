@@ -1,6 +1,6 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import parse from 'html-react-parser';
-import { toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -15,7 +15,7 @@ export class ListReportTask extends Component {
             Title: '',
             GenreName: '',
             Description: '',
-            LeaderName: '', 
+            LeaderName: '',
             ReportName: '',
             WriterName: '',
             modalTitle: '',
@@ -29,7 +29,7 @@ export class ListReportTask extends Component {
         fetch("https://localhost:7248/api/AssignTask/GetAssignTaskByReporterId?reportId=4")
             .then(response => response.json())
             .then(data => {
-                this.setState({ AssignTask: data});
+                this.setState({ AssignTask: data });
             });
     }
 
@@ -40,12 +40,13 @@ export class ListReportTask extends Component {
     seeDetailTask(e) {
         this.setState({
             modalTitle: 'See Detail Task',
-            TaskId: e.id, 
+            TaskId: e.id,
+            UserId: e.reporter.id,
             WriterId: e.writer.id,
-            LeaderName: e.leader.fullName, 
+            LeaderName: e.leader.fullName,
             ReportName: e.reporter.fullName,
             WriterName: e.writer.fullName,
-            Title: e.title, 
+            Title: e.title,
             Description: e.description,
             GenreName: e.genre.genreName
         })
@@ -58,39 +59,76 @@ export class ListReportTask extends Component {
     }
 
     acceptTask() {
-
-    }
-
-    rejectTask() {
-        if (this.state.Reason == '' ) {
-            toast.error("Reason is not empty");
-            return;
-        } else {
-            fetch("https://localhost:7248/api/RejectTask/AddRejectTask", {
+        fetch("https://localhost:7248/api/ReportTask/InsertReportTask", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                rejectId: 1,
-                reason: this.state.Reason, 
-                taskId: this.state.TaskId, 
-                UserId: this.state.WriterId,
-                isReject: false, 
-
+                isChecked: false, 
+                userId: this.state.UserId, 
+                taskId: this.state.TaskId
             })
         })
             .then(res => res.json())
             .then((result) => {
                 this.refreshList();
-                toast.success("Reject Task Pending. Congratulation!!!")  
+                
+            }, (error) => {
+            }) 
+            
+        fetch("https://localhost:7248/api/AssignTask/AcceptTask", {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: this.state.TaskId,
+                userStatus: 'Reporter',
+                isStatus: true
+            })
+        })
+            .then(res => res.json())
+            .then((result) => {
+                this.refreshList();
+                toast.success("Reject Task Pending. Congratulation!!!")
             }, (error) => {
                 toast.error("Reject failed. Try Again!!!");
             })
+    }
+
+    rejectTask() {
+        if (this.state.Reason == '') {
+            toast.error("Reason is not empty");
+            return;
+        } else {
+            fetch("https://localhost:7248/api/RejectTask/AddRejectTask", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    rejectId: 1,
+                    reason: this.state.Reason,
+                    taskId: this.state.TaskId,
+                    UserId: this.state.WriterId,
+                    isReject: false,
+
+                })
+            })
+                .then(res => res.json())
+                .then((result) => {
+                    this.refreshList();
+                    toast.success("Reject Task Pending. Congratulation!!!")
+                }, (error) => {
+                    toast.error("Reject failed. Try Again!!!");
+                })
         }
     }
- 
+
     render() {
         const { AssignTask, TaskId, Reason, modalTitle, LeaderName, Title, Description, GenreName, WriterName } = this.state;
         console.log(AssignTask)
@@ -147,7 +185,7 @@ export class ListReportTask extends Component {
                                         </button>
 
                                     </td>
-                                </tr> 
+                                </tr>
                             )}
                         </tbody>
                     </table>
@@ -164,11 +202,11 @@ export class ListReportTask extends Component {
                                 <div className="modal-body">
                                     <div className="d-flex flex-row bd-highlight mb-3">
 
-                                        <div className="p-2 bd-highlight" style={{width: "100%"}}>
+                                        <div className="p-2 bd-highlight" style={{ width: "100%" }}>
 
                                             <div className="form-group mb-3">
                                                 <label className="control-label">Title:</label>
-                                                <input name="Title" className="form-control" value={Title}/>
+                                                <input name="Title" className="form-control" value={Title} />
                                             </div>
 
                                             <div className="form-group mb-3">
@@ -184,19 +222,19 @@ export class ListReportTask extends Component {
                                             <div className="input-group mb-3">
                                                 <span className="input-group-text">GenreName</span>
                                                 <input type="text" className="form-control"
-                                                    value={GenreName}/>
+                                                    value={GenreName} />
                                             </div>
 
                                             <div className="input-group mb-3">
                                                 <span className="input-group-text">Leader:</span>
                                                 <input type="text" className="form-control"
-                                                    value={LeaderName}/>
+                                                    value={LeaderName} />
                                             </div>
 
                                             <div className="input-group mb-3">
                                                 <span className="input-group-text">WriterName:</span>
                                                 <input type="text" className="form-control"
-                                                    value={WriterName}/>
+                                                    value={WriterName} />
                                             </div>
 
                                             <div className="input-group mb-3">
