@@ -21,8 +21,8 @@ export class Admin_Home extends Component {
                 <NavBar />
                 <div className='widgets'>
                     <Widget type="user" />
-                    <Widget type="order"/>
-                    <Widget type="earning"/>
+                    <Widget type="reporter"/>
+                    <Widget type="Writer"/>
                     <Widget type="balance"/>
                 </div>
 
