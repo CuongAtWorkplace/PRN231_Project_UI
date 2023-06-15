@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h1>List Orders</h1>
+    <form>
+        <input type="text" name="FromDate" />
+        <input type="text" name="ToDate" />
+        <button type="submit">Search</button>
+    </form>
+    <table>
+        <tr>
+            <th>OrderId</th>
+            <th>CustomerId</th>
+            <th>CusomerName</th>
+            <th>EmployeeId</th>
+            <th>EmployeeName</th>
+            <th>EmployeeDepartmentName</th>
+            <th>OrderDate</th>
+            <th>Freight</th>
+        </tr>
+        <tr id="display">
+        </tr>
+    </table>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Gọi hàm getProductInfo() khi trang được load
+            LoadOrder();
+        });
+        function LoadOrder() {
+            var tr = "";
+            $.ajax({
+                url: 'https://localhost:5000/api/Order/GetAllOrder',
+                method: 'Get',
+                success: (result) => {
+                    $.each(result, (k, v) => {
+                        tr += `<tr>
+                        <td>${v.orderId}</td>
+                        <td>${v.customerId}</td>
+                        <td>${v.customerName}</td>
+                        <td>${v.employeeId}</td>
+                        <td>${v.employeeName}</td>
+                        <td>${v.employeeDepartmentName}</td>
+                        <td>${v.orderDate}</td>
+                        <td>${v.freight}</td>
+                        </tr>
+                    `
+                    })
+                    $("#display").html(tr);
+                },
+                error: (error) => {
+                    console.log(error);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

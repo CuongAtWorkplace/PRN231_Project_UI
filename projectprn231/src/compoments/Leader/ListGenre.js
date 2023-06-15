@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Pagination from 'react-js-pagination';
 
 export class ListGenre extends Component {
     constructor(props) {
@@ -12,7 +13,10 @@ export class ListGenre extends Component {
             GenreName: '',
             ErrorGenreName: '',
             Description: '',
-            modalTitle: ''
+            modalTitle: '',
+            activePage: 1,
+            itemsCountPerPage: 5,
+            totalItemsCount: 0
         }
     }
 
@@ -47,12 +51,16 @@ export class ListGenre extends Component {
         fetch("https://localhost:7248/api/Genre/GetAllGenre")
             .then(response => response.json())
             .then(data => {
-                this.setState({ Genre: data });
+                this.setState({ Genre: data, totalItemsCount: data.length });
             });
     }
 
     componentDidMount() {
         this.refreshList();
+    }
+
+    handlePageChange(pageNumber) {
+        this.setState({ activePage: pageNumber });
     }
 
 
@@ -79,7 +87,7 @@ export class ListGenre extends Component {
             .then(res => res.json())
             .then((result) => {
                 this.refreshList();
-                toast.success("Insert Successfull. Congratulation!!!")  
+                toast.success("Insert Successfull. Congratulation!!!")
             }, (error) => {
                 toast.error("Insert failed. Try Again!!!");
             })
@@ -100,10 +108,10 @@ export class ListGenre extends Component {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
-                }, 
+                },
                 body: JSON.stringify({
                     id: this.state.GenreId,
-                    genreName: this.state.GenreName, 
+                    genreName: this.state.GenreName,
                     description: this.state.Description
                 })
             })
@@ -119,22 +127,18 @@ export class ListGenre extends Component {
 
     deleteClick = (e) => {
         if (window.confirm("Do you want to delete?")) {
-            fetch("https://localhost:7248/api/Genre/DeleteGenre?genreId="+e, {
+            fetch("https://localhost:7248/api/Genre/DeleteGenre?genreId=" + e, {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 }
-                // , 
-                // body: JSON.stringify({
-                //     genreId: this.state.GenreId
-                // })
+
             })
-                // .then(res => res.json())
                 .then((result) => {
                     this.refreshList();
                     toast.success("Delete successfull. Congratulation!!!")
-                    
+
                 }, (error) => {
                     toast.error("Delete failed. Try Again!!!")
                 })
@@ -142,7 +146,11 @@ export class ListGenre extends Component {
     }
 
     render() {
-        const { Genre, GenreId, GenreName, ErrorGenreName, Description, modalTitle } = this.state;
+        const { Genre, GenreId, GenreName, ErrorGenreName, Description, modalTitle,
+            activePage, itemsCountPerPage, totalItemsCount } = this.state;
+        const indexOfLastCustomer = activePage * itemsCountPerPage;
+        const indexOfFirstCustomer = indexOfLastCustomer - itemsCountPerPage;
+        const currentCustomers = Genre.slice(indexOfFirstCustomer, indexOfLastCustomer);
         return (
             <div className="container">
                 <section className="panel tasks-widget">
@@ -176,7 +184,7 @@ export class ListGenre extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {Genre.map(gen =>
+                            {currentCustomers.map(gen =>
                                 <tr key={gen.id}>
                                     <td>{gen.id}</td>
                                     <td>{gen.genreName}</td>
@@ -207,7 +215,21 @@ export class ListGenre extends Component {
                             )}
                         </tbody>
                     </table>
-
+                    <Pagination
+                        prevPageText='Previous'
+                        nextPageText='Next'
+                        firstPageText='First'
+                        lastPageText='Last'
+                        itemClass='page-item'
+                        linkClass='page-link'
+                        activeClass='active'
+                        disabledClass='disabled'
+                        activePage={activePage}
+                        itemsCountPerPage={itemsCountPerPage}
+                        totalItemsCount={totalItemsCount}
+                        pageRangeDisplayed={5}
+                        onChange={this.handlePageChange.bind(this)}
+                    />
                     <div className="modal fade" id="exampleModal" tabIndex="-1" aria-hidden="true">
                         <div className="modal-dialog modal-lg modal-dialog-centered">
                             <div className="modal-content">
@@ -245,7 +267,7 @@ export class ListGenre extends Component {
                                     >Create</button>
                                         : null}
 
-                                    {console.log({GenreId})}
+                                    {console.log({ GenreId })}
                                     {GenreId != 0 ? <button type="button"
                                         className="btn btn-primary float-start"
                                         onClick={() => this.updateClick()}
@@ -253,12 +275,9 @@ export class ListGenre extends Component {
                                         : null}
 
                                 </div>
-
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
 

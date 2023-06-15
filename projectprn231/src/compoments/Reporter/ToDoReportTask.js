@@ -4,7 +4,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import '../Writer/Writer.css'
+import '../Writer/Writer.css';
+import Pagination from 'react-js-pagination';
 
 
 export class ToDoReportTask extends Component {
@@ -12,7 +13,35 @@ export class ToDoReportTask extends Component {
         super(props);
 
         this.state = {
-            ToDoWritingTask: []
+            ToDoWritingTask: [],
+            DocumentList: [],
+            AssignTaskRequire: {},
+            ErrorDescription: '',
+            LeaderName: '',
+            WriterName: '',
+            GenreName: '',
+            CreateBy: '',
+            Id: '',
+            TaskId: '',
+            CreateDate: '',
+            DescriptionTask: '',
+            modalTitle: '',
+            FileName: '',
+
+
+            ReportTaskById: {},
+            TopicName: '',
+            ErrorTopicName: '',
+            TodoDescription: '',
+            Content: '',
+            ImageCover: '',
+            ReporterId: 0,
+            UserId: 0,
+            IsChecked: 0,
+
+            activePage: 1,
+            itemsCountPerPage: 5,
+            totalItemsCount: 0
         }
     }
 
@@ -20,7 +49,7 @@ export class ToDoReportTask extends Component {
         fetch("https://localhost:7248/api/ReportTask/GetAllReportTask")
             .then(response => response.json())
             .then(data => {
-                this.setState({ ToDoWritingTask: data });
+                this.setState({ ToDoWritingTask: data, totalItemsCount: data.length });
             });
 
     }
@@ -29,11 +58,154 @@ export class ToDoReportTask extends Component {
         this.refreshList();
     }
 
-    editClick = (e) => { }
+    handlePageChange(pageNumber) {
+        this.setState({ activePage: pageNumber });
+    }
+
+    onChangeTopicName = (e) => {
+        if (e.target.value == '') {
+            this.setState({ ErrorTopicName: 'Topic Name is not empty' });
+        } else if (e.target.value.length < 5 || e.target.value.length > 50) {
+            this.setState({ ErrorTopicName: 'Topic Name is between 5 to 50' });
+        } else {
+            this.setState({ ErrorTopicName: null });
+        }
+        this.setState({ TopicName: e.target.value })
+    }
+
+    handleFile(event) {
+        this.setState({
+            FileName: event.target.files[0]
+        })
+        console.log(this.state.FileName);
+    }
+
+    SubmitFile() {
+        if (this.state.FileName == '') {
+            return;
+        }
+        const formData = new FormData();
+        formData.append('files', this.state.FileName);
+        fetch("https://localhost:7248/api/ReportTask/UploadFile?TaskId=3", {
+            method: 'POST',
+            body: formData
+
+        }).then(res => res.json())
+            .then((result) => {
+                this.refreshList();
+                setTimeout(() => {
+                    this.setState({ loading: false });
+                }, 5000);
+                { this.state.loading && toast.success("Import Successfull. Congratulation!!!") }
+            }, (error) => {
+                setTimeout(() => {
+                    this.setState({ loading: false });
+                }, 5000);
+                { this.state.loading && toast.error("Import failed. Try Again!!!"); }
+            })
+    }
+
+    DownLoadFile(e) {
+        fetch("https://localhost:7248/api/ReportTask/DownLoadFile?id=" + e.id, {
+            method: 'POST',
+        }).then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(new Blob([blob]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', e.fileName);
+                document.body.appendChild(link);
+                link.click();
+            });
+    }
+
+
+    editClick = (e) => {
+        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id=" + e.taskId)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({
+                    AssignTaskRequire: data, DescriptionTask: data.description,
+                    LeaderName: data.leader.fullName, WriterName: data.writer.fullName,
+                    GenreName: data.genre.genreName, CreateBy: data.writer.fullName, TaskId: data.taskId,
+                    WriterId: data.userId, CreateDate: data.createDate, UserId: data.reporter.id
+                });
+            });
+
+        fetch("https://localhost:7248/api/ReportTask/GetReportTaskByTaskId?taskId=" + e.taskId)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ ReportTaskById: data, TopicName: data.title, TodoDescription: data.description, Content: data.content, ImageCover: data.image });
+            });
+
+        fetch("https://localhost:7248/api/Document/GetAllDocumentByTaskId?TaskId=" + e.taskId)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ DocumentList: data });
+            });
+
+        this.setState({
+            modalTitle: "ReportTask",
+            Id: e.id
+        })
+    }
+
+    CancelFile(e) {
+        if (window.confirm("Do you want to delete?")) {
+            fetch("https://localhost:7248/api/Document/DeleteDocument?id=" + e, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+                // .then(res => res.json())
+                .then((result) => {
+                    this.refreshList();
+                    toast.success("Delete successfull. Congratulation!!!")
+
+                }, (error) => {
+                    toast.error("Delete failed. Try Again!!!")
+                })
+        }
+    }
+
+    onAddAssign() {
+        this.SubmitFile();
+        fetch("https://localhost:7248/api/ReportTask/UpdateReportTask", {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: this.state.Id,
+                title: this.state.TopicName,
+                description: this.state.TodoDescription,
+                content: this.state.Content,
+                image: "1.png",
+                isChecked: false,
+            })
+        })
+            .then(res => res.json())
+            .then((result) => {
+                this.refreshList();
+                this.state.loading &&
+                    toast.success("Insert Successfull. Congratulation!!!")
+            }, (error) => {
+                toast.error("Insert failed. Try Again!!!");
+            })
+    }
 
 
     render() {
-        const { ToDoWritingTask } = this.state;
+        const { DocumentList, ToDoWritingTask, DescriptionTask, LeaderName, GenreName, AssignTaskRequire, WriterName, IsChecked,
+            TopicName, ErrorTopicName, ImageCover, modalTitle, DescriptionWriting, ErrorDescription, Content,
+            CreateDate, CreateBy, TodoDescription, activePage, itemsCountPerPage, totalItemsCount } = this.state;
+
+        const indexOfLastCustomer = activePage * itemsCountPerPage;
+        const indexOfFirstCustomer = indexOfLastCustomer - itemsCountPerPage;
+        const currentCustomers = ToDoWritingTask.slice(indexOfFirstCustomer, indexOfLastCustomer);
 
         return (
             <div className="container">
@@ -64,7 +236,7 @@ export class ToDoReportTask extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {ToDoWritingTask.map(gen =>
+                            {currentCustomers.map(gen =>
                                 <tr key={gen.id}>
                                     <td>{gen.id}</td>
                                     <td>{gen.task.title}</td>
@@ -86,11 +258,27 @@ export class ToDoReportTask extends Component {
                             )}
                         </tbody>
                     </table>
+
+                    <Pagination
+                        prevPageText='Previous'
+                        nextPageText='Next'
+                        firstPageText='First'
+                        lastPageText='Last'
+                        itemClass='page-item'
+                        linkClass='page-link'
+                        activeClass='active'
+                        disabledClass='disabled'
+                        activePage={activePage}
+                        itemsCountPerPage={itemsCountPerPage}
+                        totalItemsCount={totalItemsCount}
+                        pageRangeDisplayed={5}
+                        onChange={this.handlePageChange.bind(this)}
+                    />
                     <div className="modal fade" id="exampleModal" tabIndex="-1" aria-hidden="true">
                         <div className="modal-dialog modal-lg modal-dialog-centered" style={{ width: '90%' }}>
                             <div className="modal-content">
                                 <div className="modal-header">
-                                    <h5 className="modal-title">{"modalTitle"}</h5>
+                                    <h5 className="modal-title">{modalTitle}</h5>
                                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"
                                     ></button>
                                 </div>
@@ -102,94 +290,97 @@ export class ToDoReportTask extends Component {
                                             {/* <div className="container">
                                                 <div className="row">
                                                     <div className="col-md-6"> */}
-                                                        <div style={{ border: '2px solid black', backgroundColor: 'white', borderRadius: '15px', padding: '5px', marginBottom: '15px' }} className="shadow">
-                                                            <h4>Requirement by Leader</h4>
-                                                            {/* <p><b>Title:</b> {AssignTaskRequire.title}</p>
-                                                            <p><b>Description:</b> {parse(DescriptionTask)}</p>
-                                                            <p><b>Genre: </b> {GenreName}</p>
-                                                            <p><b>Assgin by: </b>{LeaderName}</p>
-                                                            <p><b>Reporter: </b>{ReporterName}</p>
-                                                            <p><b>Start Date:</b> {AssignTaskRequire.startDate}</p>
-                                                            <p style={{ color: 'red' }}><b>End Date:</b> {AssignTaskRequire.endDate}</p> */}
-                                                        </div>
-                                                    {/* </div> */}
-                                                    {/* <div className="col-md-6">
-                                                        <div style={{ border: '2px solid black', backgroundColor: 'white', borderRadius: '15px', padding: '5px', marginBottom: '15px' }} className="shadow">
-                                                            <h4>ReportTask From {ReporterName}</h4>
-                                                            {ReportTaskById.isChecked &&
-                                                                <>
-                                                                    <p><b>Title: </b>{ReportTaskById.title}</p>
-                                                                    <p><b>Description: </b>{parse(a)}</p>
-                                                                    <p><b>Content: </b>{parse(c)}</p>
-                                                                    <p><b>Source: </b>{DocumentList != [] && DocumentList.map(it => <a href="">{it.fileName}</a>)}</p>
-                                                                </>
-                                                            }
-                                                        </div>
-                                                    </div> */}
-                                                {/* </div>
-                                            </div> */}
+                                            <div style={{ border: '2px solid black', backgroundColor: 'white', borderRadius: '15px', padding: '5px', marginBottom: '15px' }} className="shadow">
+                                                <h4>Requirement by Leader</h4>
+                                                <p><b>Title:</b> {AssignTaskRequire.title}</p>
+                                                <p><b>Description:</b> {parse(DescriptionTask)}</p>
+                                                <p><b>Genre: </b> {GenreName}</p>
+                                                <p><b>Assgin by: </b>{LeaderName}</p>
+                                                <p><b>Reporter: </b>{WriterName}</p>
+                                                <p><b>Start Date:</b> {AssignTaskRequire.startDate}</p>
+                                                <p style={{ color: 'red' }}><b>End Date:</b> {AssignTaskRequire.endDate}</p>
+                                            </div>
 
                                             <div className="form-group mb-3">
                                                 <label className="control-label">Title:</label>
-                                                <input name="ProductPrice" value={"TopicName"} class="form-control" onChange={(e) => this.onChangeTopicName(e)} />
-                                                {/* {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>} */}
+                                                <input name="ProductPrice" value={TopicName} class="form-control" onChange={(e) => this.onChangeTopicName(e)} />
+                                                {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>}
                                             </div>
 
-                                            <div className="form-group mb-3">
-                                                <label className="control-label">News Description:</label>
-                                                <input name="ProductPrice" value={"DescriptionWriting"} class="form-control" onChange={(e) => this.onChangeDescription(e)} />
-                                                {/* {ErrorDescription == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorDescription}</p>} */}
-                                            </div>
+                                            {/* <div className="form-group mb-3">
+                                                <label className="control-label">Description:</label>
+                                                <input name="ProductPrice" value={DescriptionWriting} class="form-control" onChange={(e) => this.onChangeDescription(e)} />
+                                                {ErrorDescription == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorDescription}</p>}
+                                            </div> */}
 
                                             <div className="form-group mb-3">
-                                                <label class="control-label">News Detail: </label>
+                                                <label class="control-label">Description: </label>
                                                 <div className="App">
                                                     <CKEditor
                                                         editor={ClassicEditor}
-                                                        data={"NewsDetail"}
+                                                        data={TodoDescription}
                                                         onReady={editor => {
                                                             console.log('Editor is ready to use!', editor);
                                                         }}
-                                                        // onChange={(event, editor) => {
-                                                        //     const data = editor.getData();
-                                                        //     this.setState({ NewsDetail: data })
-                                                        // }}
+                                                        onChange={(event, editor) => {
+                                                            const data = editor.getData();
+                                                            this.setState({ TodoDescription: data })
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group mb-3">
+                                                <label class="control-label">Content: </label>
+                                                <div className="App">
+                                                    <CKEditor
+                                                        editor={ClassicEditor}
+                                                        data={Content}
+                                                        onReady={editor => {
+                                                            console.log('Editor is ready to use!', editor);
+                                                        }}
+                                                        onChange={(event, editor) => {
+                                                            const data = editor.getData();
+                                                            this.setState({ Content: data })
+                                                        }}
                                                     />
                                                 </div>
                                             </div>
 
                                             <div className="input-group mb-3">
                                                 <div className="form-group">
-                                                    <label class="control-label">Image Cover: </label>
-                                                    <input class="form-control" type="file" /><br />
-                                                    {/* {ImageCover != '' ? <div style={{ border: '1px solid black', width: 120, height: 130 }} ><img src="" /></div> : null} */}
+                                                    <label className="control-label">Image Cover: </label>
+                                                    <input type="file" className="form-control" onChange={(e) => this.setState({ ImageCover: e.target.value })} /><br />
+                                                    {ImageCover != '' ? <div style={{ border: '1px solid black', width: 120, height: 130 }} ><img src="" /></div> : null}
                                                 </div>
                                             </div>
 
                                             {/* <div className="form-group mb-3">
                                                 <label className="control-label">CreateDate:</label>
                                                 <input type="date" name="ProductPrice" value={CreateDate} class="form-control" onChange={(e) => this.setState({ CreateDate: e.target.value })} />
-                                                {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>}
-                                            </div>
+                                            </div> */}
 
                                             <div className="form-group mb-3">
                                                 <label className="control-label">CreateBy:</label>
                                                 <input name="ProductPrice" value={CreateBy} class="form-control" onChange={(e) => this.setState({ CreateBy: e.target.value })} />
-                                                {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>}
                                             </div>
 
                                             <div className="form-group mb-3">
-                                                <label className="control-label">Comment:</label>
-                                                <input name="ProductPrice" value={Comment} class="form-control" onChange={(e) => this.onChangeCommnet(e)} />
-                                                {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>}
-                                            </div> */}
+                                                <label className="control-lable">Import File: </label>
+                                                <input className="form-control" type="file" onChange={(e) => this.handleFile(e)}></input>
+                                            </div>
+
+                                            <div>
+                                                {DocumentList.map(doc =>
+                                                    <><a href="" onClick={() => this.DownLoadFile(doc)}>{doc.fileName}</a>  <span onClick={() => this.CancelFile(doc.id)}>x</span></>)}
+                                            </div> <br />
 
                                             <div className="form-group">
-                                                <label className="control-label">IsChecked:</label>
+                                                <label className="control-label">IsChecked:</label> <b>{IsChecked == true ? "Accepted" : "Not Yet"}</b>
                                                 {/* {IsChecked == 1 ? < ><input type="radio" checked />Pass <input type="radio" />Not Pass</> : < ><input type="radio" />Pass <input type="radio" checked />Not Pass</>} */}
                                             </div> <br />
                                             <br />
-                                            <button type="button" className="btn btn-info" onClick={() => this.onAddAssign()}>Add Assign</button>
+                                            <button type="button" className="btn btn-info" onClick={() => this.onAddAssign()}>Add</button>
                                         </div>
                                     </div>
 

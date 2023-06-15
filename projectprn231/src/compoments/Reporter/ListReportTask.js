@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import Pagination from 'react-js-pagination';
 
 
 export class ListReportTask extends Component {
@@ -21,7 +22,12 @@ export class ListReportTask extends Component {
             modalTitle: '',
             UserId: 0,
             TaskId: 0,
-            Reason: ''
+            Reason: '',
+            CreateDate: '',
+            CreateBy: '', 
+            activePage: 1,
+            itemsCountPerPage: 5,
+            totalItemsCount: 0
         }
     }
 
@@ -29,12 +35,22 @@ export class ListReportTask extends Component {
         fetch("https://localhost:7248/api/AssignTask/GetAssignTaskByReporterId?reportId=4")
             .then(response => response.json())
             .then(data => {
-                this.setState({ AssignTask: data });
+                this.setState({
+                    AssignTask: data,
+                    totalItemsCount: data.length
+                });
+            })
+            .catch(error => {
+                console.log(error);
             });
     }
 
     componentDidMount() {
         this.refreshList();
+    }
+
+    handlePageChange(pageNumber) {
+        this.setState({ activePage: pageNumber });
     }
 
     seeDetailTask(e) {
@@ -48,7 +64,12 @@ export class ListReportTask extends Component {
             WriterName: e.writer.fullName,
             Title: e.title,
             Description: e.description,
-            GenreName: e.genre.genreName
+            GenreName: e.genre.genreName,
+            CreateDate: e.createDate,
+            CreateBy: e.writer.fullName,
+            activePage: 1,
+            itemsCountPerPage: 10,
+            totalItemsCount: 0
         })
     }
 
@@ -66,18 +87,20 @@ export class ListReportTask extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                isChecked: false, 
-                userId: this.state.UserId, 
+                isChecked: false,
+                createBy: this.state.CreateBy,
+                createDate: this.state.CreateDate,
+                userId: this.state.UserId,
                 taskId: this.state.TaskId
             })
         })
             .then(res => res.json())
             .then((result) => {
                 this.refreshList();
-                
+
             }, (error) => {
-            }) 
-            
+            })
+
         fetch("https://localhost:7248/api/AssignTask/AcceptTask", {
             method: 'PUT',
             headers: {
@@ -130,8 +153,14 @@ export class ListReportTask extends Component {
     }
 
     render() {
-        const { AssignTask, TaskId, Reason, modalTitle, LeaderName, Title, Description, GenreName, WriterName } = this.state;
-        console.log(AssignTask)
+        const { AssignTask, TaskId, Reason, modalTitle, LeaderName, Title, Description, GenreName, WriterName,
+            activePage, itemsCountPerPage, totalItemsCount } = this.state;
+        //console.log(AssignTask)
+
+        const indexOfLastCustomer = activePage * itemsCountPerPage;
+        const indexOfFirstCustomer = indexOfLastCustomer - itemsCountPerPage;
+        const currentCustomers = AssignTask.slice(indexOfFirstCustomer, indexOfLastCustomer);
+
         return (
             <div className="container">
                 <section className="panel tasks-widget">
@@ -164,7 +193,7 @@ export class ListReportTask extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {AssignTask.map(ak =>
+                            {currentCustomers.map(ak =>
                                 <tr key={ak.id}>
                                     <td>{ak.id}</td>
                                     <td>{ak.title}</td>
@@ -189,7 +218,21 @@ export class ListReportTask extends Component {
                             )}
                         </tbody>
                     </table>
-
+                    <Pagination
+                        prevPageText='Previous'
+                        nextPageText='Next'
+                        firstPageText='First'
+                        lastPageText='Last'
+                        itemClass='page-item'
+                        linkClass='page-link'
+                        activeClass='active'
+                        disabledClass='disabled'
+                        activePage={activePage}
+                        itemsCountPerPage={itemsCountPerPage}
+                        totalItemsCount={totalItemsCount}
+                        pageRangeDisplayed={5}
+                        onChange={this.handlePageChange.bind(this)}
+                    />
                     <div className="modal fade" id="exampleModal" tabIndex="-1" aria-hidden="true">
                         <div className="modal-dialog modal-lg modal-dialog-centered">
                             <div className="modal-content">
