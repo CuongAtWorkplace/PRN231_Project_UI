@@ -4,6 +4,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { ThirtyFpsSelect } from "@mui/icons-material";
+import Pagination from 'react-js-pagination';
 
 export class ListWritingTask extends Component {
     constructor(props) {
@@ -19,7 +21,13 @@ export class ListWritingTask extends Component {
             modalTitle: '',
             UserId: 0,
             TaskId: 0,
-            Reason: ''
+            Reason: '',
+            CreateDate: '',
+            CreateBy: '',
+            WrtierId: 0,
+            activePage: 1,
+            itemsCountPerPage: 5,
+            totalItemsCount: 0
         }
     }
 
@@ -28,11 +36,21 @@ export class ListWritingTask extends Component {
     }
 
     refreshList() {
-        fetch("https://localhost:7248/api/AssignTask/GetAllAssignTaskByWriterId?writerId=5")
+        fetch("https://localhost:7248/api/AssignTask/GetAllAssignTaskByWriterId?writerId=3")
             .then(response => response.json())
             .then(data => {
-                this.setState({ AssignTask: data });
+                this.setState({
+                    AssignTask: data,
+                    totalItemsCount: data.length
+                });
+            })
+            .catch(error => {
+                console.log(error);
             });
+    }
+
+    handlePageChange(pageNumber) {
+        this.setState({ activePage: pageNumber });
     }
 
     seeDetailTask(e) {
@@ -45,7 +63,9 @@ export class ListWritingTask extends Component {
             ReportName: e.reporter.fullName,
             Title: e.title,
             Description: e.description,
-            GenreName: e.genre.genreName
+            GenreName: e.genre.genreName,
+            CreateDate: e.createDate,
+            CreateBy: e.reporter.fullName
         })
     }
 
@@ -64,7 +84,9 @@ export class ListWritingTask extends Component {
             },
             body: JSON.stringify({
                 isChecked: false,
-                userId: this.state.UserId,
+                createBy: this.state,
+                createDate: this.state.CreateDate,
+                userId: this.state.WrtierId,
                 taskId: this.state.TaskId
             })
         })
@@ -94,8 +116,7 @@ export class ListWritingTask extends Component {
             }, (error) => {
                 toast.error("Reject failed. Try Again!!!");
             })
-        //
-        
+
     }
 
     rejectTask() {
@@ -129,8 +150,16 @@ export class ListWritingTask extends Component {
     }
 
     render() {
-        const { AssignTask, TaskId, Reason, modalTitle, LeaderName, Title, Description, GenreName, ReportName } = this.state;
-        console.log(AssignTask);
+        const { AssignTask, TaskId, Reason, modalTitle, LeaderName, Title, Description, GenreName, ReportName,
+            activePage, itemsCountPerPage, totalItemsCount } = this.state;
+
+        // const indexOfLastCustomer = activePage * itemsCountPerPage;
+        // const indexOfFirstCustomer = indexOfLastCustomer - itemsCountPerPage;
+        // const currentCustomers = AssignTask.slice(indexOfFirstCustomer, indexOfLastCustomer);
+        const indexOfLastCustomer = activePage * itemsCountPerPage;
+        const indexOfFirstCustomer = indexOfLastCustomer - itemsCountPerPage;
+        const currentCustomers = AssignTask.slice(indexOfFirstCustomer, indexOfLastCustomer);
+
         return (
             <div className="container">
                 <section className="panel tasks-widget">
@@ -163,7 +192,7 @@ export class ListWritingTask extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {AssignTask.map(ak =>
+                            {currentCustomers.map(ak =>
                                 <tr key={ak.id}>
                                     <td>{ak.id}</td>
                                     <td>{ak.title}</td>
@@ -188,7 +217,21 @@ export class ListWritingTask extends Component {
                             )}
                         </tbody>
                     </table>
-
+                    <Pagination
+                        prevPageText='Previous'
+                        nextPageText='Next'
+                        firstPageText='First'
+                        lastPageText='Last'
+                        itemClass='page-item'
+                        linkClass='page-link'
+                        activeClass='active'
+                        disabledClass='disabled'
+                        activePage={activePage}
+                        itemsCountPerPage={itemsCountPerPage}
+                        totalItemsCount={totalItemsCount}
+                        pageRangeDisplayed={5}
+                        onChange={this.handlePageChange.bind(this)}
+                    />
                     <div className="modal fade" id="exampleModal" tabIndex="-1" aria-hidden="true">
                         <div className="modal-dialog modal-lg modal-dialog-centered">
                             <div className="modal-content">

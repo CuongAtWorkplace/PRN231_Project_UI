@@ -18,12 +18,14 @@ import { CommentBrowseTable } from "../table/CommentBrowseTable";
 import { ListReportTask } from "../Reporter/ListReportTask";
 
 import { ToDoReportTask } from "../Reporter/ToDoReportTask";
-import { Reporter } from "../Reporter/Reporter";
 import { ListGenre } from '../Leader/ListGenre';
 import {ListReject} from "../Leader/ListReject"
 import { ListWritingTask } from "../Writer/ListWritingTask";
 import { ToDoWritingTask } from "../Writer/ToDoWritingTask";
 import { NewTest } from "../TestFile/NewTest";
+import Test from "../TestFile/Test";
+import Writer from "../Writer/Writer";
+import { ListAssignTask } from "../Leader/ListAssignTask";
 
 
 
@@ -74,7 +76,7 @@ export class SideBar extends Component {
 
                                 <li>
                                     <InsertEmoticonIcon className="icon" />
-                                    <span>List AssignTask</span>
+                                    <span>List AssignReportTask</span>
                                 </li>
                             </a>
 
@@ -198,7 +200,7 @@ export class SideBar extends Component {
                         <Route path="/comment" component={CommentBrowseTable} />
 
                         {/* Leader */}
-                        <Route />
+                        <Route path="/listassign" component={ListAssignTask}/>
 
                         <Route path="/listGenre" component={ListGenre} />
                         <Route path="/listReject" component={ListReject}/> 
@@ -213,9 +215,10 @@ export class SideBar extends Component {
                         <Route path="/listTodoWriting" component={ToDoWritingTask}/>
 
                         <Route path="/listReport" component={ListReportTask} />
-                        <Route path="/dashboard" component={Dashboard} />
-                        <Route path="/Reporter" component={Test} />
-
+                        {/* <Route path="/dashboard" component={Dashboard} /> */}
+                        {/* <Route path="/Reporter" component={Test} /> */}
+                        {/* <Route path="/test/:id" component={Test}/> */}
+                        <Route path="/writer/:id" component={Writer}/>
                     </div>
                 </div>
             </div>
