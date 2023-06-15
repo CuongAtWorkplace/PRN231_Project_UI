@@ -5,22 +5,32 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 export class Chart extends Component {
   state = {
     monthData: [],
+    isDataLoaded: false,
   };
 
   componentDidMount() {
-    const months = [30, 60, 90, 120, 150, 180];
-    months.forEach((numberOfDays) => {
-      this.getMonthUserData(numberOfDays);
-    });
+    if (!this.state.isDataLoaded) {
+      this.getMonthUserData();
+    }
   }
 
-  getMonthUserData(numberOfDays) {
-    fetch(`https://localhost:7248/api/User/GetUserData?numberOfDays=${numberOfDays}`)
-      .then((response) => response.json())
+
+  getMonthUserData() {
+    const months = [0, 30, 60, 90, 120, 150];
+    const requests = months.map((begin) =>
+      fetch(`https://localhost:7248/api/News/getNewsByDate?begin=${begin}&end=${begin + 30}`)
+    );
+
+    Promise.all(requests)
+      .then((responses) => Promise.all(responses.map((response) => response.json())))
       .then((data) => {
-        const { monthData } = this.state;
-        monthData.push({ name: `Month ${numberOfDays / 30}`, uv: data, pv: 0, amt: 0 });
-        this.setState({ monthData });
+        const monthData = data.map((item, index) => ({
+          name: `Month ${months[index] / 30}`,
+          uv: item,
+          pv: 0,
+          amt: 0,
+        }));
+        this.setState({ monthData, isDataLoaded: true });
       })
       .catch((error) => {
         console.error("Lỗi khi lấy dữ liệu người dùng:", error);

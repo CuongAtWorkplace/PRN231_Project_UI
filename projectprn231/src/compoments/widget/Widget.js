@@ -6,7 +6,6 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 export class Widget extends Component {
- 
   constructor(props) {
     super(props);
     this.state = {
@@ -15,14 +14,47 @@ export class Widget extends Component {
       diff: 20,
     };
   }
-  
 
   componentDidMount() {
-    this.getMonthUserData();
+    const { type } = this.props;
+    switch (type) {
+      case "user":
+        this.getMonthUserData("user");
+        break;
+      case "order":
+        this.getMonthUserData("order");
+        break;
+      case "earning":
+        this.getMonthUserData("earning");
+        break;
+      case "balance":
+        this.getMonthUserData("balance");
+        break;
+      default:
+        break;
+    }
   }
 
-  getMonthUserData() {
-    fetch("https://localhost:7248/api/User/GetUserData?numberOfDays=30")
+  getMonthUserData(userType) {
+    let url;
+    switch (userType) {
+      case "user":
+        url = "https://localhost:7248/api/User/GetUserData?numberOfDays=30";
+        break;
+      case "order":
+        url = "https://localhost:7248/api/Reporter/GetReporterData?numberOfDays=30";
+        break;
+      case "earning":
+        url = "https://localhost:7248/api/News/getNewsByDate?begin=0&end=30";
+        break;
+      case "balance":
+        url = "https://localhost:7248/api/News/getNewsByDate?begin=0&end=30";
+        break;
+      default:
+        return;
+    }
+
+    fetch(url)
       .then((response) => response.json())
       .then((data) => {
         this.setState({ userData: data });
@@ -33,29 +65,17 @@ export class Widget extends Component {
         console.error("Lỗi khi lấy dữ liệu người dùng:", error);
       });
   }
-  getYearUserData() {
-    fetch("https://localhost:7248/api/User/GetUserData?numberOfDays=365")
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({ userData: data });
-        const amount = data.length;
-        this.setState({ amount: amount });
-      })
-      .catch((error) => {
-        console.error("Lỗi khi lấy dữ liệu người dùng:", error);
-      });
-  }
+
   render() {
     const { type } = this.props;
     const { userData, amount, diff } = this.state;
-  
+
     let data;
-  
+
     switch (type) {
       case "user":
         data = {
           title: "User In Month",
-
           link: "See all User",
           icon: (
             <PersonOutlineIcon
@@ -65,11 +85,10 @@ export class Widget extends Component {
           ),
         };
         break;
-  
+
       case "order":
         data = {
           title: "Reporter In Month",
-       
           link: "View all orders",
           icon: (
             <ShoppingCartIcon
@@ -79,12 +98,11 @@ export class Widget extends Component {
           ),
         };
         break;
-  
+
       case "earning":
         data = {
           title: "Writer In Month",
-       
-          link: "View net earnings",
+          link: "View Writer",
           icon: (
             <AttachMoneyIcon
               className="icon"
@@ -93,7 +111,7 @@ export class Widget extends Component {
           ),
         };
         break;
-  
+
       case "balance":
         data = {
           title: "News",
@@ -107,29 +125,25 @@ export class Widget extends Component {
           ),
         };
         break;
-  
-        default:
-          data = {
-            title: "Unknown Widget",
-            isMoney: false,
-            link: "Unknown link",
-            icon: <div>Unknown icon</div>,
-          };
-          break;
-        
+
+      default:
+        data = {
+          title: "Unknown Widget",
+          isMoney: false,
+          link: "Unknown link",
+          icon: <div>Unknown icon</div>,
+        };
+        break;
     }
-  
+
     return (
       <div className="widget">
         <div className="left">
           <span>{data.title}</span>
-          <span className="counter">
-
-            {userData}
-          </span>
+          <span className="counter">{userData}</span>
           <span className="link">{data.link}</span>
         </div>
-  
+
         <div className="right">
           <div className="percentage positive">
             <KeyboardArrowUpIcon />
