@@ -13,14 +13,21 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import React, { Component } from "react";
 import { Table } from "../table/Table";
-import { Link, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { CommentBrowseTable } from "../table/CommentBrowseTable";
 import { ListReportTask } from "../Reporter/ListReportTask";
-import { Dashboard } from "../table/DashBoard";
-import Admin from "../../Pages/Admin";
-import { Admin_Home } from "../../Pages/Admin_Home";
-import { Login } from "@mui/icons-material";
-import { Test } from "../TestFile/Test";
+
+import { ToDoReportTask } from "../Reporter/ToDoReportTask";
+import { ListGenre } from '../Leader/ListGenre';
+import {ListReject} from "../Leader/ListReject"
+import { ListWritingTask } from "../Writer/ListWritingTask";
+import { ToDoWritingTask } from "../Writer/ToDoWritingTask";
+import { NewTest } from "../TestFile/NewTest";
+import Test from "../TestFile/Test";
+import Writer from "../Writer/Writer";
+import { ListAssignTask } from "../Leader/ListAssignTask";
+
+
 
 export class SideBar extends Component {
 
@@ -46,19 +53,74 @@ export class SideBar extends Component {
                             </a>
                             <p className="Title">Lists</p>
 
-                            <a href="/table">
+                            {/* Leader */}
+                            <a href="/listGenre">
+
                                 <li>
                                     <InsertEmoticonIcon className="icon" />
-                                    <span>User</span>
+                                    <span>Genre</span>
                                 </li>
                             </a>
-                            <a href="/comment">
+
+                            <a href="/listReject">
+
                                 <li>
-                                    <ModeCommentIcon className="icon" />
-                                    <span>Comment</span>
+                                    <InsertEmoticonIcon className="icon" />
+                                    <span>List Reject</span>
+                                </li>
+                            </a>
+
+
+                            {/* Reporter */}
+                            <a href="/listReportTask">
+
+                                <li>
+                                    <InsertEmoticonIcon className="icon" />
+                                    <span>List AssignReportTask</span>
+                                </li>
+                            </a>
+
+                            <a href="/listTodoTask">
+                                <li>
+                                    <InsertEmoticonIcon className="icon" />
+                                    <span>List ToDoReportTask</span>
+                                </li>
+                            </a>
+
+                            {/* Writer */}
+                            <a href="/listTodoWriting">
+                                <li>
+                                    <InsertEmoticonIcon className="icon" />
+                                    <span>List ToDoWritingTask</span>
+                                </li>
+                            </a>
+
+                            <a href="/listWritingTask">
+                                <li>
+                                    <InsertEmoticonIcon className="icon" />
+                                    <span>List WritingTask</span>
+                                </li>
+                            </a>
+
+                            {/* Admin */}
+                            <a href="/table">
+                                <li>
+                                    <ProductionQuantityLimitsIcon className="icon" />
+                                    <span>Product</span>
                                 </li>
 
                             </a>
+                            
+
+                            <a href="/reporter">
+
+                                <li>
+                                    <InsertEmoticonIcon className="icon" />
+                                    <span>Report</span>
+                                </li>
+                            </a>
+
+
 
                             <a href="/comment">
 
@@ -67,19 +129,11 @@ export class SideBar extends Component {
                                     <span>News</span>
                                 </li>
                             </a>
-
-                            <a href="/listReport">
+                            <a href="/newTest">
 
                                 <li>
                                     <NewspaperIcon className="icon" />
                                     <span>News</span>
-                                </li>
-                            </a>
-                            <a href="/Reporter">
-
-                                <li>
-                                    <NewspaperIcon className="icon" />
-                                    <span>Home</span>
                                 </li>
                             </a>
                             <p className="Title">Name</p>
@@ -144,9 +198,27 @@ export class SideBar extends Component {
                     <div className="Content">
                         <Route path="/table" component={Table} />
                         <Route path="/comment" component={CommentBrowseTable} />
+
+                        {/* Leader */}
+                        <Route path="/listassign" component={ListAssignTask}/>
+
+                        <Route path="/listGenre" component={ListGenre} />
+                        <Route path="/listReject" component={ListReject}/> 
+
+                        {/* Reporter */}
+
+                        <Route path="/listReportTask" component={ListReportTask}/>
+                        <Route path="/listTodoTask" component={ToDoReportTask} />
+
+                        {/* Writer */}
+                        <Route path="/listWritingTask" component={ListWritingTask}/>
+                        <Route path="/listTodoWriting" component={ToDoWritingTask}/>
+
                         <Route path="/listReport" component={ListReportTask} />
-                        <Route path="/dashboard" component={Dashboard} />
-                        <Route path="/Reporter" component={Test} />
+                        {/* <Route path="/dashboard" component={Dashboard} /> */}
+                        {/* <Route path="/Reporter" component={Test} /> */}
+                        {/* <Route path="/test/:id" component={Test}/> */}
+                        <Route path="/writer/:id" component={Writer}/>
                     </div>
                 </div>
             </div>

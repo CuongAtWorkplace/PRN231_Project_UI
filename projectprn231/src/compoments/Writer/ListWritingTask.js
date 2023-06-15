@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import parse from 'html-react-parser';
-import { toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { ThirtyFpsSelect } from "@mui/icons-material";
+import Pagination from 'react-js-pagination';
 
 export class ListWritingTask extends Component {
     constructor(props) {
@@ -12,12 +16,18 @@ export class ListWritingTask extends Component {
             Title: '',
             GenreName: '',
             Description: '',
-            LeaderName: '', 
+            LeaderName: '',
             ReportName: '',
             modalTitle: '',
             UserId: 0,
             TaskId: 0,
-            Reason: ''
+            Reason: '',
+            CreateDate: '',
+            CreateBy: '',
+            WrtierId: 0,
+            activePage: 1,
+            itemsCountPerPage: 5,
+            totalItemsCount: 0
         }
     }
 
@@ -26,23 +36,36 @@ export class ListWritingTask extends Component {
     }
 
     refreshList() {
-        fetch("https://localhost:7248/api/AssignTask/GetAllAssignTask")
+        fetch("https://localhost:7248/api/AssignTask/GetAllAssignTaskByWriterId?writerId=3")
             .then(response => response.json())
             .then(data => {
-                this.setState({ AssignTask: data});
+                this.setState({
+                    AssignTask: data,
+                    totalItemsCount: data.length
+                });
+            })
+            .catch(error => {
+                console.log(error);
             });
+    }
+
+    handlePageChange(pageNumber) {
+        this.setState({ activePage: pageNumber });
     }
 
     seeDetailTask(e) {
         this.setState({
             modalTitle: 'See Detail Task',
-            TaskId: e.id, 
+            TaskId: e.id,
+            UserId: e.writer.id,
             WriterId: e.writer.id,
-            LeaderName: e.leader.fullName, 
+            LeaderName: e.leader.fullName,
             ReportName: e.reporter.fullName,
-            Title: e.title, 
+            Title: e.title,
             Description: e.description,
-            GenreName: e.genre.genreName
+            GenreName: e.genre.genreName,
+            CreateDate: e.createDate,
+            CreateBy: e.reporter.fullName
         })
     }
 
@@ -53,42 +76,90 @@ export class ListWritingTask extends Component {
     }
 
     acceptTask() {
-
-    }
-
-    rejectTask() {
-        if (this.state.Reason == '' ) {
-            toast.error("Reason is not empty");
-            return;
-        } else {
-            fetch("https://localhost:7248/api/RejectTask/AddRejectTask", {
+        fetch("https://localhost:7248/api/WritingTask/InsertWritingTask", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                rejectId: 1,
-                reason: this.state.Reason, 
-                taskId: this.state.TaskId, 
-                UserId: this.state.WriterId,
-                isReject: false, 
-
+                isChecked: false,
+                createBy: this.state,
+                createDate: this.state.CreateDate,
+                userId: this.state.WrtierId,
+                taskId: this.state.TaskId
             })
         })
             .then(res => res.json())
             .then((result) => {
                 this.refreshList();
-                toast.success("Reject Task Pending. Congratulation!!!")  
+
+            }, (error) => {
+            })
+
+        fetch("https://localhost:7248/api/AssignTask/AcceptTask", {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: this.state.TaskId,
+                userStatus: 'Writer',
+                isStatus: true
+            })
+        })
+            .then(res => res.json())
+            .then((result) => {
+                this.refreshList();
+                toast.success("Reject Task Pending. Congratulation!!!")
             }, (error) => {
                 toast.error("Reject failed. Try Again!!!");
             })
+
+    }
+
+    rejectTask() {
+        if (this.state.Reason == '') {
+            toast.error("Reason is not empty");
+            return;
+        } else {
+            fetch("https://localhost:7248/api/RejectTask/AddRejectTask", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    rejectId: 1,
+                    reason: this.state.Reason,
+                    taskId: this.state.TaskId,
+                    UserId: this.state.WriterId,
+                    isReject: false,
+
+                })
+            })
+                .then(res => res.json())
+                .then((result) => {
+                    this.refreshList();
+                    toast.success("Reject Task Pending. Congratulation!!!")
+                }, (error) => {
+                    toast.error("Reject failed. Try Again!!!");
+                })
         }
     }
- 
+
     render() {
-        const { AssignTask, TaskId, Reason, modalTitle, LeaderName, Title, Description, GenreName, ReportName } = this.state;
-        console.log(AssignTask);
+        const { AssignTask, TaskId, Reason, modalTitle, LeaderName, Title, Description, GenreName, ReportName,
+            activePage, itemsCountPerPage, totalItemsCount } = this.state;
+
+        // const indexOfLastCustomer = activePage * itemsCountPerPage;
+        // const indexOfFirstCustomer = indexOfLastCustomer - itemsCountPerPage;
+        // const currentCustomers = AssignTask.slice(indexOfFirstCustomer, indexOfLastCustomer);
+        const indexOfLastCustomer = activePage * itemsCountPerPage;
+        const indexOfFirstCustomer = indexOfLastCustomer - itemsCountPerPage;
+        const currentCustomers = AssignTask.slice(indexOfFirstCustomer, indexOfLastCustomer);
+
         return (
             <div className="container">
                 <section className="panel tasks-widget">
@@ -121,8 +192,8 @@ export class ListWritingTask extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {AssignTask.map(ak =>
-                                ak.writerId == 3 ? <tr key={ak.id}>
+                            {currentCustomers.map(ak =>
+                                <tr key={ak.id}>
                                     <td>{ak.id}</td>
                                     <td>{ak.title}</td>
                                     <td>{parse(ak.description)}</td>
@@ -142,11 +213,25 @@ export class ListWritingTask extends Component {
                                         </button>
 
                                     </td>
-                                </tr> : <></>
+                                </tr>
                             )}
                         </tbody>
                     </table>
-
+                    <Pagination
+                        prevPageText='Previous'
+                        nextPageText='Next'
+                        firstPageText='First'
+                        lastPageText='Last'
+                        itemClass='page-item'
+                        linkClass='page-link'
+                        activeClass='active'
+                        disabledClass='disabled'
+                        activePage={activePage}
+                        itemsCountPerPage={itemsCountPerPage}
+                        totalItemsCount={totalItemsCount}
+                        pageRangeDisplayed={5}
+                        onChange={this.handlePageChange.bind(this)}
+                    />
                     <div className="modal fade" id="exampleModal" tabIndex="-1" aria-hidden="true">
                         <div className="modal-dialog modal-lg modal-dialog-centered">
                             <div className="modal-content">
@@ -159,36 +244,39 @@ export class ListWritingTask extends Component {
                                 <div className="modal-body">
                                     <div className="d-flex flex-row bd-highlight mb-3">
 
-                                        <div className="p-2 w-50 bd-highlight">
+                                        <div className="p-2 bd-highlight" style={{ width: "100%" }}>
 
-                                            <div className="input-group mb-3">
-                                                <span className="input-group-text">Title</span>
-                                                <input type="text" className="form-control"
-                                                    value={Title}/>
+                                            <div className="form-group mb-3">
+                                                <label className="control-label">Title:</label>
+                                                <input name="Title" className="form-control" value={Title} />
                                             </div>
 
-                                            <div className="input-group mb-3">
-                                                <span className="input-group-text">Description</span>
-                                                <input type="text" className="form-control"
-                                                    value={Description}/>
+                                            <div className="form-group mb-3">
+                                                <label className="control-label">Description:</label>
+                                                <div className="App">
+                                                    <CKEditor
+                                                        editor={ClassicEditor}
+                                                        data={Description}
+                                                    />
+                                                </div>
                                             </div>
 
                                             <div className="input-group mb-3">
                                                 <span className="input-group-text">GenreName</span>
                                                 <input type="text" className="form-control"
-                                                    value={GenreName}/>
+                                                    value={GenreName} />
                                             </div>
 
                                             <div className="input-group mb-3">
                                                 <span className="input-group-text">Leader:</span>
                                                 <input type="text" className="form-control"
-                                                    value={LeaderName}/>
+                                                    value={LeaderName} />
                                             </div>
 
                                             <div className="input-group mb-3">
                                                 <span className="input-group-text">ReportName:</span>
                                                 <input type="text" className="form-control"
-                                                    value={ReportName}/>
+                                                    value={ReportName} />
                                             </div>
 
                                             <div className="input-group mb-3">
