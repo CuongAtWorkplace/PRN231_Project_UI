@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import './login.css'
-
+import jwtDecode from 'jwt-decode';
 import { Home } from '../Home/Home';
 
 const Login = () => {
@@ -23,12 +23,19 @@ const Login = () => {
         const data = await response.json();
         const token = data.token;
       
-        history.push('/home');
-         localStorage.getItem('token', token);
+        
+         localStorage.setItem('token', token);
          const storedData = localStorage.getItem('token');
-         console.log(storedData);
+         
+        const decodedToken = jwtDecode(token);
+
+          // Lấy giá trị từ payload
+          const userId = decodedToken.Role_Name;
+          alert(userId);
+         
         console.log('Đăng nhập thành công');
-        console.log(token.Id);
+      
+        history.push('/home');
       } else {
         // Xử lý lỗi đăng nhập, hiển thị thông báo lỗi cho người dùng
         console.log('Đăng nhập thất bại');
