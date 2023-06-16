@@ -7,16 +7,19 @@ import Modal from '@mui/material/Modal';
 import "./table.css";
 
 const columns = [
-  { field: 'fullName', headerName: 'Full Name', width: 200 },
+  { field: 'fullName', headerName: 'Full Name', width: 100 },
+  { field: 'email', headerName: 'Email', width: 150 },
   { field: 'password', headerName: 'Password', width: 150 },
   { field: 'phone', headerName: 'Phone', width: 150 },
   { field: 'address', headerName: 'Address', width: 200 },
-  { field: 'roleId', headerName: 'Role ID', width: 10 },
+  { field: 'roleName', headerName: 'Role Name', width: 150 },
+  { field: 'createDate', headerName: 'Create Date', width: 150 },
 ];
 
 export class Table extends Component {
   constructor(props) {
     super(props);
+    this.selectedRows = [];
     this.state = {
       rows: [],
       open: false,
@@ -25,14 +28,22 @@ export class Table extends Component {
       password: "",
       phone: "",
       address: "",
-      roleId: "1"
+      roleId: "1",
+      image: null,
+      imageName: "",
+      activeButtonClicked: false,
+      deactiveButtonClicked: false,
     };
   }
 
   handleSubmit = () => {
-    const { fullName, email, password, phone, address, roleId } = this.state;
+    const { fullName, email, password, phone, address, roleId, imageName } = this.state;
 
-    // Gửi yêu cầu POST đến API
+    const currentDate = new Date().toISOString();
+
+    this.uploadAvatar();
+
+    // Gửi yêu cầu POST đến API với FormData
     fetch("https://localhost:7248/api/User/InsertUser", {
       method: 'POST',
       headers: {
@@ -45,7 +56,10 @@ export class Table extends Component {
         password: password,
         phone: phone,
         address: address,
-        roleId: roleId
+        roleId: roleId,
+        createDate: currentDate,
+        isBan: false,
+        image: imageName
       })
     })
       .then(response => response.json())
@@ -56,8 +70,82 @@ export class Table extends Component {
       })
       .catch(error => {
         // Xử lý lỗi (nếu có)
+        alert(error)
       });
   }
+  updateBanRows = () => {
+    this.selectedRows.forEach((id) => {
+      this.updateBan(id);
+    });
+    alert("ok");
+    window.location.reload();
+  }
+
+  handleCheckboxChange = (selectionModel) => {
+    this.selectedRows = selectionModel;
+    // Lặp qua từng ID trong mảng selectedRows và gọi phương thức updateCommentTrue
+
+  }
+
+  updateBan = (id) => {
+    const { activeButtonClicked } = this.state;
+    const isBan = !activeButtonClicked; // Set the desired ban status here
+  
+    fetch(`https://localhost:7248/api/User/UpdateBanStatus?id=${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(isBan), // Set the request body to the ban status
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Update the state with the updated rows
+        const updatedRows = this.state.rows.map(row => {
+          if (row.id === id) {
+            return {
+              ...row,
+              confirmed: true,
+            };
+          }
+          return row;
+        });
+  
+        this.setState({ rows: updatedRows });
+      })
+      .catch(error => {
+        console.error('Error updating comment:', error);
+      });
+  }
+  
+
+  uploadAvatar = () => {
+    const { image } = this.state;
+
+    if (!image) {
+      // Không có tệp ảnh được chọn, không thực hiện gửi yêu cầu
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('avatar', image);
+
+    fetch("https://localhost:7248/api/User/ImportFile", {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(result => {
+        // Xử lý kết quả từ API (nếu cần)
+        console.log(result);
+      })
+      .catch(error => {
+        // Xử lý lỗi (nếu có)
+        console.error(error);
+      });
+  }
+
+
 
   handleChange = (event) => {
     this.setState({ [event.target.id]: event.target.value });
@@ -67,12 +155,23 @@ export class Table extends Component {
     this.refreshList();
   }
 
-  refreshList() {
-    fetch("https://localhost:7248/api/User/GetAllUser")
+  refreshList = () =>{
+    fetch("https://localhost:7248/api/User/GetAllUserBan?Ban=true")
       .then(response => response.json())
       .then(data => {
         this.setState({ rows: data });
       });
+      this.setState({ activeButtonClicked: true, deactiveButtonClicked: false });
+    }
+
+  refreshListBanFalse = () =>{
+    fetch("https://localhost:7248/api/User/GetAllUserBan?Ban=false")
+      .then(response => response.json())
+      .then(data => {
+        this.setState({ rows: data });
+      });
+      this.setState({ activeButtonClicked: false, deactiveButtonClicked: true });
+
   }
 
   handleOpen = () => {
@@ -83,12 +182,28 @@ export class Table extends Component {
     this.setState({ open: false });
   };
 
+  handleAvatarChange = (event) => {
+    const file = event.target.files[0];
+    this.setState({ image: file, imageName: file.name });
+  };
+
+
   render() {
-    const { open, fullName, email, password, phone, address, roleId } = this.state;
+    const { open, fullName, email, password, phone, address, roleId,activeButtonClicked, deactiveButtonClicked  } = this.state;
 
     return (
       <div>
         <h2>User Management</h2>
+
+
+        <div className="Active_Layout">
+          <Button className='Active' onClick={this.refreshList} >
+            Active
+          </Button>
+          <Button className='De_Active' onClick={this.refreshListBanFalse} >
+            De-Active
+          </Button>
+        </div>
         <div className='TableLayout'>
           <div style={{ height: 400, width: '100%' }}>
             <DataGrid
@@ -96,14 +211,19 @@ export class Table extends Component {
               columns={columns}
               pageSize={5}
               checkboxSelection
+              onRowSelectionModelChange={this.handleCheckboxChange}
             />
           </div>
         </div>
         <div className="btn_class">
-          <button className="ban_btn" onClick={this.handleOpen}>
-            Ban User
-          </button>
-
+         {!activeButtonClicked && (
+            <Button className="Recover_btn" onClick={() => this.updateBanRows()}>Recover User</Button>
+          )}
+          {!deactiveButtonClicked && (
+            <Button className="ban_btn" onClick={() => this.updateBanRows()}>
+              Ban User
+            </Button>
+          )}
           <Button className="add_btn" onClick={this.handleOpen}>
             Add User
           </Button>
@@ -197,9 +317,9 @@ export class Table extends Component {
                 <input
                   id="avatar"
                   type="file"
+                  onChange={this.handleAvatarChange}
                 />
               </div>
-
               <button className="submit_btn" onClick={this.handleSubmit}>Submit</button>
             </Typography>
           </Box>

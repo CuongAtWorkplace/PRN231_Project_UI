@@ -1,29 +1,33 @@
-// import "./sidebar.css"
-// import DashboardIcon from '@mui/icons-material/Dashboard';
-// import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
-// import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
-// import ModeCommentIcon from '@mui/icons-material/ModeComment';
-// import NewspaperIcon from '@mui/icons-material/Newspaper';
-// import LogoutIcon from '@mui/icons-material/Logout';
-// import SearchIcon from '@mui/icons-material/Search';
-// import LanguageIcon from '@mui/icons-material/Language';
-// import DarkModeIcon from '@mui/icons-material/DarkMode';
-// import OpenWithIcon from '@mui/icons-material/OpenWith';
-// import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-// import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-// import React, { Component } from "react";
-// import { Table } from "../table/Table";
-// import { Route } from "react-router-dom";
-// import { CommentBrowseTable } from "../table/CommentBrowseTable";
-// import { ListReportTask } from "../Reporter/ListReportTask";
+// // import "./sidebar.css"
+// // import DashboardIcon from '@mui/icons-material/Dashboard';
+// // import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
+// // import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+// // import ModeCommentIcon from '@mui/icons-material/ModeComment';
+// // import NewspaperIcon from '@mui/icons-material/Newspaper';
+// // import LogoutIcon from '@mui/icons-material/Logout';
+// // import SearchIcon from '@mui/icons-material/Search';
+// // import LanguageIcon from '@mui/icons-material/Language';
+// // import DarkModeIcon from '@mui/icons-material/DarkMode';
+// // import OpenWithIcon from '@mui/icons-material/OpenWith';
+// // import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+// // import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+// // import React, { Component } from "react";
+// // import { Table } from "../table/Table";
+// // import { Route } from "react-router-dom";
+// // import { CommentBrowseTable } from "../table/CommentBrowseTable";
+// // import { ListReportTask } from "../Reporter/ListReportTask";
+
 
 // import { ToDoReportTask } from "../Reporter/ToDoReportTask";
-// import { Reporter } from "../Reporter/Reporter";
 // import { ListGenre } from '../Leader/ListGenre';
 // import {ListReject} from "../Leader/ListReject"
 // import { ListWritingTask } from "../Writer/ListWritingTask";
 // import { ToDoWritingTask } from "../Writer/ToDoWritingTask";
 // import { NewTest } from "../TestFile/NewTest";
+// import Test from "../TestFile/Test";
+// import Writer from "../Writer/Writer";
+// import { ListAssignTask } from "../Leader/ListAssignTask";
+
 
 
 
@@ -72,11 +76,13 @@
 //                             {/* Reporter */}
 //                             <a href="/listReportTask">
 
+
 //                                 <li>
 //                                     <InsertEmoticonIcon className="icon" />
-//                                     <span>List AssignTask</span>
+//                                     <span>List AssignReportTask</span>
 //                                 </li>
 //                             </a>
+
 
 //                             <a href="/listTodoTask">
 //                                 <li>
@@ -197,8 +203,10 @@
 //                         <Route path="/table" component={Table} />
 //                         <Route path="/comment" component={CommentBrowseTable} />
 
+
 //                         {/* Leader */}
-//                         <Route />
+//                         <Route path="/listassign" component={ListAssignTask}/>
+
 
 //                         <Route path="/listGenre" component={ListGenre} />
 //                         <Route path="/listReject" component={ListReject}/> 
@@ -212,13 +220,16 @@
 //                         <Route path="/listWritingTask" component={ListWritingTask}/>
 //                         <Route path="/listTodoWriting" component={ToDoWritingTask}/>
 
-//                         <Route path="/listReport" component={ListReportTask} />
-//                         <Route path="/dashboard" component={Dashboard} />
-//                         <Route path="/Reporter" component={Test} />
 
+//                         <Route path="/listReport" component={ListReportTask} />
+//                         {/* <Route path="/dashboard" component={Dashboard} /> */}
+//                         {/* <Route path="/Reporter" component={Test} /> */}
+//                         {/* <Route path="/test/:id" component={Test}/> */}
+//                         <Route path="/writer/:id" component={Writer}/>
 //                     </div>
 //                 </div>
 //             </div>
 //         )
 //     }
 // }
+

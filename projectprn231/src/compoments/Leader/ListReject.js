@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Pagination from 'react-js-pagination';
 
 export class ListReject extends Component {
     constructor(props) {
@@ -13,8 +14,11 @@ export class ListReject extends Component {
             Reason: '',
             RejectId: 0,
             Title: '',
-            IsReject: true, 
-            RejectTaskAccept: []
+            IsReject: true,
+            RejectTaskAccept: [],
+            activePage: 1,
+            itemsCountPerPage: 5,
+            totalItemsCount: 0
         }
     }
 
@@ -22,7 +26,10 @@ export class ListReject extends Component {
         fetch("https://localhost:7248/api/RejectTask/GetAllRejectTaskPending")
             .then(response => response.json())
             .then(data => {
-                this.setState({ RejectTask: data });
+                this.setState({
+                    RejectTask: data,
+                    totalItemsCount: data.length
+                });
             });
 
         fetch("https://localhost:7248/api/RejectTask/GetAllRejectTaskAccept")
@@ -34,6 +41,10 @@ export class ListReject extends Component {
 
     componentDidMount() {
         this.refreshList();
+    }
+
+    handlePageChange(pageNumber) {
+        this.setState({ activePage: pageNumber });
     }
 
     editClick = (e) => {
@@ -55,7 +66,7 @@ export class ListReject extends Component {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    id: this.state.RejectId, 
+                    id: this.state.RejectId,
                     IsReject: true
                 })
             })
@@ -72,7 +83,7 @@ export class ListReject extends Component {
     rejectTask = () => {
         if (window.confirm("Do you want to reject?")) {
             fetch("https://localhost:7248/api/RejectTask/DeleteRejectTask?Id=" + this.state.RejectId, {
-                method: 'DELETE', 
+                method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -89,12 +100,18 @@ export class ListReject extends Component {
     }
 
     render() {
-        const { RejectTask, RejectId, UserId, Title, Reason, modalTitle, RejectTaskAccept } = this.state;
+        const { RejectTask, RejectId, UserId, Title, Reason, modalTitle, RejectTaskAccept,
+            activePage, itemsCountPerPage, totalItemsCount } = this.state;
+
+        const indexOfLastCustomer = activePage * itemsCountPerPage;
+        const indexOfFirstCustomer = indexOfLastCustomer - itemsCountPerPage;
+        const currentCustomers = RejectTask.slice(indexOfFirstCustomer, indexOfLastCustomer);
+
         return (
             <div className="container">
                 <section className="panel tasks-widget">
                     <header className="panel-heading">
-                        <h2>List Reject Task</h2>
+                        <h2>List Reject Task Pending</h2>
                     </header>
                 </section>
                 <div>
@@ -119,7 +136,7 @@ export class ListReject extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {RejectTask.map(gen =>
+                            {currentCustomers.map(gen =>
                                 <tr key={gen.id}>
                                     <td>{gen.id}</td>
                                     <td>{gen.task.title}</td>
@@ -136,21 +153,26 @@ export class ListReject extends Component {
                                                 <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                             </svg>
                                         </button>
-
-                                        {/* <button type="button"
-                                            className="btn btn-light mr-1"
-                                            onClick={() => this.deleteClick(gen.id)}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash-fill" viewBox="0 0 16 16">
-                                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
-                                            </svg>
-                                        </button> */}
-
                                     </td>
                                 </tr>
                             )}
                         </tbody>
                     </table>
-
+                    <Pagination
+                        prevPageText='Previous'
+                        nextPageText='Next'
+                        firstPageText='First'
+                        lastPageText='Last'
+                        itemClass='page-item'
+                        linkClass='page-link'
+                        activeClass='active'
+                        disabledClass='disabled'
+                        activePage={activePage}
+                        itemsCountPerPage={itemsCountPerPage}
+                        totalItemsCount={totalItemsCount}
+                        pageRangeDisplayed={5}
+                        onChange={this.handlePageChange.bind(this)}
+                    />
                     <div className="modal fade" id="exampleModal" tabIndex="-1" aria-hidden="true">
                         <div className="modal-dialog modal-lg modal-dialog-centered">
                             <div className="modal-content">
@@ -238,8 +260,7 @@ export class ListReject extends Component {
                                     <td>{gen.task.title}</td>
                                     <td>{gen.reason}</td>
                                     <td>{gen.userId}</td>
-                                    <td style={{color: 'green'}}><b>Accepted</b></td>
-                                    {/* <td>{gen.reject.name}</td> */}
+                                    <td style={{ color: 'green' }}><b>Accepted</b></td>
                                 </tr>
                             )}
                         </tbody>

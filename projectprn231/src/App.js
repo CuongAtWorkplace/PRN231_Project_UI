@@ -6,28 +6,29 @@ import { SideBar } from './compoments/SideBar/SideBar';
 import { Table } from './compoments/table/Table';
 import { Reporter } from './compoments/Reporter/Reporter';
 import { ListGenre } from './compoments/Leader/ListGenre';
-import Home from './compoments/Home/Home';
-import NewsDetail from './compoments/Home/NewsDetail';
-import Login from './compoments/Login/Login';
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function App() {
   return (
     <div>
-      {/* <BrowserRouter>
-   <Login/>
-      </BrowserRouter> */}
-     
-        <BrowserRouter> 
-        <Switch>
+      <BrowserRouter>
+        <SideBar />
+      </BrowserRouter>
+      <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
 
-        <Route exact path="/login"><Login/></Route>
-        <Route path="/home"><Home/></Route>
-        <Route path="/newsdetail/:id"> <NewsDetail/></Route>
-          {/* <Route path="/newsdetail/:id" NewsDetail />
-          <Route path="/home" component={Home} /> */}
-           </Switch>
-        </BrowserRouter>
-          
-   
     </div>
   );
 

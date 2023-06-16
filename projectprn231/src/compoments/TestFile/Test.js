@@ -1,7 +1,13 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 
-export class Test extends Component {
+class Test extends Component {
+
+    componentDidMount() {
+        const { id } = this.props.match.params;
+        alert(id);
+    }
     
     render() {
       
@@ -12,3 +18,5 @@ export class Test extends Component {
         )
     }
 }
+
+export default withRouter(Test)
