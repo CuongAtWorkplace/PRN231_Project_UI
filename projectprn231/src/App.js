@@ -9,12 +9,20 @@ import { ListGenre } from './compoments/Leader/ListGenre';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Login from './compoments/Login/Login';
+import Home from './compoments/Home/Home';
+import NewsDetail from './compoments/Home/NewsDetail';
 
 function App() {
   return (
     <div>
       <BrowserRouter>
-        <SideBar />
+      <Switch>
+      <Route exact path="/login"><Login/></Route>
+        <Route path="/home"><Home/></Route>
+        <Route path="/newsdetail/:id"> <NewsDetail/></Route>
+      </Switch>
+        
       </BrowserRouter>
       <ToastContainer
           position="top-right"
