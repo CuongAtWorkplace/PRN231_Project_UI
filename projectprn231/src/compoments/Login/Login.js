@@ -23,7 +23,7 @@ const Login = () => {
         const data = await response.json();
         const token = data.token;
       
-        history.push('/Home');
+        history.push('/home');
          localStorage.getItem('token', token);
          const storedData = localStorage.getItem('token');
          console.log(storedData);
@@ -55,45 +55,7 @@ const Login = () => {
       />
       <button onClick={handleLogin}>Đăng nhập</button> */}
 
-      {/* <form>
-        <h3>Sign In</h3>
-        <div className="mb-3">
-          <label>Email address</label>
-          <input
-            type="email"
-            className="form-control"
-            placeholder="Enter email"
-          />
-        </div>
-        <div className="mb-3">
-          <label>Password</label>
-          <input
-            type="password"
-            className="form-control"
-            placeholder="Enter password"
-          />
-        </div>
-        <div className="mb-3">
-          <div className="custom-control custom-checkbox">
-            <input
-              type="checkbox"
-              className="custom-control-input"
-              id="customCheck1"
-            />
-            <label className="custom-control-label" htmlFor="customCheck1">
-              Remember me
-            </label>
-          </div>
-        </div>
-        <div className="d-grid">
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
-        </div>
-        <p className="forgot-password text-right">
-          Forgot <a href="#">password?</a>
-        </p>
-      </form> */}
+     
 
         <div class="myform form ">
 					 <div class="logo mb-3">
@@ -104,17 +66,31 @@ const Login = () => {
                    <form action="" method="post" name="login">
                            <div class="form-group">
                               <label for="exampleInputEmail1">Email address</label>
-                              <input type="email" name="email"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email"/>
+                              <input type="email" 
+                              name="email"  
+                              class="form-control" 
+                              id="email" 
+                              aria-describedby="emailHelp"  
+                              placeholder="Enter email"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}/>
                            </div>
                            <div class="form-group">
                               <label for="exampleInputEmail1">Password</label>
-                              <input type="password" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password"/>
+                              <input type="password" 
+                              name="password" 
+                              id="password"  
+                              class="form-control" 
+                              aria-describedby="emailHelp" 
+                              placeholder="Enter Password"
+                              value={password}
+                               onChange={(e) => setPassword(e.target.value)}/>
                            </div>
                            <div class="form-group">
                               <p class="text-center">By signing up you accept our <a href="#">Terms Of Use</a></p>
                            </div>
                            <div class="col-md-12 text-center ">
-                              <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
+                              <button type="submit" onClick={handleLogin} class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
                            </div>
                            <div class="col-md-12 ">
                               <div class="login-or">
