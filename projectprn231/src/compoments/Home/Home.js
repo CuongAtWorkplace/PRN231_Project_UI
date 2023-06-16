@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 import "./home.css"
+import { Link } from "@mui/material";
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { withRouter } from "react-router-dom/cjs/react-router-dom";
+import { useHistory } from 'react-router-dom';
 
-
-export class Home extends Component {
+class Home extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             NewsHome: [],
+            NewsId:0,
         }
     }
 
@@ -20,11 +24,19 @@ export class Home extends Component {
     }
 
     componentDidMount(){
+        
         this.refreshList();
+        
     }
-
+    
+    handleProductClick(id) {
+        // Chuyển hướng đến trang chi tiết sản phẩm và truyền productId
+        // this.props.history.push(`/home`);
+        // const { history } = this.props;
+        // history.push(`/newsdetail/${id}`);
+      }
     render() {
-        const{NewsHome} = this.state;
+        const{NewsHome,NewsId} = this.state;
         return (
             <div className="App">
                 <div id="top">
@@ -70,12 +82,12 @@ export class Home extends Component {
                         <div id="headlines">
                             <div id="main-headline">
                                 {NewsHome.map(item =>
-                                    <div>
-
+                                    <div key={item.id}  >
+                                 {/* <div> */}
                                     
                                 <h2 class="heading">Featured Story</h2>
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png" alt="" />
-                                <h1><a href="#">{item.description}</a></h1>
+                                <h1> <a  href={`/newsdetail/${item.id}`}>{item.description}</a>  </h1>
                                 <p class="author">Name Here | <span>09.18.09</span></p>
                                 <p>{item.description}</p>
                                 <p><a href="#">Full story &raquo;</a></p>
@@ -148,3 +160,4 @@ export class Home extends Component {
         )
     }
 }
+export default withRouter(Home);
