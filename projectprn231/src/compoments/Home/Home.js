@@ -1,4 +1,4 @@
-import React, { Component ,useState } from "react";
+import React,    { Component ,useState } from "react";
 import "./home.css"
 import { Link } from "@mui/material";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -12,6 +12,7 @@ class Home extends Component {
 
         this.state = {
             NewsHome: [],
+            DataWeather:{},
             ListGenre: [],
             NewsHomeByDate: [],
             NewsId: 0,
@@ -27,7 +28,14 @@ class Home extends Component {
                 this.setState({ NewsHome: data });
             });
     }
-
+    refreshDataWeather() {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=hanoi&appid=eb16d064d3816182670320b527544012&units=metric`)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ DataWeather: data });
+            });
+          
+    }
     refreshListGenre() {
         fetch("https://localhost:7248/api/News/getAllGenres")
             .then(response => response.json())
@@ -35,6 +43,7 @@ class Home extends Component {
                 this.setState({ ListGenre: data });
             });
     }
+    
     refreshListByDate() {
         fetch("https://localhost:7248/api/News/getNewsByDate")
             .then(response => response.json())
@@ -44,7 +53,7 @@ class Home extends Component {
     }
     componentDidMount() {
 
-        
+        this.refreshDataWeather();
         this.refreshListGenre();
         this.refreshList();
         this.refreshListByDate();
@@ -114,12 +123,13 @@ class Home extends Component {
     };
 
     render() {
-        const { NewsHome, ListGenre, NewsHomeByDate, NewsId } = this.state;
+        const { NewsHome, ListGenre, NewsHomeByDate, DataWeather,NewsId } = this.state;
+       
         return (
             <div className="App">
                 <div id="top">
                     <ul>
-                        <li><a href="#">About</a></li>
+                        <li><a href="#"></a></li>
                         <li><a href="#">Submit a Story</a></li>
                         <li><a href="#">Feedback</a></li>
                         <li><a onClick={this.handleClick}>Support</a></li>
@@ -130,9 +140,12 @@ class Home extends Component {
                     <div id="ad"> <img src="img/ad-blank.png" alt="" /> </div>
                 </div>
                 <div id="nav">
+                
+                <li><a href="/home">Home</a></li>
                     {ListGenre.map(gen =>
                         <ul key={gen.id}>
-                            <li><a href="#">{gen.genreName}</a></li>
+                            
+                            <li><a href={`/newsbygenre/${gen.id}`}>{gen.genreName}</a></li>
 
                         </ul>
                     )}
@@ -156,7 +169,9 @@ class Home extends Component {
 
                 <div id="content-wrapper">
                     <div id="content">
+                            {NewsHome.map
 
+                            }
                         <div class="feature clearfloat" id="lead">
                             <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-zQfyRzI4bm_31zRRBKBPPjapxMgtc_YSYnnBHBI6iT7LLf4Prooy7t1w0Z2CFkef5z8&usqp=CAU" alt="" id="leadpic" /></a>
                             <h3>
