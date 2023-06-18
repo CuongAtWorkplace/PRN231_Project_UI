@@ -46,7 +46,7 @@ class Header extends Component {
     componentWillUnmount() {
         clearInterval(this.timerID);
     }
-    async componentDidMount() {
+     componentDidMount() {
         this.timerID = setInterval(() => this.tick(), 1000);
         this.refreshDataWeather();
         this.refreshListGenre();
@@ -54,14 +54,14 @@ class Header extends Component {
 
         // localStorage.getItem('token', token);
         //  const storedData = localStorage.getItem('token');
-        if(token !=null){
-             const decodedToken = jwtDecode(token);
+        if(token != null){
+       
+            const decodedToken = jwtDecode(token);
 
-
-        const userId = decodedToken.Role_Name;
-        console.log(token);
-        console.log(userId);
-        this.setState({nameUser : decodedToken.FullName});
+              
+            console.log(token);
+          
+            // this.setState({nameUser : decodedToken.FullName});
         }
        
 
@@ -105,18 +105,29 @@ class Header extends Component {
             });
 
             if (response.ok) {
+                
                 const data = await response.json();
                 const token = data.token;
 
 
                 localStorage.setItem('token', token);
                 
+                const decodedToken = jwtDecode(token);
+
+              
+                console.log(token);
+              
+                this.setState({nameUser : decodedToken.FullName});
 
                 console.log('Đăng nhập thành công');
                 
-                const { history, location } = this.props;
-                const prevPath = location.state?.from || '/home';
-                history.push(prevPath);
+                // const modal = document.getElementById('my-modal');
+                // const modalInstance = bootstrap.Modal.getInstance(modal);
+                // modalInstance.hide();
+                // const { history, location } = this.props;
+                // const prevPath = location.state?.from || '/home';
+                // history.push(prevPath);
+               
                 
             } else {
                 // Xử lý lỗi đăng nhập, hiển thị thông báo lỗi cho người dùng
@@ -131,22 +142,26 @@ class Header extends Component {
         }
 
     };
+    handleClickName=()=>{
+        this.setState({ showModal : true})
+    }
     render() {
 
-        const { NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId,nameUser ,email,password} = this.state;
+        const { NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId,nameUser ,email,password,showModal} = this.state;
+       console.log(showModal);
         return (
             <div>
                 <div id="top">
                     <ul id="right">
               
                         <li><a href="#">Hello {nameUser}</a></li>
-                        <li> <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Login
+                        <li> <button onClick={this.handleClickName} type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                          Login
                         </button></li>
                         <li><button onClick={this.handleClick}>Logout</button></li>
                     </ul>
                     <ul id="left">
-                        <li><a href="/home">LOGO  </a></li>
+                        <li><a href="/">LOGO  </a></li>
                         <li><a href="#">Chủ Nhật |{currentTime.toLocaleDateString()} |{currentTime.toLocaleTimeString()}</a></li>
                         <li><a href="#"> Ha Noi :  {DataWeather.temp} °C <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud" viewBox="0 0 16 16">
                             <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z" />
@@ -183,12 +198,16 @@ class Header extends Component {
                        
                     </ul>
                 </div>
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+                        
+
+                            {showModal == true ? <>
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <button type="button" class="close" data-bs-dismiss="modal" id="my-modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -244,6 +263,9 @@ class Header extends Component {
                         </div>
                     </div>
                 </div>
+                            </>   : <></> }
+
+                
             </div>
             
         )

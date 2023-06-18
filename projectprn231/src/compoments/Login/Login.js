@@ -35,7 +35,7 @@ const Login = () => {
          
         console.log('Đăng nhập thành công');
       
-        history.push('/home');
+        history.push('/');
       } else {
         // Xử lý lỗi đăng nhập, hiển thị thông báo lỗi cho người dùng
         console.log('Đăng nhập thất bại');
