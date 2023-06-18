@@ -19,11 +19,12 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-      {/* <Switch>
-      <Route exact path="/login"><Login/></Route>
-        <Route path="/home"><Home/></Route>
-        <Route path="/newsdetail/:id"> <NewsDetail/></Route>
 
+      <Switch>
+        <Route  path="/login"><Login/></Route>
+        <Route exact path="/"><Home/></Route>
+
+        <Route path="/newsdetail/:id"> <NewsDetail/></Route>
         <Route path="/newsbygenre/:Gid"><NewsByGenre/></Route>
         <Route path="/user"><UserDetail/></Route>
       </Switch> */}
