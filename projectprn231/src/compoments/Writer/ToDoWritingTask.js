@@ -403,6 +403,9 @@ export class ToDoWritingTask extends Component {
                                     EndDate
                                 </th>
                                 <th>
+                                    Status
+                                </th>
+                                <th>
                                     Options
                                 </th>
                             </tr>
@@ -414,6 +417,7 @@ export class ToDoWritingTask extends Component {
                                     <td>{gen.task.title}</td>
                                     <td>{gen.task.startDate}</td>
                                     <td>{gen.task.endDate}</td>
+                                    <td>{gen.isChecked == true ? <b style={{color:'green'}}>Accpeting</b> : <b style={{color: 'red'}}>Pending</b>}</td>
                                     <td>
                                         <a href={`/writer/${gen.taskId}`}>
                                             <button type="button"
