@@ -18,7 +18,12 @@ export class ListReject extends Component {
             RejectTaskAccept: [],
             activePage: 1,
             itemsCountPerPage: 5,
-            totalItemsCount: 0
+            totalItemsCount: 0, 
+
+
+            activePage1: 1,
+            itemsCountPerPage1: 5,
+            totalItemsCount1: 0
         }
     }
 
@@ -35,7 +40,7 @@ export class ListReject extends Component {
         fetch("https://localhost:7248/api/RejectTask/GetAllRejectTaskAccept")
             .then(response => response.json())
             .then(data => {
-                this.setState({ RejectTaskAccept: data });
+                this.setState({ RejectTaskAccept: data, totalItemsCount1: data.length });
             });
     }
 
@@ -44,7 +49,11 @@ export class ListReject extends Component {
     }
 
     handlePageChange(pageNumber) {
-        this.setState({ activePage: pageNumber });
+        this.setState({ activePage: pageNumber});
+    }
+
+    handlePageChange1(pageNumber) {
+        this.setState({ activePage1: pageNumber});
     }
 
     editClick = (e) => {
@@ -101,11 +110,16 @@ export class ListReject extends Component {
 
     render() {
         const { RejectTask, RejectId, UserId, Title, Reason, modalTitle, RejectTaskAccept,
-            activePage, itemsCountPerPage, totalItemsCount } = this.state;
+            activePage, itemsCountPerPage, totalItemsCount, 
+            activePage1, itemsCountPerPage1, totalItemsCount1 } = this.state;
 
         const indexOfLastCustomer = activePage * itemsCountPerPage;
         const indexOfFirstCustomer = indexOfLastCustomer - itemsCountPerPage;
         const currentCustomers = RejectTask.slice(indexOfFirstCustomer, indexOfLastCustomer);
+
+        const indexOfLastCustomer1 = activePage1 * itemsCountPerPage1;
+        const indexOfFirstCustomer1 = indexOfLastCustomer1 - itemsCountPerPage1;
+        const currentCustomers1 = RejectTaskAccept.slice(indexOfFirstCustomer1, indexOfLastCustomer1);
 
         return (
             <div className="container">
@@ -131,6 +145,9 @@ export class ListReject extends Component {
                                     User's Reject
                                 </th>
                                 <th>
+                                    Status
+                                </th>
+                                <th>
                                     Options
                                 </th>
                             </tr>
@@ -142,6 +159,7 @@ export class ListReject extends Component {
                                     <td>{gen.task.title}</td>
                                     <td>{gen.reason}</td>
                                     <td>{gen.userId}</td>
+                                    <td><b style={{color: 'red'}}>Pending</b></td>
                                     <td>
                                         <button type="button"
                                             className="btn btn-light mr-1"
@@ -254,7 +272,7 @@ export class ListReject extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {RejectTaskAccept.map(gen =>
+                            {currentCustomers1.map(gen =>
                                 <tr key={gen.id}>
                                     <td>{gen.id}</td>
                                     <td>{gen.task.title}</td>
@@ -265,6 +283,21 @@ export class ListReject extends Component {
                             )}
                         </tbody>
                     </table>
+                    <Pagination
+                        prevPageText='Previous'
+                        nextPageText='Next'
+                        firstPageText='First'
+                        lastPageText='Last'
+                        itemClass='page-item'
+                        linkClass='page-link'
+                        activeClass='active'
+                        disabledClass='disabled'
+                        activePage={activePage1}
+                        itemsCountPerPage={itemsCountPerPage1}
+                        totalItemsCount={totalItemsCount1}
+                        pageRangeDisplayed={5}
+                        onChange={this.handlePageChange1.bind(this)}
+                    />
                 </div>
             </div>
 

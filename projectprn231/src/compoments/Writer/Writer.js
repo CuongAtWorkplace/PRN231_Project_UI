@@ -22,10 +22,12 @@ class Writer extends Component {
             CreateDate: '',
             TaskId: 0,
             Comment: '',
-            CreateBy:'', 
-            CreateDate:'',
+            CreateBy: '',
+            CreateDate: '',
             PhotoFileName: '',
             PhotoPath: 'https://localhost:7248/Photos/',
+            IsChecked: false,
+            Id: 0,
 
             AssignTaskRequire: {},
             DescriptionTask: '',
@@ -34,8 +36,8 @@ class Writer extends Component {
             GenreName: '',
             ReportTaskById: {},
             DocumentList: [],
-            WritingTaskById: {}, 
-            DescriptionReporter: '', 
+            WritingTaskById: {},
+            DescriptionReporter: '',
             ContentReporter: ''
         }
     }
@@ -56,7 +58,7 @@ class Writer extends Component {
         fetch("https://localhost:7248/api/WritingTask/GetWritingTaskByTaskId?taskId=" + id)
             .then(response => response.json())
             .then(data => {
-                this.setState({ WritingTaskById: data, TopicName: data.title, Description: data.description, NewsDetail: data.content, Comment: data.comment, CreateBy: data.createBy, CreateDate: data.createDate, ImageCover: data.image });
+                this.setState({ WritingTaskById: data, Id: data.id, TopicName: data.title, Description: data.description, NewsDetail: data.content, Comment: data.comment, CreateBy: data.createBy, CreateDate: data.createDate, ImageCover: data.image, IsChecked: data.isChecked });
             });
 
         fetch("https://localhost:7248/api/Document/GetAllDocumentByTaskId?TaskId=" + id)
@@ -100,14 +102,30 @@ class Writer extends Component {
         this.setState({ Description: e.target.value })
     }
 
-    // handleFile(event) {
-    //     this.setState({
-    //         ImageCover: event.target.files[0]
-    //     })
-    // }
 
     UpdateWritingTask() {
-        
+        fetch("https://localhost:7248/api/WritingTask/UpdateWritingTask", {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: this.state.Id,
+                title: this.state.TopicName,
+                description: this.state.Description,
+                content: this.state.NewsDetail,
+                image: this.state.PhotoFileName,
+                isChecked: false,
+            })
+        })
+            .then(res => res.json())
+            .then((result) => {
+                this.refreshList();
+                toast.success("Insert Successfull. Congratulation!!!")
+            }, (error) => {
+                toast.error("Insert failed. Try Again!!!");
+            })
     }
 
     handleReturn = () => {
@@ -128,29 +146,29 @@ class Writer extends Component {
             });
     }
 
-    imageUpload=(e)=>{
+    imageUpload = (e) => {
         e.preventDefault();
 
         this.setState({
             ImageCover: e.target.files[0].name
         })
-        const formData=new FormData();
-        formData.append("file",e.target.files[0],e.target.files[0].name);
+        const formData = new FormData();
+        formData.append("file", e.target.files[0], e.target.files[0].name);
 
-        fetch('https://localhost:7248/api/WritingTask/SaveFile',{
-            method:'POST',
-            body:formData
+        fetch('https://localhost:7248/api/WritingTask/SaveFile', {
+            method: 'POST',
+            body: formData
         })
-        .then(res=>res.json())
-        .then(data=>{
-            this.setState({PhotoFileName:data});
-        })
+            .then(res => res.json())
+            .then(data => {
+                this.setState({ PhotoFileName: data });
+            })
     }
 
     render() {
-        const { TopicName, ErrorTopicName, NewsDetail, Comment, Description, ErrorDescription, 
+        const { TopicName, ErrorTopicName, NewsDetail, Comment, Description, ErrorDescription,
             AssignTaskRequire, DescriptionTask, LeaderName, ReporterName, GenreName, ImageCover, CreateDate, CreateBy, PhotoFileName, PhotoPath,
-            ReportTaskById, DescriptionReporter, ContentReporter, DocumentList, WritingTaskById } = this.state;
+            ReportTaskById, DescriptionReporter, ContentReporter, DocumentList, WritingTaskById, IsChecked } = this.state;
 
         console.log(WritingTaskById);
         console.log(PhotoFileName)
@@ -192,7 +210,7 @@ class Writer extends Component {
                                     <div className="App">
                                         <CKEditor
                                             editor={ClassicEditor}
-                                            data={NewsDetail}
+                                            data={NewsDetail != null && NewsDetail}
                                             onChange={(event, editor) => {
                                                 const data = editor.getData();
                                                 this.setState({ NewsDetail: data })
@@ -202,23 +220,23 @@ class Writer extends Component {
                                 </div>
                                 <div className="form-group">
                                     <label class="control-label">Image Cover: </label>
-                                    <input type="file" className="form-control" value={PhotoFileName} onChange={(e) => this.imageUpload(e)} /><br />
-                                    {ImageCover != '' ? <div style={{ border: '1px solid black', width: 120, height: 130, backgroundImage: 'url(https://localhost:7248/Photos/'+ImageCover+')' }} ></div> : null}
+                                    <input type="file" value={PhotoFileName} className="form-control" onChange={(e) => this.imageUpload(e)} /><br />
+                                    {PhotoFileName != '' ? <div style={{ border: '1px solid black', width: 120, height: 130, backgroundImage: 'url(https://localhost:7248/Photos/' + PhotoFileName + ')' }} ><img src="" /></div> : null}
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">CreateDate:</label>
-                                    <input value={CreateDate} class="form-control" disabled/>
+                                    <input value={CreateDate} class="form-control" disabled />
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">CreateBy:</label>
-                                    <input value={CreateBy} class="form-control" disabled/>
+                                    <input value={CreateBy} class="form-control" disabled />
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Comment:</label>
                                     <div className="App">
                                         <CKEditor
                                             editor={ClassicEditor}
-                                            data={Comment == null ? "": Comment}
+                                            data={Comment == null ? "" : Comment}
                                             onChange={(event, editor) => {
                                                 const data = editor.getData();
                                                 this.setState({ Comment: data })
@@ -226,9 +244,12 @@ class Writer extends Component {
                                         />
                                     </div>
                                 </div> <br />
+                                {IsChecked == false ? <>
+                                    <button type="button" className="btn btn-info" onClick={() => this.UpdateWritingTask()}>Add Assign</button>
+                                    <button type="button" className="btn btn-success" onClick={() => this.handleReturn()}>Return Page</button>
+                                </> : <p style={{ color: 'green' }}><b>Status: Accepted</b></p>}
 
-                                <button type="button" className="btn btn-info" onClick={() => this.UpdateWritingTask()}>Add Assign</button>
-                                <button type="button" className="btn btn-success" onClick={() => this.handleReturn()}>Return Page</button>
+
                             </form>
                         </div>
                     </div>
@@ -245,7 +266,7 @@ class Writer extends Component {
                                     <p><b>Title: </b>{ReportTaskById.title}</p>
                                     <p><b>Description: </b>{parse(DescriptionReporter)}</p>
                                     <p><b>Content: </b>{parse(ContentReporter)}</p>
-                                    <p><b>Source: </b>{DocumentList != [] && DocumentList.map(it => <a href="" onClick={() => this.DownLoadFile(it)}>{it.fileName}</a>)}</p>
+                                    <p><b>Source: </b>{DocumentList != [] && DocumentList.map(it => <a href="#" onClick={() => this.DownLoadFile(it)}>{it.fileName}</a>)}</p>
                                 </>
                             }
                         </div>

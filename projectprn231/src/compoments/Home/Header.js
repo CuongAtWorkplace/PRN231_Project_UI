@@ -111,6 +111,7 @@ class Header extends Component {
 
 
                 localStorage.setItem('token', token);
+
                 
                 const decodedToken = jwtDecode(token);
 
@@ -118,6 +119,7 @@ class Header extends Component {
                 console.log(token);
               
                 this.setState({nameUser : decodedToken.FullName});
+
 
                 console.log('Đăng nhập thành công');
                 

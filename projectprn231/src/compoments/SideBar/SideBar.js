@@ -230,8 +230,8 @@ export class SideBar extends Component {
                         <Route path="/viewDetailReportProcess/:id" component={ViewDetailReportProcess} />
                         <Route path="/viewDetailWritingProcess/:id" component={ViewDetailWritingProcess} />
 
-                        <Route path="/listGenre" component={ListGenre} />
-                        <Route path="/listReject" component={ListReject} />
+                        {/* <Route path="/listGenre" component={ListGenre} />
+                        <Route path="/listReject" component={ListReject} /> */}
 
                         {/* Reporter */}
 
