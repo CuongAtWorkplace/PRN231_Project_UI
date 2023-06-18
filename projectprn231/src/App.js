@@ -12,9 +12,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import Login from './compoments/Login/Login';
 import Home from './compoments/Home/Home';
 import NewsDetail from './compoments/Home/NewsDetail';
-
+import Header from './compoments/Home/Header';
 import NewsByGenre from './compoments/Home/NewsByGenre';
-
+import { UserDetail } from './compoments/Home/UserDetail';
 function App() {
   return (
     <div>
@@ -25,7 +25,7 @@ function App() {
         <Route path="/newsdetail/:id"> <NewsDetail/></Route>
 
         <Route path="/newsbygenre/:Gid"><NewsByGenre/></Route>
-
+        <Route path="/user"><UserDetail/></Route>
       </Switch>
         
       </BrowserRouter>
