@@ -19,15 +19,15 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-      <Switch>
+      {/* <Switch>
       <Route exact path="/login"><Login/></Route>
         <Route path="/home"><Home/></Route>
         <Route path="/newsdetail/:id"> <NewsDetail/></Route>
 
         <Route path="/newsbygenre/:Gid"><NewsByGenre/></Route>
         <Route path="/user"><UserDetail/></Route>
-      </Switch>
-        
+      </Switch> */}
+        <SideBar/>
       </BrowserRouter>
       <ToastContainer
           position="top-right"
