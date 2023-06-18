@@ -25,7 +25,11 @@ import { ToDoWritingTask } from "../Writer/ToDoWritingTask";
 import { NewTest } from "../TestFile/NewTest";
 import Test from "../TestFile/Test";
 import Writer from "../Writer/Writer";
+import ViewDetailReportProcess from "../Leader/ViewDetailReportProcess";
+import ViewDetailWritingProcess from "../Leader/ViewDetailWritingProcess";
 import { ListAssignTask } from "../Leader/ListAssignTask";
+import { ViewReportProcess } from "../Leader/ViewReportProcess";
+import { ViewWritingProcess } from "../Leader/ViewWritingProcess";
 
 
 
@@ -59,6 +63,22 @@ export class SideBar extends Component {
                                 <li>
                                     <InsertEmoticonIcon className="icon" />
                                     <span>Genre</span>
+                                </li>
+                            </a>
+
+                            <a href="/viewReportProcess">
+
+                                <li>
+                                    <InsertEmoticonIcon className="icon" />
+                                    <span>Report Process</span>
+                                </li>
+                            </a>
+
+                            <a href="/viewWritingProcess">
+
+                                <li>
+                                    <InsertEmoticonIcon className="icon" />
+                                    <span>Writing Process</span>
                                 </li>
                             </a>
 
@@ -201,10 +221,12 @@ export class SideBar extends Component {
 
                         {/* Leader */}
                         <Route path="/listassign" component={ListAssignTask}/>
-
                         <Route path="/listGenre" component={ListGenre} />
                         <Route path="/listReject" component={ListReject}/> 
-
+                        <Route path="/viewReportProcess" component={ViewReportProcess}/>
+                        <Route path="/viewWritingProcess" component={ViewWritingProcess}/>
+                        <Route path="/viewDetailReportProcess/:id" component={ViewDetailReportProcess}/>
+                        <Route path="/viewDetailWritingProcess/:id" component={ViewDetailWritingProcess}/>
                         {/* Reporter */}
 
                         <Route path="/listReportTask" component={ListReportTask}/>

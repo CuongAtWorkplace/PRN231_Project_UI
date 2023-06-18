@@ -27,7 +27,8 @@ export class ToDoReportTask extends Component {
             DescriptionTask: '',
             modalTitle: '',
             FileName: '',
-
+            PhotoFileName: '',
+            PhotoPath: 'https://localhost:7248/Photos/',
 
             ReportTaskById: {},
             TopicName: '',
@@ -38,13 +39,14 @@ export class ToDoReportTask extends Component {
             ReporterId: 0,
             UserId: 0,
             IsChecked: 0,
+            
 
             activePage: 1,
             itemsCountPerPage: 5,
             totalItemsCount: 0
         }
     }
-
+ 
     refreshList() {
         fetch("https://localhost:7248/api/ReportTask/GetAllReportTask")
             .then(response => response.json())
@@ -197,11 +199,27 @@ export class ToDoReportTask extends Component {
             })
     }
 
+    imageUpload=(e)=>{
+        e.preventDefault();
+
+        const formData=new FormData();
+        formData.append("file",e.target.files[0],e.target.files[0].name);
+
+        fetch('https://localhost:7248/api/WritingTask/SaveFile',{
+            method:'POST',
+            body:formData
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            this.setState({PhotoFileName:data});
+        })
+    }
+
 
     render() {
         const { DocumentList, ToDoWritingTask, DescriptionTask, LeaderName, GenreName, AssignTaskRequire, WriterName, IsChecked,
             TopicName, ErrorTopicName, ImageCover, modalTitle, DescriptionWriting, ErrorDescription, Content,
-            CreateDate, CreateBy, TodoDescription, activePage, itemsCountPerPage, totalItemsCount } = this.state;
+            CreateDate, CreateBy, TodoDescription, activePage, itemsCountPerPage, totalItemsCount, PhotoFileName, PhotoPath } = this.state;
 
         const indexOfLastCustomer = activePage * itemsCountPerPage;
         const indexOfFirstCustomer = indexOfLastCustomer - itemsCountPerPage;
@@ -211,7 +229,7 @@ export class ToDoReportTask extends Component {
             <div className="container">
                 <section className="panel tasks-widget">
                     <header className="panel-heading">
-                        <h2>List ToDoWritingTask</h2>
+                        <h2>List ToDoReportTask</h2>
                     </header>
                 </section>
                 <div>
@@ -243,16 +261,18 @@ export class ToDoReportTask extends Component {
                                     <td>{gen.task.startDate}</td>
                                     <td>{gen.task.endDate}</td>
                                     <td>
-                                        <button type="button"
-                                            className="btn btn-light mr-1"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal"
-                                            onClick={() => this.editClick(gen)}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
-                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                                <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
-                                            </svg>
-                                        </button>
+                                        {
+                                            gen.isChecked == true ? <p style={{color:'green'}}><b>Accepted</b></p> : <button type="button"
+                                                className="btn btn-light mr-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal"
+                                                onClick={() => this.editClick(gen)}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                    <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                                </svg>
+                                            </button>
+                                        }
                                     </td>
                                 </tr>
                             )}
@@ -350,8 +370,8 @@ export class ToDoReportTask extends Component {
                                             <div className="input-group mb-3">
                                                 <div className="form-group">
                                                     <label className="control-label">Image Cover: </label>
-                                                    <input type="file" className="form-control" onChange={(e) => this.setState({ ImageCover: e.target.value })} /><br />
-                                                    {ImageCover != '' ? <div style={{ border: '1px solid black', width: 120, height: 130 }} ><img src="" /></div> : null}
+                                                    <input type="file" className="form-control" onChange={(e) => this.imageUpload(e)} /><br />
+                                                    {PhotoFileName != '' ? <div style={{ border: '1px solid black', width: 120, height: 130, backgroundImage: `url:${PhotoPath+PhotoFileName}` }} ><img src="" /></div> : null}
                                                 </div>
                                             </div>
 

@@ -65,8 +65,9 @@ export class ListReportTask extends Component {
             Title: e.title,
             Description: e.description,
             GenreName: e.genre.genreName,
-            CreateDate: e.createDate,
-            CreateBy: e.writer.fullName,
+            CreateDate: e.startDate,
+            CreateBy: e.reporter.fullName,
+            Status: 'N/A',
             activePage: 1,
             itemsCountPerPage: 10,
             totalItemsCount: 0
@@ -97,8 +98,10 @@ export class ListReportTask extends Component {
             .then(res => res.json())
             .then((result) => {
                 this.refreshList();
-
+                toast.success("Add ToDoTask Successfull. Congratulation!!!")
             }, (error) => {
+                this.refreshList();
+                toast.success("Add ToDoTask Failed. Congratulation!!!")
             })
 
         fetch("https://localhost:7248/api/AssignTask/AcceptTask", {
@@ -109,16 +112,16 @@ export class ListReportTask extends Component {
             },
             body: JSON.stringify({
                 id: this.state.TaskId,
-                userStatus: 'Reporter',
-                isStatus: true
+                roleName: 'Reporter',
+                isAccept: true
             })
         })
             .then(res => res.json())
             .then((result) => {
                 this.refreshList();
-                toast.success("Reject Task Pending. Congratulation!!!")
+                toast.success("Accept Task Pending. Congratulation!!!")
             }, (error) => {
-                toast.error("Reject failed. Try Again!!!");
+                toast.error("Accept Task failed. Try Again!!!");
             })
     }
 
@@ -149,6 +152,25 @@ export class ListReportTask extends Component {
                 }, (error) => {
                     toast.error("Reject failed. Try Again!!!");
                 })
+            fetch("https://localhost:7248/api/AssignTask/RejectTask", {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: this.state.TaskId,
+                roleName: 'Reporter',
+                isAccept: false
+            })
+        })
+            .then(res => res.json())
+            .then((result) => {
+                this.refreshList();
+                //toast.success(" Task Pending. Congratulation!!!")
+            }, (error) => {
+                //toast.error("Accept Task failed. Try Again!!!");
+            })
         }
     }
 
@@ -188,6 +210,9 @@ export class ListReportTask extends Component {
                                     EndDate
                                 </th>
                                 <th>
+                                    Status
+                                </th>
+                                <th>
                                     Options
                                 </th>
                             </tr>
@@ -200,6 +225,10 @@ export class ListReportTask extends Component {
                                     <td>{parse(ak.description)}</td>
                                     <td>{ak.startDate}</td>
                                     <td>{ak.endDate}</td>
+                                    <td>
+                                        {ak.isReporterAccept == null && <p><b>N/A</b></p>}
+                                        {ak.isReporterAccept == false && <p style={{color: 'red'}}><b>Rejectting</b></p>}
+                                    </td>
                                     <td>
                                         <button type="button"
                                             className="btn btn-light mr-1"
