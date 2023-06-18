@@ -17,9 +17,10 @@ import { Route } from "react-router-dom";
 import { CommentBrowseTable } from "../table/CommentBrowseTable";
 import { ListReportTask } from "../Reporter/ListReportTask";
 
+
 import { ToDoReportTask } from "../Reporter/ToDoReportTask";
 import { ListGenre } from '../Leader/ListGenre';
-import {ListReject} from "../Leader/ListReject"
+import { ListReject } from "../Leader/ListReject"
 import { ListWritingTask } from "../Writer/ListWritingTask";
 import { ToDoWritingTask } from "../Writer/ToDoWritingTask";
 import { NewTest } from "../TestFile/NewTest";
@@ -30,6 +31,7 @@ import ViewDetailWritingProcess from "../Leader/ViewDetailWritingProcess";
 import { ListAssignTask } from "../Leader/ListAssignTask";
 import { ViewReportProcess } from "../Leader/ViewReportProcess";
 import { ViewWritingProcess } from "../Leader/ViewWritingProcess";
+
 
 
 
@@ -59,10 +61,9 @@ export class SideBar extends Component {
 
                             {/* Leader */}
                             <a href="/listGenre">
-
                                 <li>
                                     <InsertEmoticonIcon className="icon" />
-                                    <span>Genre</span>
+                                    <span>List Genre</span>
                                 </li>
                             </a>
 
@@ -82,6 +83,8 @@ export class SideBar extends Component {
                                 </li>
                             </a>
 
+
+
                             <a href="/listReject">
 
                                 <li>
@@ -93,6 +96,7 @@ export class SideBar extends Component {
 
                             {/* Reporter */}
                             <a href="/listReportTask">
+
 
                                 <li>
                                     <InsertEmoticonIcon className="icon" />
@@ -130,16 +134,15 @@ export class SideBar extends Component {
                                 </li>
 
                             </a>
-                            
 
-                            <a href="/reporter">
 
-                                <li>
-                                    <InsertEmoticonIcon className="icon" />
-                                    <span>Report</span>
-                                </li>
-                            </a>
+                            {/*                              <a href="/reporter">
 
+                                 <li>
+                                     <InsertEmoticonIcon className="icon" />
+                                     <span>Report</span>
+                                 </li>
+                             </a> */}
 
 
                             <a href="/comment">
@@ -149,13 +152,13 @@ export class SideBar extends Component {
                                     <span>News</span>
                                 </li>
                             </a>
-                            <a href="/newTest">
+                            {/* <a href="/newTest">
 
-                                <li>
-                                    <NewspaperIcon className="icon" />
-                                    <span>News</span>
-                                </li>
-                            </a>
+                                 <li>
+                                     <NewspaperIcon className="icon" />
+                                     <span>News</span>
+                                 </li>
+                             </a> */}
                             <p className="Title">Name</p>
 
                             <li>
@@ -187,7 +190,6 @@ export class SideBar extends Component {
                                     <LanguageIcon className="icon" />
                                     English
                                 </div>
-
                                 <div className="item">
                                     <DarkModeIcon className="icon" />
                                 </div>
@@ -202,7 +204,6 @@ export class SideBar extends Component {
                                 <div className="item">
                                     <FormatListBulletedIcon className="icon" />
                                 </div>
-
                                 <div className="item">
                                 </div>
                                 <img src="https://th.bing.com/th/id/R.e900afd2d9b0b93857b0ffa8310f5247?rik=e6eWtgl4bA%2bbGg&pid=ImgRaw&r=0"
@@ -220,30 +221,36 @@ export class SideBar extends Component {
                         <Route path="/comment" component={CommentBrowseTable} />
 
                         {/* Leader */}
-                        <Route path="/listassign" component={ListAssignTask}/>
+                        <Route path="/listassign" component={ListAssignTask} />
                         <Route path="/listGenre" component={ListGenre} />
-                        <Route path="/listReject" component={ListReject}/> 
-                        <Route path="/viewReportProcess" component={ViewReportProcess}/>
-                        <Route path="/viewWritingProcess" component={ViewWritingProcess}/>
-                        <Route path="/viewDetailReportProcess/:id" component={ViewDetailReportProcess}/>
-                        <Route path="/viewDetailWritingProcess/:id" component={ViewDetailWritingProcess}/>
+                        <Route path="/listReject" component={ListReject} />
+                        <Route path="/viewReportProcess" component={ViewReportProcess} />
+                        <Route path="/viewWritingProcess" component={ViewWritingProcess} />
+                        <Route path="/viewDetailReportProcess/:id" component={ViewDetailReportProcess} />
+                        <Route path="/viewDetailWritingProcess/:id" component={ViewDetailWritingProcess} />
+
+                        <Route path="/listGenre" component={ListGenre} />
+                        <Route path="/listReject" component={ListReject} />
+
                         {/* Reporter */}
 
-                        <Route path="/listReportTask" component={ListReportTask}/>
+                        <Route path="/listReportTask" component={ListReportTask} />
                         <Route path="/listTodoTask" component={ToDoReportTask} />
 
                         {/* Writer */}
-                        <Route path="/listWritingTask" component={ListWritingTask}/>
-                        <Route path="/listTodoWriting" component={ToDoWritingTask}/>
+                        <Route path="/listWritingTask" component={ListWritingTask} />
+                        <Route path="/listTodoWriting" component={ToDoWritingTask} />
+
 
                         <Route path="/listReport" component={ListReportTask} />
                         {/* <Route path="/dashboard" component={Dashboard} /> */}
                         {/* <Route path="/Reporter" component={Test} /> */}
                         {/* <Route path="/test/:id" component={Test}/> */}
-                        <Route path="/writer/:id" component={Writer}/>
+                        <Route path="/writer/:id" component={Writer} />
                     </div>
                 </div>
             </div>
         )
     }
 }
+
