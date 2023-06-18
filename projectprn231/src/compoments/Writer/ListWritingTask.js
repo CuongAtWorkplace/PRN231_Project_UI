@@ -64,8 +64,8 @@ export class ListWritingTask extends Component {
             Title: e.title,
             Description: e.description,
             GenreName: e.genre.genreName,
-            CreateDate: e.createDate,
-            CreateBy: e.reporter.fullName
+            CreateDate: e.startDate,
+            CreateBy: e.writer.fullName
         })
     }
 
@@ -84,17 +84,18 @@ export class ListWritingTask extends Component {
             },
             body: JSON.stringify({
                 isChecked: false,
-                createBy: this.state,
+                createBy: this.state.CreateBy,
                 createDate: this.state.CreateDate,
-                userId: this.state.WrtierId,
+                userId: this.state.UserId,
                 taskId: this.state.TaskId
             })
         })
             .then(res => res.json())
             .then((result) => {
                 this.refreshList();
-
+                toast.success("Add ToDoTask Successfull. Congratulation!!!")
             }, (error) => {
+                toast.success("Add ToDoTask Failed. Congratulation!!!")
             })
 
         fetch("https://localhost:7248/api/AssignTask/AcceptTask", {
@@ -105,16 +106,16 @@ export class ListWritingTask extends Component {
             },
             body: JSON.stringify({
                 id: this.state.TaskId,
-                userStatus: 'Writer',
-                isStatus: true
+                roleName: 'Writer',
+                isAccept: true
             })
         })
             .then(res => res.json())
             .then((result) => {
                 this.refreshList();
-                toast.success("Reject Task Pending. Congratulation!!!")
+                toast.success("Accept Task Pending. Congratulation!!!")
             }, (error) => {
-                toast.error("Reject failed. Try Again!!!");
+                toast.error("Accept failed. Try Again!!!");
             })
 
     }
@@ -146,16 +147,32 @@ export class ListWritingTask extends Component {
                 }, (error) => {
                     toast.error("Reject failed. Try Again!!!");
                 })
+            fetch("https://localhost:7248/api/AssignTask/RejectTask", {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: this.state.TaskId,
+                    roleName: 'Writer',
+                    isAccept: false
+                })
+            })
+                .then(res => res.json())
+                .then((result) => {
+                    this.refreshList();
+                    //toast.success(" Task Pending. Congratulation!!!")
+                }, (error) => {
+                    //toast.error("Accept Task failed. Try Again!!!");
+                })
         }
     }
 
     render() {
         const { AssignTask, TaskId, Reason, modalTitle, LeaderName, Title, Description, GenreName, ReportName,
             activePage, itemsCountPerPage, totalItemsCount } = this.state;
-
-        // const indexOfLastCustomer = activePage * itemsCountPerPage;
-        // const indexOfFirstCustomer = indexOfLastCustomer - itemsCountPerPage;
-        // const currentCustomers = AssignTask.slice(indexOfFirstCustomer, indexOfLastCustomer);
+            
         const indexOfLastCustomer = activePage * itemsCountPerPage;
         const indexOfFirstCustomer = indexOfLastCustomer - itemsCountPerPage;
         const currentCustomers = AssignTask.slice(indexOfFirstCustomer, indexOfLastCustomer);
@@ -187,6 +204,9 @@ export class ListWritingTask extends Component {
                                     EndDate
                                 </th>
                                 <th>
+                                    Status
+                                </th>
+                                <th>
                                     Options
                                 </th>
                             </tr>
@@ -199,6 +219,10 @@ export class ListWritingTask extends Component {
                                     <td>{parse(ak.description)}</td>
                                     <td>{ak.startDate}</td>
                                     <td>{ak.endDate}</td>
+                                    <td>
+                                        {ak.isWriterAccept == null && <p><b>N/A</b></p>}
+                                        {ak.isWriterAccept == false && <p style={{ color: "red" }}><b>Rejectting</b></p>}
+                                    </td>
                                     <td>
                                         <button type="button"
                                             className="btn btn-light mr-1"

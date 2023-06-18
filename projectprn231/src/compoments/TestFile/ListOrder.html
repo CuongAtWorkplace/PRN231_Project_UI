@@ -1,34 +1,71 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <title></title>
+    <style>
+        #customers {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #customers td,
+        #customers th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #customers tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #customers tr:hover {
+            background-color: #ddd;
+        }
+
+        #customers th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: rgb(194, 189, 189);
+            color: white;
+        }
+    </style>
 </head>
+
 <body>
     <h1>List Orders</h1>
-    <form>
-        <input type="text" name="FromDate" />
-        <input type="text" name="ToDate" />
-        <button type="submit">Search</button>
-    </form>
-    <table>
-        <tr>
-            <th>OrderId</th>
-            <th>CustomerId</th>
-            <th>CusomerName</th>
-            <th>EmployeeId</th>
-            <th>EmployeeName</th>
-            <th>EmployeeDepartmentName</th>
-            <th>OrderDate</th>
-            <th>Freight</th>
-        </tr>
-        <tr id="display">
-        </tr>
+
+        <div>
+            <input type="text" name="FromDate" id="from" />
+            <input type="text" name="ToDate" id="to" />
+            <button id="btn">Search</button>
+        </div>
+        
+        <br/>
+    <div id="delete"></div>
+    <table id="customers">
+        <thead>
+            <tr>
+                <th>OrderId</th>
+                <th>CustomerId</th>
+                <th>CusomerName</th>
+                <th>EmployeeId</th>
+                <th>EmployeeName</th>
+                <th>EmployeeDepartmentName</th>
+                <th>OrderDate</th>
+                <th>Freight</th>
+            </tr>
+        </thead>
+        <tbody id="display">
+
+        </tbody>
     </table>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-            // Gọi hàm getProductInfo() khi trang được load
             LoadOrder();
         });
         function LoadOrder() {
@@ -41,7 +78,42 @@
                         tr += `<tr>
                         <td>${v.orderId}</td>
                         <td>${v.customerId}</td>
-                        <td>${v.customerName}</td>
+                        <td>${v.customerName} <a href="#" data-item="" onclick="deleteItem(${v.customerId})">Delete Customer</a></td>
+                        <td>${v.employeeId}</td>
+                        <td>${v.employeeName}</td>
+                        <td>${v.employeeDepartmentName}</td>
+                        <td>${v.orderDate}</td>
+                        <td>${v.freight}</td>
+                        </tr>
+                    `
+                    })
+                    $("#display").html(tr);
+                },
+                error: (error) => {
+                    console.log(error);
+                }
+            });
+
+        }
+
+        $('#btn').click(function (e) {
+            SearchFunction();
+        });
+
+        function SearchFunction() {
+            alert("Here")
+            var from = document.getElementById('from');
+            var to = document.getElementById('to');
+            var tr = "";
+            $.ajax({
+                url: 'https://localhost:5000/api/Order/GetOrderByDate/' + from.value + '/' + to.value,
+                method: 'Get',
+                success: (result) => {
+                    $.each(result, (k, v) => {
+                        tr += `<tr>
+                        <td>${v.orderId}</td>
+                        <td>${v.customerId}</td>
+                        <td>${v.customerName} <a href="#" data-item="" onclick="deleteItem(${v.customerId})">Delete Customer</a></td>
                         <td>${v.employeeId}</td>
                         <td>${v.employeeName}</td>
                         <td>${v.employeeDepartmentName}</td>
@@ -57,6 +129,8 @@
                 }
             });
         }
+
     </script>
 </body>
+
 </html>
