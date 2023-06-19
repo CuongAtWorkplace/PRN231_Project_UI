@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import "./home.css"
 import { withRouter } from "react-router-dom/cjs/react-router-dom";
 import jwtDecode from 'jwt-decode'
+import Example from "./ModalHome";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+
 class Header extends Component {
     constructor(props) {
         super(props);
@@ -15,7 +19,7 @@ class Header extends Component {
             email: '',
             password: '',
             currentTime: new Date(),
-            nameUser:'',
+            nameUser: '',
             showModal: false,
         }
     }
@@ -46,7 +50,7 @@ class Header extends Component {
     componentWillUnmount() {
         clearInterval(this.timerID);
     }
-     componentDidMount() {
+    componentDidMount() {
         this.timerID = setInterval(() => this.tick(), 1000);
         this.refreshDataWeather();
         this.refreshListGenre();
@@ -54,16 +58,16 @@ class Header extends Component {
 
         // localStorage.getItem('token', token);
         //  const storedData = localStorage.getItem('token');
-        if(token != null){
-       
+        if (token != null) {
+
             const decodedToken = jwtDecode(token);
 
-              
+
             console.log(token);
-          
+
             // this.setState({nameUser : decodedToken.FullName});
         }
-       
+
 
     }
 
@@ -93,10 +97,10 @@ class Header extends Component {
     // const [email, setEmail] = useState('');
     // const [password, setPassword] = useState('');
     // const history = useHistory();
-     handleLogin = async () => {
+    handleLogin = async () => {
         const { email, password } = this.state;
         try {
-            const response = await fetch('https://localhost:7248/api/Login', {
+            const response = await fetch(`https://localhost:7248/api/Login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -105,38 +109,38 @@ class Header extends Component {
             });
 
             if (response.ok) {
-                
+
                 const data = await response.json();
                 const token = data.token;
 
 
                 localStorage.setItem('token', token);
 
-                
+
                 const decodedToken = jwtDecode(token);
 
-              
-                console.log(token);
-              
-                this.setState({nameUser : decodedToken.FullName});
 
+                console.log(token);
+
+                this.setState({ nameUser: decodedToken.FullName });
+                this.setState({ showModal: false })
 
                 console.log('Đăng nhập thành công');
-                
+
                 // const modal = document.getElementById('my-modal');
                 // const modalInstance = bootstrap.Modal.getInstance(modal);
                 // modalInstance.hide();
                 // const { history, location } = this.props;
                 // const prevPath = location.state?.from || '/home';
                 // history.push(prevPath);
-               
-                
+
+
             } else {
                 // Xử lý lỗi đăng nhập, hiển thị thông báo lỗi cho người dùng
                 console.log(email);
                 console.log(password);
                 console.log('Đăng nhập thất bại');
-                
+
             }
         } catch (error) {
             // Xử lý lỗi gọi API
@@ -144,23 +148,32 @@ class Header extends Component {
         }
 
     };
-    handleClickName=()=>{
-        this.setState({ showModal : true})
+    handleShow = () => {
+        this.setState({ showModal: true })
+    }
+    handleClose = () => {
+        this.setState({ showModal: false })
     }
     render() {
 
-        const { NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId,nameUser ,email,password,showModal} = this.state;
-       console.log(showModal);
+        const { NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal } = this.state;
+        console.log(showModal);
         return (
             <div>
                 <div id="top">
                     <ul id="right">
-              
+                      
                         <li><a href="#">Hello {nameUser}</a></li>
-                        <li> <button onClick={this.handleClickName} type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                          Login
-                        </button></li>
-                        <li><button onClick={this.handleClick}>Logout</button></li>
+                        {/* <li> <button onClick={this.handleClickName} type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Login
+                        </button></li> */}
+                         <Button variant="secondary" onClick={this.handleShow}>
+                            Login
+                        </Button>
+                        {/* <li><button onClick={this.handleClick}>Logout</button></li> */}
+                        <Button variant="secondary" onClick={this.handleClick}>
+                            Logout
+                        </Button>
                     </ul>
                     <ul id="left">
                         <li><a href="/">LOGO  </a></li>
@@ -178,7 +191,7 @@ class Header extends Component {
                 <div id="nav">
 
 
-                  
+
                     {ListGenre.map(gen =>
                         <ul key={gen.id}>
 
@@ -197,38 +210,38 @@ class Header extends Component {
                         <li><img src="img/icons/rss.png" alt="" /><a href="#">Subscribe</a></li>
                         <li>|</li>
                         <li><img src="img/icons/twitter.png" alt="" /><a href="#">Twitter</a></li>
-                       
+
                     </ul>
                 </div>
 
-                        
 
-                            {showModal == true ? <>
-                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                <button type="button" class="close" data-bs-dismiss="modal" id="my-modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
+                <Modal
+                    show={showModal}
+                    onHide={this.handleClose}
+                    backdrop="static"
+                    keyboard={false}
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>Modal title</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+
+                        <div class="modal-body">
 
 
-                                <div class="login_wrapper">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
-                                            <a href="#" class="btn btn-primary facebook"> <span>Login with Facebook</span> <i class="fa fa-facebook"></i> </a>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
-                                            <a href="#" class="btn btn-primary google-plus"> Login  with Google <i class="fa fa-google-plus"></i> </a>
-                                        </div>
+                            <div class="login_wrapper">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+                                        <a href="#" class="btn btn-primary facebook"> <span>Login with Facebook</span> <i class="fa fa-facebook"></i> </a>
                                     </div>
-                                    <h2>or</h2>
-                                    <form onSubmit={this.handleLogin}>
+                                    <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+                                        <a href="#" class="btn btn-primary google-plus"> Login  with Google <i class="fa fa-google-plus"></i> </a>
+                                    </div>
+                                </div>
+                                <h2>or</h2>
+                                <form onSubmit={this.handleLogin}>
 
-                                  
+
                                     <div class="formsix-pos">
                                         <div class="form-group i-email">
                                             <input type="email" class="form-control" required="" id="email2" value={email}
@@ -254,6 +267,74 @@ class Header extends Component {
                                         <a href="#" class="btn btn-primary login_btn"> Login </a>
                                         <button type="submit" onClick={this.handleLogin} class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
                                     </div>
+                                </form>
+                                <div class="login_message">
+                                    <p>Don&rsquo;t have an account ? <a href="#"> Sign up </a> </p>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={this.handleClose}>
+                            Close
+                        </Button>
+                        <Button variant="primary">Understood</Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" id="my-modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+
+                                <div class="login_wrapper">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+                                            <a href="#" class="btn btn-primary facebook"> <span>Login with Facebook</span> <i class="fa fa-facebook"></i> </a>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+                                            <a href="#" class="btn btn-primary google-plus"> Login  with Google <i class="fa fa-google-plus"></i> </a>
+                                        </div>
+                                    </div>
+                                    <h2>or</h2>
+                                    <form onSubmit={this.handleLogin}>
+
+
+                                        <div class="formsix-pos">
+                                            <div class="form-group i-email">
+                                                <input type="email" class="form-control" required="" id="email2" value={email}
+                                                    onChange={this.handleEmailChange} placeholder="Email Address *" />
+                                            </div>
+                                        </div>
+                                        <div class="formsix-e">
+                                            <div class="form-group i-password">
+                                                <input type="password" class="form-control" required="" id="password2" value={password}
+                                                    onChange={this.handlePasswordChange} placeholder="Password *" />
+                                            </div>
+                                        </div>
+                                        <div class="login_remember_box">
+                                            <label class="control control--checkbox">Remember me
+                                                <input type="checkbox" />
+                                                <span class="control__indicator"></span>
+                                            </label>
+                                            <a href="#" class="forget_password">
+                                                Forgot Password
+                                            </a>
+                                        </div>
+                                        <div class="login_btn_wrapper">
+                                            <a href="#" class="btn btn-primary login_btn"> Login </a>
+                                            <button type="submit" onClick={this.handleLogin} class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
+                                        </div>
                                     </form>
                                     <div class="login_message">
                                         <p>Don&rsquo;t have an account ? <a href="#"> Sign up </a> </p>
@@ -265,12 +346,12 @@ class Header extends Component {
                         </div>
                     </div>
                 </div>
-                            </>   : <></> }
 
-                
             </div>
-            
+
         )
     }
 }
+
+
 export default withRouter(Header);
