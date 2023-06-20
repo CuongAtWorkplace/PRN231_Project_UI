@@ -28,11 +28,14 @@ import { ToDoWritingTask } from "../Writer/ToDoWritingTask";
 import { NewTest } from "../TestFile/NewTest";
 import Test from "../TestFile/Test";
 import Writer from "../Writer/Writer";
+
 import ViewDetailReportProcess from "../Leader/ViewDetailReportProcess";
 import ViewDetailWritingProcess from "../Leader/ViewDetailWritingProcess";
 import UpdateAssigTask from "../Leader/UpdateAssigTask";
 import { Leader } from "../Leader/Leader";
 import { ListAssignTask } from "../Leader/ListAssignTask";
+import {ViewReportProcess} from '../Leader/ViewReportProcess';
+import {ViewWritingProcess} from '../Leader/ViewWritingProcess';
 
 
 
@@ -227,9 +230,9 @@ export class SideBar extends Component {
                          {/* Admin */}
                         <Route path="/table" component={Table} />
                         <Route path="/comment" component={CommentBrowseTable} />
-                        <Route path="/AdminDashBoard" component={Admin_Home} />
-                        <Route path="/Advertisement" component={Advertisement} />
-                        <Route path="/Ok" component={Ok}/>  
+                        {/* <Route path="/AdminDashBoard" component={Admin_Home} /> */}
+                        {/* <Route path="/Advertisement" component={Advertisement} /> */}
+                        {/* <Route path="/Ok" component={Ok}/>   */}
 
                         {/* Leader */}
                         <Route path="/addAssignTask" component={Leader}/>

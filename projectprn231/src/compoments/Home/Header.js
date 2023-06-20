@@ -5,6 +5,11 @@ import jwtDecode from 'jwt-decode'
 import Example from "./ModalHome";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
+
+import { LoginSocialFacebook } from "reactjs-social-login";
+import { FacebookLoginButton } from "react-social-login-buttons";
 
 class Header extends Component {
     constructor(props) {
@@ -21,6 +26,8 @@ class Header extends Component {
             currentTime: new Date(),
             nameUser: '',
             showModal: false,
+            Profile: null, 
+            tokenFromSocial: ''
         }
     }
     refreshListGenre() {
@@ -156,18 +163,20 @@ class Header extends Component {
     }
     render() {
 
-        const { NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal } = this.state;
-        console.log(showModal);
+        const { NewsHome, ListGenre, NewsHomeByDate, DataWeather, 
+            currentTime, NewsId, nameUser, email, password, showModal, Profile, tokenFromSocial } = this.state;
+        //console.log(showModal);
+        console.log(tokenFromSocial);
         return (
             <div>
                 <div id="top">
                     <ul id="right">
-                      
+
                         <li><a href="#">Hello {nameUser}</a></li>
                         {/* <li> <button onClick={this.handleClickName} type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Login
                         </button></li> */}
-                         <Button variant="secondary" onClick={this.handleShow}>
+                        <Button variant="secondary" onClick={this.handleShow}>
                             Login
                         </Button>
                         {/* <li><button onClick={this.handleClick}>Logout</button></li> */}
@@ -189,9 +198,6 @@ class Header extends Component {
                     <div id="ad"> <img src="img/ad-blank.png" alt="" /> </div>
                 </div>
                 <div id="nav">
-
-
-
                     {ListGenre.map(gen =>
                         <ul key={gen.id}>
 
@@ -231,11 +237,40 @@ class Header extends Component {
 
                             <div class="login_wrapper">
                                 <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
-                                        <a href="#" class="btn btn-primary facebook"> <span>Login with Facebook</span> <i class="fa fa-facebook"></i> </a>
+                                    <div>
+                                        {/* <a href="#" class="btn btn-primary facebook"> <span>Login with Facebook</span> <i class="fa fa-facebook"></i> </a> */}
+                                        <GoogleOAuthProvider clientId="186729364333-sfd6o0oe4ud91dllo9t4s2p834kjj53e.apps.googleusercontent.com">
+                                            <GoogleLogin
+                                                onSuccess={credentialResponse => {
+                                                    console.log(credentialResponse);
+                                                    this.setState({
+                                                        Profile: credentialResponse,
+                                                        tokenFromSocial: credentialResponse.credential
+                                                    })
+                                                    localStorage.setItem('token', tokenFromSocial);
+                                                }}
+                                                onError={() => {
+                                                    console.log('Login Failed');
+                                                }}
+                                            />
+                                        </GoogleOAuthProvider>
                                     </div>
-                                    <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
-                                        <a href="#" class="btn btn-primary google-plus"> Login  with Google <i class="fa fa-google-plus"></i> </a>
+                                    <div>
+                                        {/* <a href="#" class="btn btn-primary google-plus"> Login  with Google <i class="fa fa-google-plus"></i> </a> */}
+                                        <LoginSocialFacebook
+                                            appId="233542922769686"
+                                            onResolve={(response) => {
+                                                console.log(response)
+                                                this.setState({ Profile: response.data, tokenFromSocial: response.data.accessToken });
+                                                localStorage.setItem('token', tokenFromSocial);
+                                            }}
+                                            
+                                            onReject={(error) => {
+                                                console.log(error)
+                                            }}
+                                        >
+                                            <FacebookLoginButton />
+                                        </LoginSocialFacebook>
                                     </div>
                                 </div>
                                 <h2>or</h2>
@@ -299,11 +334,32 @@ class Header extends Component {
 
                                 <div class="login_wrapper">
                                     <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
-                                            <a href="#" class="btn btn-primary facebook"> <span>Login with Facebook</span> <i class="fa fa-facebook"></i> </a>
+                                        <div> 
+                                        {/* class="col-lg-6 col-md-6 col-xs-12 col-sm-6" */}
+                                            <GoogleOAuthProvider clientId="186729364333-sfd6o0oe4ud91dllo9t4s2p834kjj53e.apps.googleusercontent.com">
+                                                <GoogleLogin
+                                                    onSuccess={credentialResponse => {
+                                                        console.log(credentialResponse);
+                                                    }}
+                                                    onError={() => {
+                                                        console.log('Login Failed');
+                                                    }}
+                                                />
+                                            </GoogleOAuthProvider>
                                         </div>
-                                        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
-                                            <a href="#" class="btn btn-primary google-plus"> Login  with Google <i class="fa fa-google-plus"></i> </a>
+                                        <div>
+                                            <LoginSocialFacebook
+                                                appId="233542922769686"
+                                                onResolve={(response) => {
+                                                    console.log(response)
+                                                    this.setState({ Profile: response.data })
+                                                }}
+                                                onReject={(error) => {
+                                                    console.log(error)
+                                                }}
+                                            >
+                                                <FacebookLoginButton />
+                                            </LoginSocialFacebook>
                                         </div>
                                     </div>
                                     <h2>or</h2>
@@ -339,19 +395,14 @@ class Header extends Component {
                                     <div class="login_message">
                                         <p>Don&rsquo;t have an account ? <a href="#"> Sign up </a> </p>
                                     </div>
-
                                 </div>
                             </div>
 
                         </div>
                     </div>
                 </div>
-
             </div>
-
         )
     }
 }
-
-
 export default withRouter(Header);
