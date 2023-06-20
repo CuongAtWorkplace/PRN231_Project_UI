@@ -30,8 +30,7 @@ import Writer from "../Writer/Writer";
 import ViewDetailReportProcess from "../Leader/ViewDetailReportProcess";
 import ViewDetailWritingProcess from "../Leader/ViewDetailWritingProcess";
 import { ListAssignTask } from "../Leader/ListAssignTask";
-import { ViewReportProcess } from "../Leader/ViewReportProcess";
-import { ViewWritingProcess } from "../Leader/ViewWritingProcess";
+
 
 
 
@@ -52,7 +51,7 @@ export class SideBar extends Component {
                     <div className="center">
                         <ul>
                             <p className="Title">Main</p>
-                            <a href="/dashboard">
+                            <a href="/AdminDashBoard">
                                 <li>
                                     <DashboardIcon className="icon" />
                                     <span>Dashboard</span>
@@ -83,6 +82,7 @@ export class SideBar extends Component {
                                     <span>Writing Process</span>
                                 </li>
                             </a>
+
 
 
 
@@ -137,14 +137,10 @@ export class SideBar extends Component {
                             </a>
 
 
-                            {/*                              <a href="/reporter">
 
-                                 <li>
-                                     <InsertEmoticonIcon className="icon" />
-                                     <span>Report</span>
-                                 </li>
-                             </a> */}
 
+
+                         
 
                             <a href="/comment">
 
@@ -218,8 +214,12 @@ export class SideBar extends Component {
                     </div>
 
                     <div className="Content">
+                         {/* Admin */}
                         <Route path="/table" component={Table} />
                         <Route path="/comment" component={CommentBrowseTable} />
+                        <Route path="/AdminDashBoard" component={Admin_Home} />
+                        <Route path="/Advertisement" component={Advertisement} />
+                        <Route path="/Ok" component={Ok}/>  
 
                         {/* Leader */}
                         <Route path="/listassign" component={ListAssignTask} />

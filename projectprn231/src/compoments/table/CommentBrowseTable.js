@@ -72,8 +72,8 @@ export class CommentBrowseTable extends Component {
   }
 
   updateCommentFalse = (id) => {
-    fetch(`https://localhost:7248/api/Comment/UpdateCommentFalse?Id=${id}`, {
-      method: 'PUT',
+    fetch(`https://localhost:7248/api/Comment/DeleteComment?id=${id}`, {
+      method: 'DELETE',
     })
       .then(response => response.json())
       .then(data => {
