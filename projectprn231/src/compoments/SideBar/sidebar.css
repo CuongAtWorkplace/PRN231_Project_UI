@@ -1,5 +1,11 @@
+
+
+
 .layout {
   display: flex;
+  background-color: #ffffff;
+  height: 100vh; /* Thiết lập chiều cao 100% của viewport */
+  width: 100%; /* Thêm thuộc tính chiều ngang 100% */
 }
 .layout_sidebar {
   flex: 6;
@@ -96,10 +102,6 @@ a {
     background-color: #333;
   }
   
-  .sidebar .bottom .colorOption:nth-child(3) {
-    background-color: darkblue;
-  }
-  
 
  .layout_sidebar .navbar {
     height: 100px;
@@ -113,6 +115,7 @@ a {
   .Content{
     height: 100px;
 
+   
   }
   .navbar .wrapper {
     padding: 20px;

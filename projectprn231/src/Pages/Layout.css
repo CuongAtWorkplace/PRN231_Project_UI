@@ -1,0 +1,7 @@
+.layout {
+    display: flex;
+  }
+  
+  .layout .layoutContainer {
+    flex: 6;
+  }

@@ -26,7 +26,9 @@ import { NewTest } from "../TestFile/NewTest";
 import Test from "../TestFile/Test";
 import Writer from "../Writer/Writer";
 import { ListAssignTask } from "../Leader/ListAssignTask";
-
+import { Admin_Home } from "../../Pages/Admin_Home";
+import { Ok } from "../../Pages/Ok";
+import Advertisement from "../advertise/advertisement";
 
 
 export class SideBar extends Component {
@@ -45,7 +47,7 @@ export class SideBar extends Component {
                     <div className="center">
                         <ul>
                             <p className="Title">Main</p>
-                            <a href="/dashboard">
+                            <a href="/AdminDashBoard">
                                 <li>
                                     <DashboardIcon className="icon" />
                                     <span>Dashboard</span>
@@ -112,11 +114,11 @@ export class SideBar extends Component {
                             </a>
                             
 
-                            <a href="/reporter">
+                            <a href="/AdminDashBoard">
 
                                 <li>
                                     <InsertEmoticonIcon className="icon" />
-                                    <span>Report</span>
+                                    <span>Dashboard</span>
                                 </li>
                             </a>
 
@@ -196,8 +198,12 @@ export class SideBar extends Component {
                     </div>
 
                     <div className="Content">
+                         {/* Admin */}
                         <Route path="/table" component={Table} />
                         <Route path="/comment" component={CommentBrowseTable} />
+                        <Route path="/AdminDashBoard" component={Admin_Home} />
+                        <Route path="/Advertisement" component={Advertisement} />
+                        <Route path="/Ok" component={Ok}/>  
 
                         {/* Leader */}
                         <Route path="/listassign" component={ListAssignTask}/>
