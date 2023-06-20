@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import './login.css'
-
+import jwtDecode from 'jwt-decode';
 import { Home } from '../Home/Home';
 
 const Login = () => {
@@ -22,13 +22,19 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         const token = data.token;
-      
-        history.push('/Home');
-         localStorage.getItem('token', token);
-         const storedData = localStorage.getItem('token');
-         console.log(storedData);
+        localStorage.setItem('token', token);
+        const storedData = localStorage.getItem('token');
+        const decodedToken = jwtDecode(token);
+
+        // Lấy giá trị từ payload
+        const userId = decodedToken.Role_Name;
+        alert(userId);
+
         console.log('Đăng nhập thành công');
-        console.log(token.Id);
+
+
+        history.push('/');
+
       } else {
         // Xử lý lỗi đăng nhập, hiển thị thông báo lỗi cho người dùng
         console.log('Đăng nhập thất bại');
@@ -55,87 +61,63 @@ const Login = () => {
       />
       <button onClick={handleLogin}>Đăng nhập</button> */}
 
-      {/* <form>
-        <h3>Sign In</h3>
-        <div className="mb-3">
-          <label>Email address</label>
-          <input
-            type="email"
-            className="form-control"
-            placeholder="Enter email"
-          />
-        </div>
-        <div className="mb-3">
-          <label>Password</label>
-          <input
-            type="password"
-            className="form-control"
-            placeholder="Enter password"
-          />
-        </div>
-        <div className="mb-3">
-          <div className="custom-control custom-checkbox">
-            <input
-              type="checkbox"
-              className="custom-control-input"
-              id="customCheck1"
-            />
-            <label className="custom-control-label" htmlFor="customCheck1">
-              Remember me
-            </label>
+
+
+      <div class="myform form ">
+        <div class="logo mb-3">
+          <div class="col-md-12 text-center">
+            <h1>Login</h1>
           </div>
         </div>
-        <div className="d-grid">
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
-        </div>
-        <p className="forgot-password text-right">
-          Forgot <a href="#">password?</a>
-        </p>
-      </form> */}
+        <form action="" method="post" name="login">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email"
+              name="email"
+              class="form-control"
+              id="email"
+              aria-describedby="emailHelp"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)} />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Password</label>
+            <input type="password"
+              name="password"
+              id="password"
+              class="form-control"
+              aria-describedby="emailHelp"
+              placeholder="Enter Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)} />
+          </div>
+          <div class="form-group">
+            <p class="text-center">By signing up you accept our <a href="#">Terms Of Use</a></p>
+          </div>
+          <div class="col-md-12 text-center ">
+            <button type="submit" onClick={handleLogin} class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
+          </div>
+          <div class="col-md-12 ">
+            <div class="login-or">
+              {/* <hr class="hr-or"> */}
+              <span class="span-or">or</span>
+            </div>
+          </div>
+          <div class="col-md-12 mb-3">
+            <p class="text-center">
+              <a href="javascript:void();" class="google btn mybtn"><i class="fa fa-google-plus">
+              </i> Signup using Google
+              </a>
+            </p>
+          </div>
+          <div class="form-group">
+            <p class="text-center">Don't have account? <a href="#" id="signup">Sign up here</a></p>
+          </div>
+        </form>
 
-        <div class="myform form ">
-					 <div class="logo mb-3">
-						 <div class="col-md-12 text-center">
-							<h1>Login</h1>
-						 </div>
-					</div>
-                   <form action="" method="post" name="login">
-                           <div class="form-group">
-                              <label for="exampleInputEmail1">Email address</label>
-                              <input type="email" name="email"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email"/>
-                           </div>
-                           <div class="form-group">
-                              <label for="exampleInputEmail1">Password</label>
-                              <input type="password" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password"/>
-                           </div>
-                           <div class="form-group">
-                              <p class="text-center">By signing up you accept our <a href="#">Terms Of Use</a></p>
-                           </div>
-                           <div class="col-md-12 text-center ">
-                              <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
-                           </div>
-                           <div class="col-md-12 ">
-                              <div class="login-or">
-                                 {/* <hr class="hr-or"> */}
-                                 <span class="span-or">or</span>
-                              </div>
-                           </div>
-                           <div class="col-md-12 mb-3">
-                              <p class="text-center">
-                                 <a href="javascript:void();" class="google btn mybtn"><i class="fa fa-google-plus">
-                                 </i> Signup using Google
-                                 </a>
-                              </p>
-                           </div>
-                           <div class="form-group">
-                              <p class="text-center">Don't have account? <a href="#" id="signup">Sign up here</a></p>
-                           </div>
-                        </form>
-                        
-                 
-				</div>
+
+      </div>
     </div>
   );
 };

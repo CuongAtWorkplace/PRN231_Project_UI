@@ -1,17 +1,18 @@
-import React, { Component, useEffect } from "react";
+import React, { Component } from "react";
 import parse from 'html-react-parser';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
-import './Writer.css';
+//import './Writer.css';
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-class Writer extends Component {
+class ViewDetailWritingProcess extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            Id: 0,
             TopicName: '',
             ErrorTopicName: null,
             Description: '',
@@ -27,7 +28,6 @@ class Writer extends Component {
             PhotoFileName: '',
             PhotoPath: 'https://localhost:7248/Photos/',
             IsChecked: false,
-            Id: 0,
 
             AssignTaskRequire: {},
             DescriptionTask: '',
@@ -72,97 +72,57 @@ class Writer extends Component {
         this.refreshList();
     }
 
-    useEffect() {
-
-    }
-
-    onChangeTopicName = (e) => {
-        if (e.target.value == '') {
-            this.setState({ ErrorTopicName: 'Topic Name is not empty' });
-        } else if (e.target.value.length < 5 || e.target.value.length > 50) {
-            this.setState({ ErrorTopicName: 'Topic Name is between 5 to 50' });
+    FeedBackTask() {
+        if (this.state.Comment == '') {
+            toast.error("Comment is not empty");
+            return;
         } else {
-            this.setState({ ErrorTopicName: null });
+            if (window.confirm("Do you want to give feedback?")) {
+                fetch("https://localhost:7248/api/WritingTask/FeedBackTask", {
+                    method: 'PUT',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: this.state.Id,
+                        comment: this.state.Comment
+                    })
+                })
+                    .then(res => res.json())
+                    .then((result) => {
+                        toast.success("FeedBack successfull. Congratulation!!!")
+                        this.refreshList();
+                    }, (error) => {
+                        toast.error("Give FeedBack failed. Try Again!!!")
+                    })
+            }
         }
-        this.setState({ TopicName: e.target.value })
     }
 
-    onChangeCommnet = (e) => {
-        this.setState({ Comment: e.target.value });
-    }
+    AcceptTask() {
+        if (window.confirm("Do you want to accept?")) {
 
-    onChangeDescription = (e) => {
-        if (e.target.value == '') {
-            this.setState({ ErrorDescription: 'Description is not empty' });
-        } else if (e.target.value.length < 5 || e.target.value.length > 50) {
-            this.setState({ ErrorDescription: 'Description is between 5 to 2000' });
-        } else {
-            this.setState({ ErrorDescription: null });
+
+            fetch("https://localhost:7248/api/WritingTask/AcceptToPublic?Id=" + this.state.Id, {
+                method: 'Put',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then(res => res.json())
+                .then((result) => {
+                    toast.success("Accept Task successfull. Congratulation!!!")
+                    this.refreshList();
+                }, (error) => {
+                    toast.error("Accept task failed. Try Again!!!")
+                })
         }
-        this.setState({ Description: e.target.value })
-    }
-
-
-    UpdateWritingTask() {
-        fetch("https://localhost:7248/api/WritingTask/UpdateWritingTask", {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                id: this.state.Id,
-                title: this.state.TopicName,
-                description: this.state.Description,
-                content: this.state.NewsDetail,
-                image: this.state.PhotoFileName,
-                isChecked: false,
-            })
-        })
-            .then(res => res.json())
-            .then((result) => {
-                this.refreshList();
-                toast.success("Insert Successfull. Congratulation!!!")
-            }, (error) => {
-                toast.error("Insert failed. Try Again!!!");
-            })
     }
 
     handleReturn = () => {
         this.props.history.goBack();
-    }
-
-    DownLoadFile(e) {
-        fetch("https://localhost:7248/api/ReportTask/DownLoadFile?id=" + e.id, {
-            method: 'POST',
-        }).then(response => response.blob())
-            .then(blob => {
-                const url = window.URL.createObjectURL(new Blob([blob]));
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', e.fileName);
-                document.body.appendChild(link);
-                link.click();
-            });
-    }
-
-    imageUpload = (e) => {
-        e.preventDefault();
-
-        this.setState({
-            ImageCover: e.target.files[0].name
-        })
-        const formData = new FormData();
-        formData.append("file", e.target.files[0], e.target.files[0].name);
-
-        fetch('https://localhost:7248/api/WritingTask/SaveFile', {
-            method: 'POST',
-            body: formData
-        })
-            .then(res => res.json())
-            .then(data => {
-                this.setState({ PhotoFileName: data });
-            })
     }
 
     render() {
@@ -195,14 +155,12 @@ class Writer extends Component {
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">News Name:</label>
-                                    <input name="ProductPrice" value={TopicName} class="form-control" onChange={(e) => this.onChangeTopicName(e)} />
-                                    {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>}
+                                    <input name="ProductPrice" value={TopicName} class="form-control" />
                                 </div>
 
                                 <div className="form-group">
                                     <label className="control-label">News Description:</label>
-                                    <input name="ProductPrice" value={Description} class="form-control" onChange={(e) => this.onChangeDescription(e)} />
-                                    {ErrorDescription == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorDescription}</p>}
+                                    <input name="ProductPrice" value={Description} class="form-control" />
                                 </div>
 
                                 <div className="form-group">
@@ -210,18 +168,13 @@ class Writer extends Component {
                                     <div className="App">
                                         <CKEditor
                                             editor={ClassicEditor}
-                                            data={NewsDetail != null && NewsDetail}
-                                            onChange={(event, editor) => {
-                                                const data = editor.getData();
-                                                this.setState({ NewsDetail: data })
-                                            }}
+                                            data={NewsDetail}
                                         />
                                     </div>
                                 </div>
                                 <div className="form-group">
                                     <label class="control-label">Image Cover: </label>
-                                    <input type="file" value={PhotoFileName} className="form-control" onChange={(e) => this.imageUpload(e)} /><br />
-                                    {PhotoFileName != '' ? <div style={{ border: '1px solid black', width: 120, height: 130, backgroundImage: 'url(https://localhost:7248/Photos/' + PhotoFileName + ')' }} ><img src="" /></div> : null}
+                                    {ImageCover != '' ? <div style={{ border: '1px solid black', width: 120, height: 130, backgroundImage: 'url(https://localhost:7248/Photos/' + ImageCover + ')' }} ></div> : null}
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">CreateDate:</label>
@@ -244,11 +197,11 @@ class Writer extends Component {
                                         />
                                     </div>
                                 </div> <br />
-                                {IsChecked == false ? <>
-                                    <button type="button" className="btn btn-info" onClick={() => this.UpdateWritingTask()}>Add Assign</button>
-                                    <button type="button" className="btn btn-success" onClick={() => this.handleReturn()}>Return Page</button>
-                                </> : <p style={{ color: 'green' }}><b>Status: Accepted</b></p>}
-
+                                {
+                                    IsChecked == true ? <p style={{ color: 'green' }}><b>Status: Accepted</b></p> : <><button type="button" className="btn btn-info" onClick={() => this.AcceptTask()}>Accept Writing Task</button>
+                                        <button type="button" className="btn btn-danger" onClick={() => this.FeedBackTask()}>FeedBack Task</button>
+                                        <button type="button" className="btn btn-success" onClick={() => this.handleReturn()}>Return Page</button></>
+                                }
 
                             </form>
                         </div>
@@ -266,7 +219,7 @@ class Writer extends Component {
                                     <p><b>Title: </b>{ReportTaskById.title}</p>
                                     <p><b>Description: </b>{parse(DescriptionReporter)}</p>
                                     <p><b>Content: </b>{parse(ContentReporter)}</p>
-                                    <p><b>Source: </b>{DocumentList != [] && DocumentList.map(it => <a href="#" onClick={() => this.DownLoadFile(it)}>{it.fileName}</a>)}</p>
+                                    <p><b>Source: </b>{DocumentList != [] && DocumentList.map(it => <a href="" onClick={() => this.DownLoadFile(it)}>{it.fileName}</a>)}</p>
                                 </>
                             }
                         </div>
@@ -276,5 +229,4 @@ class Writer extends Component {
         )
     }
 }
-
-export default withRouter(Writer)
+export default withRouter(ViewDetailWritingProcess)
