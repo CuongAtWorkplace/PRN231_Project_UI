@@ -11,6 +11,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { LoginSocialFacebook } from "reactjs-social-login";
 import { FacebookLoginButton } from "react-social-login-buttons";
 
+
 class Header extends Component {
     constructor(props) {
         super(props);
@@ -162,21 +163,21 @@ class Header extends Component {
         this.setState({ showModal: false })
     }
     render() {
-
         const { NewsHome, ListGenre, NewsHomeByDate, DataWeather, 
             currentTime, NewsId, nameUser, email, password, showModal, Profile, tokenFromSocial } = this.state;
         //console.log(showModal);
         console.log(tokenFromSocial);
+
         return (
             <div>
                 <div id="top">
                     <ul id="right">
-
                         <li><a href="#">Hello {nameUser}</a></li>
                         {/* <li> <button onClick={this.handleClickName} type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Login
                         </button></li> */}
-                        <Button variant="secondary" onClick={this.handleShow}>
+
+                         <Button variant="secondary" onClick={this.handleShow}>
                             Login
                         </Button>
                         {/* <li><button onClick={this.handleClick}>Logout</button></li> */}
@@ -247,7 +248,7 @@ class Header extends Component {
                                                         Profile: credentialResponse,
                                                         tokenFromSocial: credentialResponse.credential
                                                     })
-                                                    localStorage.setItem('token', tokenFromSocial);
+                                                    //localStorage.setItem('token', tokenFromSocial);
                                                 }}
                                                 onError={() => {
                                                     console.log('Login Failed');
@@ -262,7 +263,7 @@ class Header extends Component {
                                             onResolve={(response) => {
                                                 console.log(response)
                                                 this.setState({ Profile: response.data, tokenFromSocial: response.data.accessToken });
-                                                localStorage.setItem('token', tokenFromSocial);
+                                                //localStorage.setItem('token', tokenFromSocial);
                                             }}
                                             
                                             onReject={(error) => {
@@ -334,32 +335,11 @@ class Header extends Component {
 
                                 <div class="login_wrapper">
                                     <div class="row">
-                                        <div> 
-                                        {/* class="col-lg-6 col-md-6 col-xs-12 col-sm-6" */}
-                                            <GoogleOAuthProvider clientId="186729364333-sfd6o0oe4ud91dllo9t4s2p834kjj53e.apps.googleusercontent.com">
-                                                <GoogleLogin
-                                                    onSuccess={credentialResponse => {
-                                                        console.log(credentialResponse);
-                                                    }}
-                                                    onError={() => {
-                                                        console.log('Login Failed');
-                                                    }}
-                                                />
-                                            </GoogleOAuthProvider>
+                                        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+                                            <a href="#" class="btn btn-primary facebook"> <span>Login with Facebook</span> <i class="fa fa-facebook"></i> </a>
                                         </div>
-                                        <div>
-                                            <LoginSocialFacebook
-                                                appId="233542922769686"
-                                                onResolve={(response) => {
-                                                    console.log(response)
-                                                    this.setState({ Profile: response.data })
-                                                }}
-                                                onReject={(error) => {
-                                                    console.log(error)
-                                                }}
-                                            >
-                                                <FacebookLoginButton />
-                                            </LoginSocialFacebook>
+                                        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+                                            <a href="#" class="btn btn-primary google-plus"> Login  with Google <i class="fa fa-google-plus"></i> </a>
                                         </div>
                                     </div>
                                     <h2>or</h2>
@@ -401,8 +381,11 @@ class Header extends Component {
                         </div>
                     </div>
                 </div>
+
             </div>
         )
     }
 }
+
+
 export default withRouter(Header);

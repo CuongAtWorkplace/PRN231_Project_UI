@@ -16,23 +16,22 @@ import Header from './compoments/Home/Header';
 import NewsByGenre from './compoments/Home/NewsByGenre';
 import { UserDetail } from './compoments/Home/UserDetail';
 
-import { LoginByGoogle } from './compoments/TestFile/LoginByGoogle';
-import { LoginByFaceBook } from './compoments/TestFile/LoginByFaceBook';
 import ModalHome from './compoments/Home/ModalHome';
 function App() {
   return (
     <div>
       <BrowserRouter>
-        <Switch>
-          <Route path="/login"><Login /></Route>
-          <Route exact path="/"><Home /></Route>
 
-          <Route path="/newsdetail/:id"> <NewsDetail /></Route>
-          <Route path="/newsbygenre/:Gid"><NewsByGenre /></Route>
-          <Route path="/user"><UserDetail /></Route>
-          <Route path="/modal"><ModalHome /></Route>
-          <Route path="/header"><Header /></Route>
-        </Switch>
+      <Switch>
+        <Route  path="/login"><Login/></Route>
+        <Route exact path="/"><Home/></Route>
+
+        <Route path="/newsdetail/:id"> <NewsDetail/></Route>
+        <Route path="/newsbygenre/:Gid"><NewsByGenre/></Route>
+        <Route path="/user"><UserDetail/></Route>
+        <Route path ="/modal"><ModalHome/></Route>
+        <Route path ="/header"><Header/></Route>
+      </Switch>
         {/* <SideBar/> */}
       </BrowserRouter>
       <ToastContainer
