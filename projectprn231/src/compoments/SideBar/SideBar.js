@@ -24,11 +24,14 @@ import { ListGenre } from '../Leader/ListGenre';
 import { ListReject } from "../Leader/ListReject"
 import { ListWritingTask } from "../Writer/ListWritingTask";
 import { ToDoWritingTask } from "../Writer/ToDoWritingTask";
+//import { ListAssignTask } from "../Leader/ListAssignTask";
 import { NewTest } from "../TestFile/NewTest";
 import Test from "../TestFile/Test";
 import Writer from "../Writer/Writer";
 import ViewDetailReportProcess from "../Leader/ViewDetailReportProcess";
 import ViewDetailWritingProcess from "../Leader/ViewDetailWritingProcess";
+import UpdateAssigTask from "../Leader/UpdateAssigTask";
+import { Leader } from "../Leader/Leader";
 import { ListAssignTask } from "../Leader/ListAssignTask";
 import { ViewReportProcess } from "../Leader/ViewReportProcess";
 import { ViewWritingProcess } from "../Leader/ViewWritingProcess";
@@ -65,6 +68,13 @@ export class SideBar extends Component {
                                 <li>
                                     <InsertEmoticonIcon className="icon" />
                                     <span>List Genre</span>
+                                </li>
+                            </a>
+
+                            <a href="/listAssign">
+                                <li>
+                                    <InsertEmoticonIcon className="icon" />
+                                    <span>AssignTask</span>
                                 </li>
                             </a>
 
@@ -222,16 +232,15 @@ export class SideBar extends Component {
                         <Route path="/comment" component={CommentBrowseTable} />
 
                         {/* Leader */}
-                        <Route path="/listassign" component={ListAssignTask} />
+                        <Route path="/addAssignTask" component={Leader}/>
                         <Route path="/listGenre" component={ListGenre} />
                         <Route path="/listReject" component={ListReject} />
+                        <Route path="/listAssign" component={ListAssignTask}/>
+                        <Route path="/updateAssignTask/:id" component={UpdateAssigTask}/>
                         <Route path="/viewReportProcess" component={ViewReportProcess} />
                         <Route path="/viewWritingProcess" component={ViewWritingProcess} />
                         <Route path="/viewDetailReportProcess/:id" component={ViewDetailReportProcess} />
                         <Route path="/viewDetailWritingProcess/:id" component={ViewDetailWritingProcess} />
-
-                        {/* <Route path="/listGenre" component={ListGenre} />
-                        <Route path="/listReject" component={ListReject} /> */}
 
                         {/* Reporter */}
 
