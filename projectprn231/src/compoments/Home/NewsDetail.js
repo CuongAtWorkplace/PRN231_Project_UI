@@ -59,8 +59,7 @@ class NewsDetail extends React.Component {
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png" alt="" />
                                     <h1> <a>{object.description}</a>  </h1>
 
-                                    <p><a href="#">Full story &raquo;</a></p>
-
+                                  
                                 </div>
 
                             </div>
