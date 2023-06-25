@@ -4,11 +4,12 @@ import { useHistory } from "react-router-dom";
 import './login.css'
 import jwtDecode from 'jwt-decode';
 import { Home } from '../Home/Home';
-
+import { withRouter } from 'react-router-dom/cjs/react-router-dom';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
+
   const handleLogin = async () => {
     try {
       const response = await fetch('https://localhost:7248/api/Login', {
@@ -23,28 +24,27 @@ const Login = () => {
         const data = await response.json();
         const token = data.token;
         localStorage.setItem('token', token);
-        const storedData = localStorage.getItem('token');
-        const decodedToken = jwtDecode(token);
+        // const storedData = localStorage.getItem('token');
+        // const decodedToken = jwtDecode(token);
 
-        // Lấy giá trị từ payload
-        const userId = decodedToken.Role_Name;
-        alert(userId);
-
+        // // Lấy giá trị từ payload
+        // const userId = decodedToken.Role_Name;
+        alert(token);
+        history.push('/homeuser');
         console.log('Đăng nhập thành công');
-
-
-        history.push('/');
-
       } else {
-        // Xử lý lỗi đăng nhập, hiển thị thông báo lỗi cho người dùng
+       
         console.log('Đăng nhập thất bại');
       }
     } catch (error) {
-      // Xử lý lỗi gọi API
+     
       console.log('Lỗi gọi API', error);
     }
   };
-
+ function handleClick  () {
+   
+    localStorage.removeItem('token');
+};
   return (
     <div>
       {/* <input
@@ -72,7 +72,7 @@ const Login = () => {
         <form action="" method="post" name="login">
           <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
-            <input type="email"
+            <input type="text"
               name="email"
               class="form-control"
               id="email"
@@ -97,6 +97,7 @@ const Login = () => {
           </div>
           <div class="col-md-12 text-center ">
             <button type="submit" onClick={handleLogin} class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
+            <button type="submit" onClick={handleClick} class=" btn btn-block mybtn btn-primary tx-tfm">Xoa token</button>
           </div>
           <div class="col-md-12 ">
             <div class="login-or">
@@ -122,4 +123,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default  withRouter(Login);

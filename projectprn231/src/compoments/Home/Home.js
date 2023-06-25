@@ -20,8 +20,34 @@ class Home extends Component {
             email: '',
             password: '',
             currentTime: new Date(),
+             data: [], // Array to hold the data
+            page: 1, // Current page of data
+            hasMore: true,
         }
     }
+
+    fetchData = () => {
+        const { page,data } = this.state;
+    
+        // Make an API call to fetch data
+        fetch(`https://localhost:7248/api/News/GetData/data?page=${page}`)
+          .then(response => response.json())
+          .then(newdata => {
+           
+            if (newdata.length === 0) {
+                this.setState({ hasMore: false });
+                return;
+              }
+            this.setState(prevState => ({
+              data: [...prevState.data, ...newdata], // Appending new items to the existing array
+              page: prevState.page + 1, // Incrementing the page number
+              // Checking if there are more items to load
+            }));
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+        }
 
     refreshList() {
         fetch("https://localhost:7248/api/News/getAllNews")
