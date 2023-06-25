@@ -68,6 +68,7 @@
 .Active_Layout {
   display: flex;
   justify-content: flex-end;
+  background-color: #FFFFFF;
   margin-right: 20px;
   margin-bottom: 5px;
 }

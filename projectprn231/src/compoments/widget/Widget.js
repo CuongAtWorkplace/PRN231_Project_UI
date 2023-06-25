@@ -9,8 +9,7 @@ export class Widget extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userData: null,
-      amount: 100,
+      amount: 0,
       diff: 20,
     };
   }
@@ -28,7 +27,7 @@ export class Widget extends Component {
         this.getMonthUserData("earning");
         break;
       case "balance":
-        this.getMonthUserData("balance");
+        this.getMonthNewsData();
         break;
       default:
         break;
@@ -39,16 +38,13 @@ export class Widget extends Component {
     let url;
     switch (userType) {
       case "user":
-        url = "https://localhost:7248/api/User/GetUserData?numberOfDays=30";
+        url = "https://localhost:7248/api/User/GetUserRole?id=2";
         break;
       case "order":
-        url = "https://localhost:7248/api/Reporter/GetReporterData?numberOfDays=30";
+        url = "https://localhost:7248/api/User/GetUserRole?id=3";
         break;
       case "earning":
-        url = "https://localhost:7248/api/News/getNewsByDate?begin=0&end=30";
-        break;
-      case "balance":
-        url = "https://localhost:7248/api/News/getNewsByDate?begin=0&end=30";
+        url = "https://localhost:7248/api/User/GetUserRole?id=4";
         break;
       default:
         return;
@@ -57,7 +53,6 @@ export class Widget extends Component {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        this.setState({ userData: data });
         const amount = data.length;
         this.setState({ amount: amount });
       })
@@ -66,9 +61,21 @@ export class Widget extends Component {
       });
   }
 
+  getMonthNewsData() {
+    const url = "https://localhost:7248/api/News/getNewsByDate?begin=0&end=30";
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ amount: data });
+      })
+      .catch((error) => {
+        console.error("Lỗi khi lấy dữ liệu tin tức:", error);
+      });
+  }
+
   render() {
     const { type } = this.props;
-    const { userData, amount, diff } = this.state;
+    const { amount, diff } = this.state;
 
     let data;
 
@@ -140,7 +147,7 @@ export class Widget extends Component {
       <div className="widget">
         <div className="left">
           <span>{data.title}</span>
-          <span className="counter">{userData}</span>
+          <span className="counter">{amount}</span>
           <span className="link">{data.link}</span>
         </div>
 
