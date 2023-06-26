@@ -120,14 +120,8 @@ class Header extends Component {
 
                 const data = await response.json();
                 const token = data.token;
-
-
                 localStorage.setItem('token', token);
-
-
                 const decodedToken = jwtDecode(token);
-
-
                 console.log(token);
 
                 this.setState({ nameUser: decodedToken.FullName });
