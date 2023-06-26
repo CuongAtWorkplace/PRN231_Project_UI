@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route,Router } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Router } from 'react-router-dom';
 import './App.css';
 import { CommentBrowseTable } from './compoments/table/CommentBrowseTable';
 import { SideBar } from './compoments/SideBar/SideBar';
@@ -15,6 +15,7 @@ import NewsDetail from './compoments/Home/NewsDetail';
 import Header from './compoments/Home/Header';
 import NewsByGenre from './compoments/Home/NewsByGenre';
 import { UserDetail } from './compoments/Home/UserDetail';
+
 import ModalHome from './compoments/Home/ModalHome';
 function App() {
   return (
@@ -34,17 +35,17 @@ function App() {
         {/* <SideBar/> */}
       </BrowserRouter>
       <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-        />
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
 
     </div>
   );

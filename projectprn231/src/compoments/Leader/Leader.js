@@ -89,7 +89,7 @@ export class Leader extends Component {
 
     render() {
         const { Genre, User, TopicName, ErrorTopicName, Description, GenreId, WriterId, ReporterId, StartDate, EndDate } = this.state;
-
+        console.log(User)
         return (
             <div className="container">
                 <div className="row">
@@ -135,7 +135,7 @@ export class Leader extends Component {
                                             {gen.genreName}
                                         </option>)}
                                     </select>
-                                    {GenreId == 0 ? <p style={{ color: 'red' }}>Genre is not empty</p> : <></>}
+                                    {/* {GenreId == 0 ? <p style={{ color: 'red' }}>Genre is not empty</p> : <></>} */}
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Assign To Writer:</label>
@@ -149,7 +149,7 @@ export class Leader extends Component {
                                             </option>
                                         )}
                                     </select>
-                                    {WriterId == 0 ? <p style={{ color: 'red' }}>Writer have no assign</p> : <></>}
+                                    {/* {WriterId == 0 ? <p style={{ color: 'red' }}>Writer have no assign</p> : <></>} */}
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Assign To Reporter:</label>
@@ -163,7 +163,7 @@ export class Leader extends Component {
                                             </option>
                                         )}
                                     </select>
-                                    {ReporterId == 0 ? <p style={{ color: 'red' }}>Reporter have no assign</p> : <></>}
+                                    {/* {ReporterId == 0 ? <p style={{ color: 'red' }}>Reporter have no assign</p> : <></>} */}
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Create Date:</label>
