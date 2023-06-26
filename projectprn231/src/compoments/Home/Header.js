@@ -80,18 +80,7 @@ class Header extends Component {
     }
 
     handleClick = () => {
-        // const token = localStorage.getItem("token");
-
-        // // localStorage.getItem('token', token);
-        // //  const storedData = localStorage.getItem('token');
-
-        // const decodedToken = jwtDecode(token);
-
-
-        // const userId = decodedToken.Role_Name;
-        // console.log(token);
-        // console.log(userId);
-        // this.setState({nameUser : decodedToken.FullName});
+       
         localStorage.removeItem('token');
     };
     handleEmailChange = (e) => {
@@ -121,6 +110,7 @@ class Header extends Component {
                 const data = await response.json();
                 const token = data.token;
                 localStorage.setItem('token', token);
+
                 const decodedToken = jwtDecode(token);
                 console.log(token);
 
@@ -128,7 +118,13 @@ class Header extends Component {
                 this.setState({ showModal: false })
 
                 console.log('Đăng nhập thành công');
+                console.log(token);
 
+                // this.setState({ nameUser: decodedToken.FullName });
+                // this.setState({ showModal: false })
+                
+              
+                alert("ok");
                 // const modal = document.getElementById('my-modal');
                 // const modalInstance = bootstrap.Modal.getInstance(modal);
                 // modalInstance.hide();
@@ -171,7 +167,13 @@ class Header extends Component {
                             Login
                         </button></li> */}
 
-                         <Button variant="secondary" onClick={this.handleShow}>
+                         <Button variant="secondary" onClick={this.handleShow} />
+                      
+                        <li><a href="#">Hello { nameUser}</a></li>
+                        {/* <li> <button onClick={this.handleClickName} type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Login
+                        </button></li> */}
+                         <Button type="button" variant="secondary" onClick={this.handleShow}>
                             Login
                         </Button>
                         {/* <li><button onClick={this.handleClick}>Logout</button></li> */}
@@ -269,12 +271,12 @@ class Header extends Component {
                                     </div>
                                 </div>
                                 <h2>or</h2>
-                                <form onSubmit={this.handleLogin}>
+                                <form >
 
 
                                     <div class="formsix-pos">
                                         <div class="form-group i-email">
-                                            <input type="email" class="form-control" required="" id="email2" value={email}
+                                            <input type="text" class="form-control" required="" id="email2" value={email}
                                                 onChange={this.handleEmailChange} placeholder="Email Address *" />
                                         </div>
                                     </div>
@@ -294,8 +296,8 @@ class Header extends Component {
                                         </a>
                                     </div>
                                     <div class="login_btn_wrapper">
-                                        <a href="#" class="btn btn-primary login_btn"> Login </a>
-                                        <button type="submit" onClick={this.handleLogin} class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
+                                       
+                                        <button type="button" onClick={this.handleLogin} class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
                                     </div>
                                 </form>
                                 <div class="login_message">
