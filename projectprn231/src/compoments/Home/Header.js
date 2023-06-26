@@ -150,7 +150,7 @@ class Header extends Component {
     render() {
 
         const { NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal } = this.state;
-        console.log(showModal);
+        
         return (
             <div>
                 <div id="top">
