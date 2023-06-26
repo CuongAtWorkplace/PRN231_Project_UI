@@ -117,6 +117,11 @@ class Header extends Component {
                 this.setState({ nameUser: decodedToken.FullName });
                 this.setState({ showModal: false })
 
+                if(decodedToken.roleId === "2"){
+
+                }
+              
+
                 console.log('Đăng nhập thành công');
                 console.log(token);
 
@@ -168,6 +173,11 @@ class Header extends Component {
                         </button></li> */}
 
                          <Button variant="secondary" onClick={this.handleShow} />
+                      
+                        <li><a href="#">Hello { nameUser}</a></li>
+                        {/* <li> <button onClick={this.handleClickName} type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Login
+                        </button></li> */}
                       
                         <li><a href="#">Hello { nameUser}</a></li>
                         {/* <li> <button onClick={this.handleClickName} type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
