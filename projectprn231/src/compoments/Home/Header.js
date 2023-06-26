@@ -158,10 +158,11 @@ class Header extends Component {
         this.setState({ showModal: false })
     }
     render() {
-        const { NewsHome, ListGenre, NewsHomeByDate, DataWeather, 
-            currentTime, NewsId, nameUser, email, password, showModal, Profile, tokenFromSocial } = this.state;
-        //console.log(showModal);
-        console.log(tokenFromSocial);
+      
+
+
+        const { NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal } = this.state;
+        
 
         return (
             <div>
