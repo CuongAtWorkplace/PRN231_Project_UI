@@ -244,7 +244,7 @@ class Header extends Component {
 
                                     <div class="formsix-pos">
                                         <div class="form-group i-email">
-                                            <input type="email" class="form-control" required="" id="email2" value={email}
+                                            <input type="text" class="form-control" required="" id="email2" value={email}
                                                 onChange={this.handleEmailChange} placeholder="Email Address *" />
                                         </div>
                                     </div>

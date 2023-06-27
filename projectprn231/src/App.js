@@ -27,27 +27,18 @@ function App() {
       <Switch>
         <Route  path="/login"><Login/></Route>
         <Route exact path="/"><Home/></Route>
-
+        <Route exact path="/Advertisement"><Advertisement/></Route>
         <Route path="/newsdetail/:id"> <NewsDetail/></Route>
         <Route path="/newsbygenre/:Gid"><NewsByGenre/></Route>
         <Route path="/user"><UserDetail/></Route>
         <Route path ="/modal"><ModalHome/></Route>
         <Route path ="/header"><Header/></Route>
+        <Route path="/Ok" component={Ok} />
+        <Route path ="/Home"><SideBar/></Route>
+
       </Switch>
-        {/* <SideBar/> */}
       </BrowserRouter>
-      <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-        />
+      
 
     </div>
   );
