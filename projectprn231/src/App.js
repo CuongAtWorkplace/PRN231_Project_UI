@@ -19,21 +19,7 @@ import { UserDetail } from './compoments/Home/UserDetail';
 import ModalHome from './compoments/Home/ModalHome';
 function App() {
   return (
-    <div>
-      <BrowserRouter>
-
-      <Switch>
-        <Route  path="/login"><Login/></Route>
-        <Route exact path="/"><Home/></Route>
-
-        <Route path="/newsdetail/:id"> <NewsDetail/></Route>
-        <Route path="/newsbygenre/:Gid"><NewsByGenre/></Route>
-        <Route path="/user"><UserDetail/></Route>
-        <Route path ="/modal"><ModalHome/></Route>
-        <Route path ="/header"><Header/></Route>
-      </Switch>
-        {/* <SideBar/> */}
-      </BrowserRouter>
+   
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -47,7 +33,6 @@ function App() {
         theme="colored"
       />
 
-    </div>
   );
 
 }
