@@ -20,8 +20,49 @@ class Home extends Component {
             email: '',
             password: '',
             currentTime: new Date(),
+             data: [], // Array to hold the data
+            page: 1, // Current page of data
+            hasMore: true,
+            NewsFirst:{},
         }
     }
+
+
+    
+    fetchData = () => {
+        const { page,data } = this.state;
+    
+        // Make an API call to fetch data
+        fetch(`https://localhost:7248/api/News/GetData/data?page=${page}`)
+          .then(response => response.json())
+          .then(newdata => {
+           
+            if (newdata.length === 0) {
+                this.setState({ hasMore: false });
+                return;
+              }
+            this.setState(prevState => ({
+              data: [...prevState.data, ...newdata], // Appending new items to the existing array
+              page: prevState.page + 1, // Incrementing the page number
+              // Checking if there are more items to load
+            }));
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+        }
+
+    fetchDataFirst(){
+        fetch("https://localhost:7248/api/News/getNewsFirst")
+        .then(response => response.json())
+        .then(data => {
+            this.setState({ NewsFirst : data });
+        }) 
+        .catch(error => {
+            console.error('Error fetching object:', error);
+        });
+    }
+        
 
     refreshList() {
         fetch("https://localhost:7248/api/News/getAllNews")
@@ -65,6 +106,7 @@ class Home extends Component {
     componentDidMount() {
         this.timerID = setInterval(() => this.tick(), 1000);
         this.refreshDataWeather();
+        this.fetchDataFirst();
         this.refreshListGenre();
         this.refreshList();
         this.refreshListByDate();
@@ -94,7 +136,7 @@ class Home extends Component {
       }   
     render() {
 
-        const { NewsHome, ListGenre, NewsHomeByDate, DataWeather,currentTime, NewsId } = this.state;
+        const { NewsFirst ,NewsHome, ListGenre, NewsHomeByDate, DataWeather,currentTime, NewsId } = this.state;
 
        
 
@@ -158,9 +200,9 @@ class Home extends Component {
                         <div class="feature clearfloat" id="lead">
                             <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-zQfyRzI4bm_31zRRBKBPPjapxMgtc_YSYnnBHBI6iT7LLf4Prooy7t1w0Z2CFkef5z8&usqp=CAU" alt="" id="leadpic" /></a>
                             <h3>
-                                <a href="#">Lead Story</a><br />
+                                <a href="#">Lead Sto {NewsFirst.title}</a><br />
                             </h3>
-                            <a href="#" class="title"> Aliquam euismod dolor in hendrerit in vulputate </a>
+                            <a href="#" class="title"> {NewsFirst.title} </a>
                             <p>You are viewing the demo for Mimbo v2.1, now <a href="#">available for download</a>. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation.</p>
                             {<a href="#">More&raquo;</a>}
                         </div>

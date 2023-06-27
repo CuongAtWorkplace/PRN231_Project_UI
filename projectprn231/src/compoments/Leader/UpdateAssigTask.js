@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { toast} from 'react-toastify';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
-export class UpdateAssignTask extends Component {
+class UpdateAssignTask extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,6 +20,7 @@ export class UpdateAssignTask extends Component {
             ErrorDeadline: '',
             LeaderId: 0,
             GenreId: 0,
+            GenreName: '',
             LeaderId: 0,
             WriterId: 0,
             ReporterId: 0,
@@ -30,10 +32,11 @@ export class UpdateAssignTask extends Component {
     }
 
     refreshList() {
-        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id=14")
+        const { id } = this.props.match.params;
+        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id="+id)
             .then(response => response.json())
             .then(data => {
-                this.setState({AssignTask: data, AssignTaskId: data.id, TopicName:data.title, Description: data.description, StartDate: data.startDate, EndDate:data.endDate, WriterId: data.WriterId, ReporterId: data.ReporterId, GenreId: data.GenreId });
+                this.setState({AssignTask: data, AssignTaskId: data.id, TopicName:data.title, Description: data.description, StartDate: data.startDate, EndDate:data.endDate, WriterId: data.WriterId, ReporterId: data.ReporterId, GenreId: data.GenreId, GenreName: data.genre.genreName });
             });
         fetch("https://localhost:7248/api/Genre/GetAllGenre")
             .then(response => response.json())
@@ -92,8 +95,8 @@ export class UpdateAssignTask extends Component {
         })
     }
     render() {
-        var {TopicName, Description,  StartDate, EndDate, AssignTask, Genre, User, GenreId, ReporterId, WriterId } = this.state;
-       
+        var {TopicName, Description,  StartDate, EndDate, AssignTask, Genre, User, GenreId, ReporterId, WriterId, GenreName } = this.state;
+        //alert(GenreName)
         return (
             <div className="container">
                 <div className="row">
@@ -147,10 +150,10 @@ export class UpdateAssignTask extends Component {
                                         onChange={(e) => this.setState({ WriterId: e.target.value })}
                                         value={WriterId}
                                     >
-                                        {User.map(u => u.roleId == 4 &&
-                                            <option value={u.id} key={u.id} >
+                                        {User.map(u => u.roleId == 4 && 
+                                            <option value={u.id} key={u.id} selected>
                                                 {u.fullName}
-                                            </option>
+                                            </option> 
                                         )}
                                     </select>
                                     {/* {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>} */}
@@ -188,3 +191,5 @@ export class UpdateAssignTask extends Component {
         )
     }
 }
+
+export default withRouter(UpdateAssignTask)
