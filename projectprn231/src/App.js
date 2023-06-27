@@ -9,9 +9,6 @@ import { ListGenre } from './compoments/Leader/ListGenre';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Admin_Home } from './Pages/Admin_Home';
-import Advertisement from './compoments/advertise/advertisement';
-import { Ok } from './Pages/Ok';
 import Login from './compoments/Login/Login';
 import Home from './compoments/Home/Home';
 import NewsDetail from './compoments/Home/NewsDetail';

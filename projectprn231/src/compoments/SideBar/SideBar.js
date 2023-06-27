@@ -30,9 +30,6 @@ import Writer from "../Writer/Writer";
 import ViewDetailReportProcess from "../Leader/ViewDetailReportProcess";
 import ViewDetailWritingProcess from "../Leader/ViewDetailWritingProcess";
 import { ListAssignTask } from "../Leader/ListAssignTask";
-import { Admin_Home } from "../../Pages/Admin_Home";
-import { Ok } from "../../Pages/Ok";
-import Advertisement from "../advertise/advertisement";
 
 
 
@@ -88,6 +85,7 @@ export class SideBar extends Component {
 
 
 
+
                             <a href="/listReject">
 
                                 <li>
@@ -138,23 +136,11 @@ export class SideBar extends Component {
 
                             </a>
 
-                            <a href="/AdminDashBoard">
 
-                                <li>
-                                    <InsertEmoticonIcon className="icon" />
-                                    <span>Dashboard</span>
-                                </li>
-                            </a>
 
-                            {/*                              <a href="/reporter">
->>>>>>> main
 
-                                 <li>
-                                     <InsertEmoticonIcon className="icon" />
-                                     <span>Report</span>
-                                 </li>
-                             </a> */}
 
+                         
 
                             <a href="/comment">
 
