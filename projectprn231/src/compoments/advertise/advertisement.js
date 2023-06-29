@@ -4,8 +4,9 @@ import './ad.css';
 class Advertisement extends Component {
 
   handleJoinNowClick = (amount) => {
-    window.location.href = `http://localhost:16262/vnpay_pay.aspx?amount=${amount}`;
+    window.location.href = `/Ok/${amount}`;
   }
+  
 
   render() {
     return (

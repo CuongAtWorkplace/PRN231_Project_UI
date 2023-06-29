@@ -10,31 +10,25 @@ import { ListGenre } from './compoments/Leader/ListGenre';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Login from './compoments/Login/Login';
-import Home from './compoments/Home/Home';
 import NewsDetail from './compoments/Home/NewsDetail';
 import Header from './compoments/Home/Header';
 import NewsByGenre from './compoments/Home/NewsByGenre';
 import { UserDetail } from './compoments/Home/UserDetail';
 
 import ModalHome from './compoments/Home/ModalHome';
+import { Ok } from './Pages/Ok';
+import Advertisement from './compoments/advertise/advertisement';
+
 function App() {
   return (
-   
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-
-  );
-
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={Advertisement} />
+        <Route exact path="/Ok" component={Ok} /> 
+        <Route exact path="/Ok/:amount" component={Ok} /> 
+      </Switch>
+      <ToastContainer />
+  </BrowserRouter>  );
 }
 
 export default App;
