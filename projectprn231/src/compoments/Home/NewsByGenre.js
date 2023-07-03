@@ -22,7 +22,7 @@ class NewsByGenre extends Component {
         }
     }
     fetchData = () => {
-        const { page,data } = this.state;
+        const { page } = this.state;
         const apiUrl = `https://localhost:7248/api/News/GetData/data?pageSize=${page}`;
     
         // Make an API call to fetch data
