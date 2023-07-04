@@ -48,9 +48,9 @@ export class Ok extends Component {
   handleSaveChange = () => {
     const { UserId, amount, imageName, title, description } = this.state;
     this.setState({ saveButtonDisabled: true });
-
+  
     this.uploadFile();
-
+  
     fetch(`https://localhost:7248/api/Adertisement/GetAdertisementByAmount?amount=${amount}`, {
       method: 'GET',
       headers: {
@@ -60,23 +60,16 @@ export class Ok extends Component {
     })
       .then(response => response.json())
       .then(advertisementData => {
-        // Sử dụng advertisementData (đối tượng JSON) ở đây
-
         this.setState({ advertisementData });
-
-        // Tiếp tục xử lý logic lưu thay đổi
+  
         const { UserId } = this.state;
         this.setState({ saveButtonDisabled: true });
-
-        // Lấy ngày hiện tại
-        const currentDate = new Date().toISOString();
-
-        // Tính ngày kết thúc bằng cách thêm số ngày từ API vào ngày hiện tại
+  
+        const currentDate = new Date().toLocaleString();
         const endDate = new Date(
           new Date().getTime() + advertisementData.totalDate * 24 * 60 * 60 * 1000
         ).toISOString();
-        
-        // Tiếp tục xử lý lưu thay đổi
+  
         fetch("https://localhost:7248/api/AdertisementOrder/InsertAdvertisementOrder", {
           method: 'POST',
           headers: {
@@ -98,10 +91,29 @@ export class Ok extends Component {
         })
           .then(response => response.json())
           .then(result => {
+            const adId = result.id;
             toast.success("Save changes successfully!");
-            setTimeout(() => {
-              window.location.href = "http://localhost:3000/";
-            }, 5000);
+  
+            // Gọi API GetAdertisementOrderByDate sau khi đã thêm thành công Advertisement Order
+            fetch(`https://localhost:7248/api/AdertisementOrder/GetAdertisementOrderByDate?date=${encodeURIComponent(currentDate)}`, {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              }
+            })
+              .then(response => response.json())
+              .then(advertisementOrder => {
+                const adId = advertisementOrder.id;
+                this.sendEmail(adId);
+                setTimeout(() => {
+                  window.location.href = "http://localhost:3000/";
+                }, 10000);
+              })
+              .catch(error => {
+                toast.error("An error occurred. Please try again later.");
+                this.setState({ saveButtonDisabled: false });
+              });
           })
           .catch(error => {
             toast.error("An error occurred. Please try again later.");
@@ -112,6 +124,59 @@ export class Ok extends Component {
         console.error(error);
       });
   }
+  
+  
+
+  sendEmail = (adId) => {
+    const userId = this.state.UserId; // ID người dùng cần lấy từ API
+    const amount = this.state.amount; // Lấy giá trị amount từ trạng thái ứng dụng
+  
+    fetch(`https://localhost:7248/api/User/GetUserById?id=${userId}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Error fetching user data');
+        }
+      })
+      .then(user => {
+        const emailData = {
+          to: user.email, // Email người nhận từ đối tượng user
+          subject: 'Payment Announcement', // Tiêu đề email
+          text: `You can pay your payment in this link: http://localhost:16262/vnpay_pay.aspx?amount=${amount}&adId=${adId}` // Nội dung email với liên kết có giá trị amount và adId từ trạng thái
+        };
+  
+        fetch('https://localhost:7248/api/Email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(emailData)
+        })
+          .then(response => {
+            if (response.ok) {
+              toast.success("Send Email Successfully!");
+              return response.text();
+            } else {
+              throw new Error('Error sending email');
+            }
+          })
+          .then(result => {
+            console.log(result);
+            // Xử lý kết quả, ví dụ: hiển thị thông báo gửi email thành công
+          })
+          .catch(error => {
+            console.error(error);
+            // Xử lý lỗi, ví dụ: hiển thị thông báo lỗi
+          });
+      })
+      .catch(error => {
+        console.error(error);
+        // Xử lý lỗi khi lấy dữ liệu người dùng, ví dụ: hiển thị thông báo lỗi
+      });
+  };
+  
+    
 
   uploadFile = () => {
     const { image } = this.state;
