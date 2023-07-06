@@ -18,11 +18,12 @@ import Home from './compoments/Home/Home';
 import ModalHome from './compoments/Home/ModalHome';
 import { Ok } from './Pages/Ok';
 import Advertisement from './compoments/advertise/advertisement';
-
+import { AdvertisementTable } from './compoments/table/AdvertisementTable';
 function App() {
   return (
     <BrowserRouter>
       <Switch>
+
       <Route  path="/login"><Login/></Route>
         <Route exact path="/"><Home/></Route>
         <Route exact path="/Advertisement"><Advertisement/></Route>
@@ -34,8 +35,14 @@ function App() {
     
       
         {/* <Route exact path="/" component={Advertisement} /> */}
+
+      <Route  path="/" component={Advertisement} />
+        <Route path="/ad" component={AdvertisementTable} />
+
+
         <Route exact path="/Ok" component={Ok} /> 
         <Route exact path="/Ok/:amount" component={Ok} /> 
+
       </Switch>
       <ToastContainer />
   </BrowserRouter>  );
