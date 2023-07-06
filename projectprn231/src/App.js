@@ -14,7 +14,7 @@ import NewsDetail from './compoments/Home/NewsDetail';
 import Header from './compoments/Home/Header';
 import NewsByGenre from './compoments/Home/NewsByGenre';
 import { UserDetail } from './compoments/Home/UserDetail';
-
+import Home from './compoments/Home/Home';
 import ModalHome from './compoments/Home/ModalHome';
 import { Ok } from './Pages/Ok';
 import Advertisement from './compoments/advertise/advertisement';
@@ -23,7 +23,17 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={Advertisement} />
+      <Route  path="/login"><Login/></Route>
+        <Route exact path="/"><Home/></Route>
+        <Route exact path="/Advertisement"><Advertisement/></Route>
+        <Route path="/newsdetail/:id"> <NewsDetail/></Route>
+        <Route path="/newsbygenre/:Gid"><NewsByGenre/></Route>
+        <Route path="/user"><UserDetail/></Route>
+        <Route path ="/modal"><ModalHome/></Route>
+        <Route path ="/header"><Header/></Route>
+    
+      
+        {/* <Route exact path="/" component={Advertisement} /> */}
         <Route exact path="/Ok" component={Ok} /> 
         <Route exact path="/Ok/:amount" component={Ok} /> 
       </Switch>

@@ -23,10 +23,9 @@ class NewsByGenre extends Component {
     }
     fetchData = () => {
         const { page } = this.state;
-        const apiUrl = `https://localhost:7248/api/News/GetData/data?pageSize=${page}`;
     
         // Make an API call to fetch data
-        fetch(`https://localhost:7248/api/News/GetData/data?page=${page}`)
+        fetch(`https://localhost:7248/api/News/GetData?page=${page}`)
           .then(response => response.json())
           .then(newdata => {
            
@@ -54,72 +53,15 @@ class NewsByGenre extends Component {
                 this.setState({ NewsByGenre: data });
             });
     }
-    refreshListByDate() {
-        fetch("https://localhost:7248/api/News/getNewsByDate")
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ NewsHomeByDate: data });
-            });
-    }
-    refreshListGenre() {
-        fetch("https://localhost:7248/api/News/getAllGenres")
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ ListGenre: data });
-            });
-    }
+   
    
     componentDidMount() {  
      
         this.refreshListByGenre();
-        this.refreshListGenre();
+      
       
     };
-    handleEmailChange = (e) => {
-        this.setState({ email: e.target.value });
-      };
-    
-      handlePasswordChange = (e) => {
-        this.setState({ password: e.target.value });
-      };
-    handleLogin = () => {
-        const { email, password } = this.state;
-        try {
-            const response = fetch('https://localhost:7248/api/Login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
-
-            if (response.ok) {
-                const data = response.json();
-                const token = data.token;
-
-
-                localStorage.setItem('token', token);
-                const storedData = localStorage.getItem('token');
-
-                const decodedToken = jwtDecode(token);
-
-                // Lấy giá trị từ payload
-                const userId = decodedToken.Role_Name;
-                alert(userId);
-
-                console.log('Đăng nhập thành công');
-
-
-            } else {
-                // Xử lý lỗi đăng nhập, hiển thị thông báo lỗi cho người dùng
-                console.log('Đăng nhập thất bại');
-            }
-        } catch (error) {
-            // Xử lý lỗi gọi API
-            console.log('Lỗi gọi API', error);
-        }
-
-    };
+   
     handleClick = () => {
         const token = localStorage.getItem("token");
 
@@ -136,7 +78,7 @@ class NewsByGenre extends Component {
     };
     render() {
         const { NewsHome, ListGenre, NewsHomeByDate, NewsByGenre,data,hasMore } = this.state;
-        console.log(data);
+      
         return (
             <div className="App">
                  <Header/>
@@ -151,10 +93,9 @@ class NewsByGenre extends Component {
                                     <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="https://i.imgur.com/QpjAiHq.jpg" /></div>
                                     <div class="col-md-9 mt-1">
                                         <h5> <a href={`/newsdetail/${news.id}`}>{news.title}</a> </h5>
-                                        <div class="d-flex flex-row">
-                                            <div class="ratings mr-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-                                        </div>
+                                        
                                         <p class="">{news.description}<br /><br /></p>
+                                     
                                     </div>
 
                                 </div>
