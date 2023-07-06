@@ -229,7 +229,7 @@ class Header extends Component {
                     keyboard={false}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Modal title</Modal.Title>
+                       
                     </Modal.Header>
                     <Modal.Body>
 
@@ -313,12 +313,7 @@ class Header extends Component {
 
 
                     </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={this.handleClose}>
-                            Close
-                        </Button>
-                        <Button variant="primary">Understood</Button>
-                    </Modal.Footer>
+                   
                 </Modal>
 
                 
