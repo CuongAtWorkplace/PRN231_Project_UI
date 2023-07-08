@@ -336,6 +336,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './Writer.css';
 import Pagination from 'react-js-pagination';
+import moment from "moment/moment";
 
 export class ToDoWritingTask extends Component {
     constructor(props) {
@@ -366,6 +367,40 @@ export class ToDoWritingTask extends Component {
 
     componentDidMount() {
         this.refreshList();
+
+        this.intervalId = setInterval(() => {
+            const { ToDoWritingTask } = this.state;
+            const updatedTasks = ToDoWritingTask.map(task => {
+                if (task.isLated != false || task.isLated == null) {
+                    const isExpired = moment().isAfter(task.endDate);
+                    if (isExpired) {
+                        this.checkDeadLine(task);
+                    }
+                } else {
+                    
+                }   
+            });
+            this.setState({
+                ToDoWritingTask: updatedTasks,
+            });
+        }, 86400000);
+    }
+
+    checkDeadLine(task) {
+        fetch("https://localhost:7248/api/WritingTask/CheckDeadLine?taskId="+task.id+"&IsLated=true", {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => res.json())
+            .then((result) => {
+                this.refreshList();
+                toast.success("Add ToDoTask Successfull. Congratulation!!!")
+            }, (error) => {
+                toast.success("Add ToDoTask Failed. Congratulation!!!")
+            })
     }
 
     handlePageChange(pageNumber) {
@@ -403,6 +438,9 @@ export class ToDoWritingTask extends Component {
                                     EndDate
                                 </th>
                                 <th>
+                                    Lated
+                                </th>
+                                <th>
                                     Status
                                 </th>
                                 <th>
@@ -418,18 +456,19 @@ export class ToDoWritingTask extends Component {
                                     <td>{gen.task.startDate}</td>
                                     <td>{gen.task.endDate}</td>
                                     <td>{gen.isChecked == true ? <b style={{color:'green'}}>Accpeting</b> : <b style={{color: 'red'}}>Pending</b>}</td>
+                                    <th>{gen.isLated == true ? <b style={{color:'red'}}>Lated</b>: ""}</th>
                                     <td>
                                         <a href={`/writer/${gen.taskId}`}>
-                                            <button type="button"
+                                            {/* <button type="button"
                                                 className="btn btn-light mr-1"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#exampleModal"
-                                                onClick={() => this.editClick(gen)}>
+                                                onClick={() => this.editClick(gen)}> */}
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
                                                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                                                     <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                                 </svg>
-                                            </button>
+                                            {/* </button> */}
                                         </a>
 
                                     </td>

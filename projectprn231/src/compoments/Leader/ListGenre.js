@@ -127,13 +127,12 @@ export class ListGenre extends Component {
 
     deleteClick = (e) => {
         if (window.confirm("Do you want to delete?")) {
-            fetch("https://localhost:7248/api/Genre/DeleteGenre?genreId=" + e, {
-                method: 'DELETE',
+            fetch("https://localhost:7248/api/Genre/DeleteGenre?Id="+e, {
+                method: 'PUT',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 }
-
             })
                 .then((result) => {
                     this.refreshList();
@@ -184,7 +183,8 @@ export class ListGenre extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {currentCustomers.map(gen =>
+                            {currentCustomers.map(gen => 
+                            
                                 <tr key={gen.id}>
                                     <td>{gen.id}</td>
                                     <td>{gen.genreName}</td>
@@ -212,6 +212,7 @@ export class ListGenre extends Component {
 
                                     </td>
                                 </tr>
+                                
                             )}
                         </tbody>
                     </table>
