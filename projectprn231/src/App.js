@@ -9,6 +9,7 @@ import { ListGenre } from './compoments/Leader/ListGenre';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 import Login from './compoments/Login/Login';
 import NewsDetail from './compoments/Home/NewsDetail';
 import Header from './compoments/Home/Header';
@@ -22,16 +23,28 @@ import { AdvertisementTable } from './compoments/table/AdvertisementTable';
 function App() {
   return (
     <BrowserRouter>
-      <Switch>
+      {/* <Switch>
         <Route exact path="/" component={Advertisement} />
         <Route exact path="/ad" component={AdvertisementTable} />
 
-        <Route exact path="/Ok" component={Ok} /> 
-        <Route exact path="/Ok/:amount" component={Ok} /> 
+        <Route exact path="/Ok" component={Ok} />
+        <Route exact path="/Ok/:amount" component={Ok} />
 
-      </Switch>
-      <ToastContainer />
-  </BrowserRouter>  );
+      </Switch> */}
+      <SideBar/>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+    </BrowserRouter>);
 }
 
 export default App;
