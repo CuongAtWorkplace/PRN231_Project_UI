@@ -9,6 +9,7 @@ import Pagination from 'react-js-pagination';
 import ReactQuill from "react-quill";
 import EditorToolbar, { modules, formats } from '../../EditorToolbar'
 import "react-quill/dist/quill.snow.css";
+import moment from "moment/moment";
 
 
 export class ToDoReportTask extends Component {
@@ -57,11 +58,43 @@ export class ToDoReportTask extends Component {
             .then(data => {
                 this.setState({ ToDoWritingTask: data, totalItemsCount: data.length });
             });
-
     }
 
     componentDidMount() {
         this.refreshList();
+        this.intervalId = setInterval(() => {
+            const { ToDoWritingTask } = this.state;
+            const updatedTasks = ToDoWritingTask.map(task => {
+                if (task.isLated != false || task.isLated == null) {
+                    const isExpired = moment().isAfter(task.endDate);
+                    if (isExpired) {
+                        this.checkDeadLine(task);
+                    }
+                } else {
+                    
+                }   
+            });
+            this.setState({
+                ToDoWritingTask: updatedTasks,
+            });
+        }, 86400000);
+    }
+
+    checkDeadLine(task) {
+        fetch("https://localhost:7248/api/ReportTask/CheckDeadLine?taskId="+task.id+"&IsLated=true", {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => res.json())
+            .then((result) => {
+                this.refreshList();
+                toast.success("Add ToDoTask Successfull. Congratulation!!!")
+            }, (error) => {
+                toast.success("Add ToDoTask Failed. Congratulation!!!")
+            })
     }
 
     handlePageChange(pageNumber) {
@@ -246,6 +279,7 @@ export class ToDoReportTask extends Component {
                                 <th>
                                     Status
                                 </th>
+                                <th>Lated</th>
                                 <th>
                                     Options
                                 </th>
@@ -259,6 +293,7 @@ export class ToDoReportTask extends Component {
                                     <td>{gen.task.startDate}</td>
                                     <td>{gen.task.endDate}</td>
                                     <td>{gen.isChecked == true ? <b style={{ color: 'green' }}>Accpeting</b> : <b style={{ color: 'red' }}>Pending</b>}</td>
+                                    <td>{gen.isLated == true ? <b style={{ color: 'red' }}>Lated</b> :""}</td>
                                     <td>
                                         <button type="button"
                                             className="btn btn-light mr-1"

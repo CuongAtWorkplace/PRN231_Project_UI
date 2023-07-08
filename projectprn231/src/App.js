@@ -42,14 +42,14 @@ function App() {
       
         {/* <Route exact path="/" component={Advertisement} /> */}
 
-        <Route path="/" component={Advertisement} />
+        {/* <Route path="/" component={Advertisement} />
         <Route path="/ad" component={AdvertisementTable} />
 
         <Route exact path="/Ok" component={Ok} />
-        <Route exact path="/Ok/:amount" component={Ok} />
+        <Route exact path="/Ok/:amount" component={Ok} /> */}
 
       </Switch> 
-      //<SideBar />
+      <SideBar />
       <ToastContainer
         position="top-right"
         autoClose={5000}

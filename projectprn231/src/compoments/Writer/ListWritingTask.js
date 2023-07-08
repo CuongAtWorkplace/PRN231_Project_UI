@@ -24,6 +24,7 @@ export class ListWritingTask extends Component {
             Reason: '',
             CreateDate: '',
             CreateBy: '',
+            EndDate: '',
             WrtierId: 0,
             activePage: 1,
             itemsCountPerPage: 5,
@@ -65,7 +66,8 @@ export class ListWritingTask extends Component {
             Description: e.description,
             GenreName: e.genre.genreName,
             CreateDate: e.startDate,
-            CreateBy: e.writer.fullName
+            CreateBy: e.writer.fullName, 
+            EndDate: e.endDate
         })
     }
 
@@ -87,7 +89,9 @@ export class ListWritingTask extends Component {
                 createBy: this.state.CreateBy,
                 createDate: this.state.CreateDate,
                 userId: this.state.UserId,
-                taskId: this.state.TaskId
+                taskId: this.state.TaskId, 
+                endDate: this.state.EndDate, 
+                isDeleted: false
             })
         })
             .then(res => res.json())
