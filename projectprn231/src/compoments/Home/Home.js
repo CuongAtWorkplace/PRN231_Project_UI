@@ -7,6 +7,7 @@ import { withRouter } from "react-router-dom/cjs/react-router-dom";
 import jwtDecode from 'jwt-decode'
 import { useHistory } from 'react-router-dom';
 import Header from "./Header";
+import InfiniteScroll from "react-infinite-scroll-component";
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -20,20 +21,46 @@ class Home extends Component {
             email: '',
             password: '',
             currentTime: new Date(),
-             data: [], // Array to hold the data
+            dataall: [], // 
+            data: [], // 
+            data1: [], // the thao
+            data2: [], // kinh doanh
+            data3: [], // du lich
             page: 1, // Current page of data
             hasMore: true,
             NewsFirst:{},
+            
         }
     }
 
+    fetchDataAll = () => {
+        const { page } = this.state;
+        // Make an API call to fetch data
+        fetch(`https://localhost:7248/api/News/GetData?page=${page}`)
+          .then(response => response.json())
+          .then(newdata => {
+           
+            if (newdata.length === 0) {
+                this.setState({ hasMore: false });
+                return;
+              }
+            this.setState(prevState => ({
+              dataall: [...prevState.dataall, ...newdata], // Appending new items to the existing array
+              page: prevState.page + 1, // Incrementing the page number
+              // Checking if there are more items to load
+            }));
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+        }
 
     
     fetchData = () => {
-        const { page,data } = this.state;
+        const { page } = this.state;
     
         // Make an API call to fetch data
-        fetch(`https://localhost:7248/api/News/GetData/data?page=${page}`)
+        fetch(`https://localhost:7248/api/News/getNewByGenreFirst?page=${page}`)
           .then(response => response.json())
           .then(newdata => {
            
@@ -52,6 +79,76 @@ class Home extends Component {
           });
         }
 
+        fetchData1 = () => {
+            const { page } = this.state;
+        
+            // Make an API call to fetch data
+            fetch(`https://localhost:7248/api/News/getNewByGenreSecond?page=${page}`)
+              .then(response => response.json())
+              .then(newdata1 => {
+               
+                if (newdata1.length === 0) {
+                    this.setState({ hasMore: false });
+                    return;
+                  }
+                this.setState(prevState => ({
+                  data1: [...prevState.data1, ...newdata1], // Appending new items to the existing array
+                  page: prevState.page + 1, // Incrementing the page number
+                  // Checking if there are more items to load
+                }));
+              })
+              .catch(error => {
+                console.error('Error fetching data:', error);
+              });
+            }
+    
+            fetchData2 = () => {
+                const { page } = this.state;
+            
+                // Make an API call to fetch data
+                fetch(`https://localhost:7248/api/News/getNewByGenreFirst?page=${page}`)
+                  .then(response => response.json())
+                  .then(newdata => {
+                   
+                    if (newdata.length === 0) {
+                        this.setState({ hasMore: false });
+                        return;
+                      }
+                    this.setState(prevState => ({
+                      data2: [...prevState.data2, ...newdata], // Appending new items to the existing array
+                      page: prevState.page + 1, // Incrementing the page number
+                      // Checking if there are more items to load
+                    }));
+                  })
+                  .catch(error => {
+                    console.error('Error fetching data:', error);
+                  });
+                }
+        
+                fetchData3 = () => {
+                    const { page } = this.state;
+                
+                    // Make an API call to fetch data
+                    fetch(`https://localhost:7248/api/News/getNewByGenreThree?page=${page}`)
+                      .then(response => response.json())
+                      .then(newdata => {
+                       
+                        if (newdata.length === 0) {
+                            this.setState({ hasMore: false });
+                            return;
+                          }
+                        this.setState(prevState => ({
+                          data3: [...prevState.data3, ...newdata], // Appending new items to the existing array
+                          page: prevState.page + 1, // Incrementing the page number
+                          // Checking if there are more items to load
+                        }));
+                      })
+                      .catch(error => {
+                        console.error('Error fetching data:', error);
+                      });
+                    }
+            
+        
     fetchDataFirst(){
         fetch("https://localhost:7248/api/News/getNewsFirst")
         .then(response => response.json())
@@ -96,20 +193,20 @@ class Home extends Component {
 
 
 
-    refreshListByDate() {
-        fetch("https://localhost:7248/api/News/getNewsByDate")
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ NewsHomeByDate: data });
-            });
-    }
+    // refreshListByDate() {
+    //     fetch("https://localhost:7248/api/News/getNewsByDate")
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             this.setState({ NewsHomeByDate: data });
+    //         });
+    // }
     componentDidMount() {
         this.timerID = setInterval(() => this.tick(), 1000);
         this.refreshDataWeather();
         this.fetchDataFirst();
         this.refreshListGenre();
         this.refreshList();
-        this.refreshListByDate();
+     
     }
     
     handleClick = () => {
@@ -136,59 +233,12 @@ class Home extends Component {
       }   
     render() {
 
-        const { NewsFirst ,NewsHome, ListGenre, NewsHomeByDate, DataWeather,currentTime, NewsId } = this.state;
-
-       
-
+        const { NewsFirst ,hasMore, data ,data1 ,data2 ,data3,dataall ,NewsHome, ListGenre, NewsHomeByDate, DataWeather,currentTime, NewsId } = this.state;
+         
+ 
         return (
             <div className="App">
-                {/* <div id="top">
-                    <ul id="right">
-                        <li><a href="#">{DataWeather.temp}</a></li>
-                        <li><a href="#">Submit a Story</a></li>
-                        <li><a href="#">Login</a></li>
-                        <li><button onClick={this.handleClick}>Support</button></li>
-                    </ul>
-                    <ul id="left">
-                        <li><a href="#">LOGO | </a></li>
-                        <li><a href="#">Chủ Nhật |{currentTime.toLocaleDateString()} |{currentTime.toLocaleTimeString()}</a></li>
-                        <li><a href="#"> Ha Noi   {DataWeather.temp} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud" viewBox="0 0 16 16">
-                            <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z" />
-                        </svg></a></li>
-
-                    </ul>
-                </div>
-                <div id="header">
-                    <div id="logo"> <a href="#"><img src="img/wireframe/logo.png" alt="" /></a> </div>
-                    <div id="ad"> <img src="img/ad-blank.png" alt="" /> </div>
-                </div>
-                <div id="nav">
-
-
-                    <li><a href="/home">Home</a></li>
-                    {ListGenre.map(gen =>
-                        <ul key={gen.id}>
-
-                            <li><a href={`/newsbygenre/${gen.id}`}>{gen.genreName}</a></li>
-                        </ul>
-                    )}
-
-                </div>
-                <div id="sub-nav">
-                    <ul>
-                        <li class="title">Stay in the know:</li>
-                        <li><a href="#">Blogs</a></li>
-                        <li>|</li>
-                        <li><a href="#">Video Gallery</a></li>
-                        <li>|</li>
-                        <li><img src="img/icons/rss.png" alt="" /><a href="#">Subscribe</a></li>
-                        <li>|</li>
-                        <li><img src="img/icons/twitter.png" alt="" /><a href="#">Twitter</a></li>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Launch demo modal
-                        </button>
-                    </ul>
-                </div> */}
+                
                     <Header/>
                 <div id="content-wrapper">
                     <div id="content">
@@ -203,14 +253,21 @@ class Home extends Component {
                                 <a href="#">Lead Sto {NewsFirst.title}</a><br />
                             </h3>
                             <a href="#" class="title"> {NewsFirst.title} </a>
-                            <p>You are viewing the demo for Mimbo v2.1, now <a href="#">available for download</a>. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation.</p>
+                            <a> {NewsFirst.description}</a><br/>
                             {<a href="#">More&raquo;</a>}
                         </div>
                         <div id="leftcol">
                             <h3>
                                 <a href="#">Features</a><br />
                             </h3>
-                            {NewsHome.map(item =>
+                            <InfiniteScroll
+                     dataLength={data.length} //This is important field to render the next data
+                     next={this.fetchData}
+                     hasMore={hasMore}
+                     loader={<h4>Loading...</h4>}
+                     endMessage={<p>No more data to load.</p>}
+                        >
+                      {data.map(item =>
                                 <div key={item.id}>
 
                                     <div class="feature">
@@ -223,53 +280,97 @@ class Home extends Component {
                                 </div>
 
                             )}
+                    </InfiniteScroll>
+                           
 
                         </div>
                         <div id="rightcol">
                             <div class="clearfloat">
                                 <h3><a href="#">Thể Thao</a></h3>
-                                <div class="clearfloatitem">
-                                <a href="#"><img src="images/iphone.jpg" alt="" /></a> <a href="#" class="title">Hendrerit S</a>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                                <InfiniteScroll
+                     dataLength={data1.length} //This is important field to render the next data
+                     next={this.fetchData1}
+                     hasMore={hasMore}
+                     loader={<h4>Loading...</h4>}
+                     endMessage={<p>No more data to load.</p>}>
+                            {data1.map(item1=>(
+                                 <div key={item1.id} class="clearfloatitem">
+                                <a href="#"><img src="images/iphone.jpg" alt="" /></a> <a href="#" class="title">{item1.title}</a>
+                                <p>{item1.description}</p>
                                 </div>
-                                <div class="clearfloatitem">
-                                <a href="#"><img src="images/iphone.jpg" alt="" /></a> <a href="#" class="title">Hendrerit Sed </a>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-                                </div>
-                                <div class="clearfloatitem">
-                                <a href="#"><img src="images/iphone.jpg" alt="" /></a> <a href="#" class="title">Hendrerit Sed Diam Ullamc</a>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-                                </div>
+                            ))}
+                               
+
+
+                        </InfiniteScroll>
+                              
                              </div>
                             <div class="clearfloat">
                                 <h3><a href="#">Kinh Doanh</a></h3>
-                                <a href="#"><img src="images/mark.jpg" alt="" /></a> <a href="#" class="title">Diam nonummy nibh euismod&raquo;</a>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-                            </div>
+                                <InfiniteScroll
+                     dataLength={data1.length} //This is important field to render the next data
+                     next={this.fetchData2}
+                     hasMore={hasMore}
+                     loader={<h4>Loading...</h4>}
+                     endMessage={<p>No more data to load.</p>}>
+                            {data2.map(item2=>(
+                                 <div key={item2.id} class="clearfloatitem">
+                                <a href="#"><img src="images/iphone.jpg" alt="" /></a> <a href="#" class="title">{item2.title}</a>
+                                <p>{item2.description}</p>
+                                </div>
+                            ))}
+                               
+
+
+                        </InfiniteScroll> 
+                         </div>
                             <div class="clearfloat">
                                 <h3><a href="#">Du Lịch</a></h3>
-                                <a href="#"><img src="images/shoes.jpg" alt="" /></a> <a href="#" class="title">Erat volutpat ut wisi&raquo;</a>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidun. Adipiscing elit, sed diam nonummy nibh euismod tincidun. Sed diam nonummy nibh euismod tincidun.</p>
-                            </div>
+                                <InfiniteScroll
+                     dataLength={data1.length} //This is important field to render the next data
+                     next={this.fetchData3}
+                     hasMore={hasMore}
+                     loader={<h4>Loading...</h4>}
+                     endMessage={<p>No more data to load.</p>}>
+                            {data3.map(item3=>(
+                                 <div key={item3.id} class="clearfloatitem">
+                                <a href="#"><img src="images/iphone.jpg" alt="" /></a> <a href="#" class="title">{item3.title}</a>
+                                <p>{item3.description}</p>
+                                </div>
+                            ))}
+                               
+
+
+                        </InfiniteScroll>   </div>
                         </div>
                     </div>
                     <div id="sidebars">
-                        {NewsHomeByDate.map(date =>
+                    <InfiniteScroll
+                     dataLength={dataall.length} //This is important field to render the next data
+                     next={this.fetchDataAll}
+                     hasMore={hasMore}
+                     loader={<h4>Loading...</h4>}
+                     endMessage={<p>No more data to load.</p>}
+                    >
+                       
+                        {dataall.map(d=>(
 
 
-                            <div key={date.key}>
+                            <div key={d.id}>
                                 <a href="#"><img src="img/side-ad.png" alt="" class="ad" /></a> <a href="#"><img src="img/side-ad.png" alt="" class="ad-right" /></a> <a href="#"><img src="img/side-ad.png" alt="" class="ad" /></a> <a href="#"><img src="img/side-ad.png" alt="" class="ad-right" /></a>
 
                                 <h2 class="heading-blue"></h2>
                                 <img src="img/wayne.jpg" alt="" />
-                                <h3><a href="#">{date.title}</a></h3>
+                                <h3><a href="#">{d.title}</a></h3>
                                 <p><a href="#">More headlines &raquo;</a></p>
-                           
+                                <h2 class="heading">Celebrity Sightings</h2>
                                 <img src="img/casey.jpg" alt="" class="ad" /> <img src="img/hobo.jpg" alt="" class="ad-right" />
-                             
+                                <h2 class="heading">In the Community</h2>
 
                             </div>
-                        )}
+                       ) )}
+                  
+                    </InfiniteScroll>
                     </div>
 
                 </div>
@@ -310,63 +411,7 @@ class Home extends Component {
                         <li>Designed by <a href="http://www.skyrocketlabs.com/">Skyrocket Labs</a></li>
                     </ul>
                 </div>
-                {/* <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-
-
-                                <div class="login_wrapper">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
-                                            <a href="#" class="btn btn-primary facebook"> <span>Login with Facebook</span> <i class="fa fa-facebook"></i> </a>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
-                                            <a href="#" class="btn btn-primary google-plus"> Login  with Google <i class="fa fa-google-plus"></i> </a>
-                                        </div>
-                                    </div>
-                                    <h2>or</h2>
-                                    <div class="formsix-pos">
-                                        <div class="form-group i-email">
-                                            <input type="email" class="form-control" required="" id="email2" value={this.state.email}
-                                                onChange={this.handleEmailChange} placeholder="Email Address *" />
-                                        </div>
-                                    </div>
-                                    <div class="formsix-e">
-                                        <div class="form-group i-password">
-                                            <input type="password" class="form-control" required="" id="password2" value={this.state.password}
-                                                onChange={this.handlePasswordChange} placeholder="Password *" />
-                                        </div>
-                                    </div>
-                                    <div class="login_remember_box">
-                                        <label class="control control--checkbox">Remember me
-                                            <input type="checkbox" />
-                                            <span class="control__indicator"></span>
-                                        </label>
-                                        <a href="#" class="forget_password">
-                                            Forgot Password
-                                        </a>
-                                    </div>
-                                    <div class="login_btn_wrapper">
-                                        <a href="#" class="btn btn-primary login_btn"> Login </a>
-                                        <button type="submit" onClick={this.handleLogin} class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
-                                    </div>
-                                    <div class="login_message">
-                                        <p>Don&rsquo;t have an account ? <a href="#"> Sign up </a> </p>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div> */}
+               
             </div>
         )
     }
