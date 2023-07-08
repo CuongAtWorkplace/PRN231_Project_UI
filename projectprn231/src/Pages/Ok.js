@@ -91,9 +91,7 @@ export class Ok extends Component {
         })
           .then(response => response.json())
           .then(result => {
-            const adId = result.id;
-            toast.success("Save changes successfully!");
-  
+            toast.success("Save changes successfully!");  
             // Gọi API GetAdertisementOrderByDate sau khi đã thêm thành công Advertisement Order
             fetch(`https://localhost:7248/api/AdertisementOrder/GetAdertisementOrderByDate?date=${encodeURIComponent(currentDate)}`, {
               method: 'GET',

@@ -25,7 +25,6 @@ function App() {
       <Switch>
         <Route exact path="/" component={Advertisement} />
         <Route exact path="/ad" component={AdvertisementTable} />
-
         <Route exact path="/Ok" component={Ok} /> 
         <Route exact path="/Ok/:amount" component={Ok} /> 
 
