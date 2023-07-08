@@ -3,18 +3,64 @@ import { useParams } from 'react-router-dom';
 import { withRouter } from "react-router-dom/cjs/react-router-dom";
 import "./home.css"
 import Header from "./Header";
-
+import { Route } from "react-router-dom";
+import SaveNews from "../User/SaveNews";
+import jwtDecode from "jwt-decode";
 class NewsDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             ListGenre: [],
             news: null, // Sản phẩm được chọn
-
             loading: true,
             object: {},
+            NewsSeenid: 1,
+            addDate: null,
+            newsId: null,
+            cateId: null,
         };
     }
+
+    addNewsSeen() {
+        const {NewsSeenid , addDate , cateId, NewsId ,userid } = this.state;
+       
+        const url = 'https://localhost:7248/api/News/AddNewsSeen';
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ NewsSeenid, addDate , userid , NewsId , cateId})
+        })
+            .then(response => response.json())
+            .then(responseData => {
+                console.log(responseData); // Xử lý dữ liệu phản hồi từ API (nếu cần thiết)
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+    }
+    addNewsSave() {
+        const {NewsSeenid , addDate , cateId, NewsId ,userid } = this.state;
+        const url = 'https://localhost:7248/api/News/AddNewsSave';
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ NewsSeenid, addDate , userid , NewsId , cateId})
+        })
+            .then(response => response.json())
+            .then(responseData => {
+                console.log(responseData); // Xử lý dữ liệu phản hồi từ API (nếu cần thiết)
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+    }
+
     refreshListGenre() {
         fetch("https://localhost:7248/api/News/getAllGenres")
             .then(response => response.json())
@@ -22,6 +68,7 @@ class NewsDetail extends React.Component {
                 this.setState({ ListGenre: data });
             });
     }
+
     refeshListDataById() {
         const { id } = this.props.match.params;
         fetch(`https://localhost:7248/api/News/getNewsById?id=${id}`)
@@ -33,28 +80,68 @@ class NewsDetail extends React.Component {
                 console.error('Error fetching object:', error);
             });
     }
+    handleClick = () => {
+       
+        this.setState({ cateId : 2 });
+        const token = localStorage.getItem("token");
+        if (token != null) {
+            const { id } = this.props.match.params;
+            const decodedToken = jwtDecode(token);
+            const NewsId = id;
+            const userid = decodedToken.id;
+            const NewsSeenid = this.state;
+            const addDate = new Date().toISOString().slice(0, 16);
+            const cateId = 2;
+            this.setState({userid,NewsSeenid ,addDate,NewsId,cateId}, () => {
+                this.addNewsSave();
+            });
+           
+
+
+            // this.setState({nameUser : decodedToken.FullName});
+        }
+    };
 
     componentDidMount() {
         this.refreshListGenre();
         this.refeshListDataById();
+        const token = localStorage.getItem("token");
+     
+        if (token != null) {
+            const { id } = this.props.match.params;
+            const decodedToken = jwtDecode(token);
+            const NewsId = id;
+            const userid = decodedToken.id;
+            const NewsSeenid = this.state;
+            const addDate = new Date().toISOString().slice(0, 16);
+            const cateId = 1;
+            this.setState({userid,NewsSeenid ,addDate,NewsId,cateId}, () => {
+                this.addNewsSeen();
+            });
+           
 
+
+            // this.setState({nameUser : decodedToken.FullName});
+        }
     }
 
     render() {
-        const { object, ListGenre } = this.state;
-
+        const { object, ListGenre ,cateId} = this.state;
+        console.log(cateId);
         return (
             <div>
                 <div className="App">
                     <Header />
 
                     <div id="content-wrapper">
+                  
                         <div id="main">
                             <div id="">
                                 <div id="new-detail">
 
 
                                     <h2 class="heading">Featured Story</h2>
+                                    <button onClick={this.handleClick}>Click me</button>
                                     <p class="author">{object.content} | <span>{object.createDate}</span></p>
                                     <h1 class="title-detail">{object.title}</h1> 
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png" alt="" />
@@ -156,6 +243,9 @@ class NewsDetail extends React.Component {
                         <li>|</li>
                         <li>Designed by <a href="http://www.skyrocketlabs.com/">Skyrocket Labs</a></li>
                     </ul>
+                </div>
+                <div className="Content">
+                <Route path="/savenews" component={SaveNews}/>
                 </div>
             </div>
 

@@ -102,10 +102,6 @@ class NewsByGenre extends Component {
                             </div>
 
                         )}
-                      
-                        
-
-
                     </div>
                      <div id="sidebars">
                     <InfiniteScroll
