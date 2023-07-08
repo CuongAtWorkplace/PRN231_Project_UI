@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "./home.css"
-import { withRouter } from "react-router-dom/cjs/react-router-dom";
+import { withRouter,Route } from "react-router-dom/cjs/react-router-dom";
 import jwtDecode from 'jwt-decode'
-import Example from "./ModalHome";
+
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -10,7 +10,7 @@ import { GoogleLogin } from '@react-oauth/google';
 
 import { LoginSocialFacebook } from "reactjs-social-login";
 import { FacebookLoginButton } from "react-social-login-buttons";
-
+import SaveNews from "../User/SaveNews";
 
 class Header extends Component {
     constructor(props) {
@@ -30,7 +30,26 @@ class Header extends Component {
             Profile: null, 
             tokenFromSocial: '',
             IsLogin : false,
+            PhotoFileName: '',
         }
+    }
+    imageUpload = (e) => {
+        e.preventDefault();
+
+        this.setState({
+            ImageCover: e.target.files[0].name
+        })
+        const formData = new FormData();
+        formData.append("file", e.target.files[0], e.target.files[0].name);
+
+        fetch('https://localhost:7248/api/WritingTask/SaveFile', {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => res.json())
+            .then(data => {
+                this.setState({ PhotoFileName: data });
+            })
     }
     refreshListGenre() {
         fetch("https://localhost:7248/api/News/getAllGenres")
@@ -63,20 +82,7 @@ class Header extends Component {
         this.timerID = setInterval(() => this.tick(), 1000);
         this.refreshDataWeather();
         this.refreshListGenre();
-        const token = localStorage.getItem("token");
-
-      
-        if (token != null) {
-
-            const decodedToken = jwtDecode(token);
-
-
-            console.log(token);
-
-            // this.setState({nameUser : decodedToken.FullName});
-        }
-
-
+       
     }
 
     handleClick = () => {
@@ -150,7 +156,7 @@ class Header extends Component {
     }
     render() {
       
-        const {IsLogin, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal } = this.state;
+        const { PhotoFileName , IsLogin, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal } = this.state;
         
         return (
             <div>
@@ -207,7 +213,7 @@ class Header extends Component {
                     )}
 
                 </div>
-                <div id="sub-nav">
+                {/* <div id="sub-nav">
                     <ul>
                         <li class="title">Stay in the know:</li>
                         <li><a href="#">Blogs</a></li>
@@ -219,7 +225,7 @@ class Header extends Component {
                         <li><img src="img/icons/twitter.png" alt="" /><a href="#">Twitter</a></li>
 
                     </ul>
-                </div>
+                </div> */}
 
 
                 <Modal
@@ -315,8 +321,6 @@ class Header extends Component {
                     </Modal.Body>
                    
                 </Modal>
-
-                
 
             </div>
         )
