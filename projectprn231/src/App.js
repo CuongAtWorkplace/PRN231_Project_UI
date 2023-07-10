@@ -48,8 +48,7 @@ function App() {
         <Route exact path="/Ok" component={Ok} />
         <Route exact path="/Ok/:amount" component={Ok} /> */}
 
-      </Switch> 
-      <SideBar />
+      
       <ToastContainer
         position="top-right"
         autoClose={5000}
