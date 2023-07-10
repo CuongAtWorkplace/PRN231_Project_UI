@@ -6,6 +6,10 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import '../Writer/Writer.css';
 import Pagination from 'react-js-pagination';
+import ReactQuill from "react-quill";
+import EditorToolbar, { modules, formats } from '../../EditorToolbar'
+import "react-quill/dist/quill.snow.css";
+import moment from "moment/moment";
 
 
 export class ToDoReportTask extends Component {
@@ -54,11 +58,43 @@ export class ToDoReportTask extends Component {
             .then(data => {
                 this.setState({ ToDoWritingTask: data, totalItemsCount: data.length });
             });
-
     }
 
     componentDidMount() {
         this.refreshList();
+        this.intervalId = setInterval(() => {
+            const { ToDoWritingTask } = this.state;
+            const updatedTasks = ToDoWritingTask.map(task => {
+                if (task.isLated != false || task.isLated == null) {
+                    const isExpired = moment().isAfter(task.endDate);
+                    if (isExpired) {
+                        this.checkDeadLine(task);
+                    }
+                } else {
+                    
+                }   
+            });
+            this.setState({
+                ToDoWritingTask: updatedTasks,
+            });
+        }, 86400000);
+    }
+
+    checkDeadLine(task) {
+        fetch("https://localhost:7248/api/ReportTask/CheckDeadLine?taskId="+task.id+"&IsLated=true", {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => res.json())
+            .then((result) => {
+                this.refreshList();
+                toast.success("Add ToDoTask Successfull. Congratulation!!!")
+            }, (error) => {
+                toast.success("Add ToDoTask Failed. Congratulation!!!")
+            })
     }
 
     handlePageChange(pageNumber) {
@@ -96,19 +132,14 @@ export class ToDoReportTask extends Component {
         }).then(res => res.json())
             .then((result) => {
                 this.refreshList();
-                toast.success("Import Successfull. Congratulation!!!")
+                //toast.success("Import Successfull. Congratulation!!!")
             }, (error) => {
-                toast.error("Import failed. Try Again!!!");
+                //toast.error("Import failed. Try Again!!!");
             })
-        // fetch("https://localhost:7248/api/Document/GetAllDocumentByTaskId?TaskId=" + this.state.TaskId)
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         this.setState({ DocumentList: data });
-        //     });
     }
 
     DownLoadFile(e) {
-        fetch("https://localhost:7248/api/ReportTask/DownLoadFile?id=" + e.id, {
+        fetch("https://localhost:7248/api/ReportTask/DownLoadFile?id="+e.id, {
             method: 'POST',
         }).then(response => response.blob())
             .then(blob => {
@@ -123,7 +154,7 @@ export class ToDoReportTask extends Component {
 
 
     editClick = (e) => {
-        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id=" + e.taskId)
+        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id="+e.taskId)
             .then(response => response.json())
             .then(data => {
                 this.setState({
@@ -134,13 +165,13 @@ export class ToDoReportTask extends Component {
                 });
             });
 
-        fetch("https://localhost:7248/api/ReportTask/GetReportTaskByTaskId?taskId=" + e.taskId)
+        fetch("https://localhost:7248/api/ReportTask/GetReportTaskByTaskId?taskId="+e.taskId)
             .then(response => response.json())
             .then(data => {
                 this.setState({ ReportTaskById: data, TopicName: data.title, TodoDescription: data.description, Content: data.content, ImageCover: data.image });
             });
 
-        fetch("https://localhost:7248/api/Document/GetAllDocumentByTaskId?TaskId=" + e.taskId)
+        fetch("https://localhost:7248/api/Document/GetAllDocumentByTaskId?TaskId="+e.taskId)
             .then(response => response.json())
             .then(data => {
                 this.setState({ DocumentList: data });
@@ -154,7 +185,7 @@ export class ToDoReportTask extends Component {
 
     CancelFile(e) {
         if (window.confirm("Do you want to delete?")) {
-            fetch("https://localhost:7248/api/Document/DeleteDocument?id=" + e, {
+            fetch("https://localhost:7248/api/Document/DeleteDocument?id="+e, {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',
@@ -171,6 +202,7 @@ export class ToDoReportTask extends Component {
     }
 
     onAddAssign() {
+        this.SubmitFile();
         fetch("https://localhost:7248/api/ReportTask/UpdateReportTask", {
             method: 'PUT',
             headers: {
@@ -247,6 +279,7 @@ export class ToDoReportTask extends Component {
                                 <th>
                                     Status
                                 </th>
+                                <th>Lated</th>
                                 <th>
                                     Options
                                 </th>
@@ -260,6 +293,7 @@ export class ToDoReportTask extends Component {
                                     <td>{gen.task.startDate}</td>
                                     <td>{gen.task.endDate}</td>
                                     <td>{gen.isChecked == true ? <b style={{ color: 'green' }}>Accpeting</b> : <b style={{ color: 'red' }}>Pending</b>}</td>
+                                    <td>{gen.isLated == true ? <b style={{ color: 'red' }}>Lated</b> :""}</td>
                                     <td>
                                         <button type="button"
                                             className="btn btn-light mr-1"
@@ -344,16 +378,15 @@ export class ToDoReportTask extends Component {
                                             <div className="form-group mb-3">
                                                 <label class="control-label">Content: </label>
                                                 <div className="App">
-                                                    <CKEditor
-                                                        editor={ClassicEditor}
-                                                        data={Content != null && Content}
-                                                        onReady={editor => {
-                                                            console.log('Editor is ready to use!', editor);
-                                                        }}
-                                                        onChange={(event, editor) => {
-                                                            const data = editor.getData();
-                                                            this.setState({ Content: data })
-                                                        }}
+
+                                                    <EditorToolbar toolbarId={'t1'} />
+                                                    <ReactQuill
+                                                        theme="snow"
+                                                        value={Content == null ? "" : Content}
+                                                        onChange={this.handleContentChange}
+                                                        placeholder={"Write something awesome..."}
+                                                        modules={modules('t1')}
+                                                        formats={formats}
                                                     />
                                                 </div>
                                             </div>
@@ -370,12 +403,12 @@ export class ToDoReportTask extends Component {
 
                                             <div className="form-group mb-3">
                                                 <label className="control-label">CreateBy:</label>
-                                                <input name="ProductPrice" value={CreateBy} class="form-control" disabled/>
+                                                <input name="ProductPrice" value={CreateBy} class="form-control" disabled />
                                             </div>
 
                                             <div className="form-group mb-3">
                                                 <label className="control-label">CreateDate:</label>
-                                                <input name="ProductPrice" value={CreateDate} class="form-control" disabled/>
+                                                <input name="ProductPrice" value={CreateDate} class="form-control" disabled />
                                             </div>
 
                                             <div className="form-group mb-3">

@@ -47,7 +47,7 @@ class ViewDetailWritingProcess extends Component {
         fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id=" + id)
             .then(response => response.json())
             .then(data => {
-                this.setState({ AssignTaskRequire: data, DescriptionTask: data.description, LeaderName: data.leader.fullName, ReporterName: data.reporter.fullName, GenreName: data.genre.genreName, ImageCover: data.ImageCover });
+                this.setState({ AssignTaskRequire: data, DescriptionTask: data.description, LeaderName: data.leader.fullName, ReporterName: data.reporter.fullName, GenreName: data.genre.genreName });//ImageCover: data.ImageCover
             });
         fetch("https://localhost:7248/api/ReportTask/GetReportTaskByTaskId?taskId=" + id)
             .then(response => response.json())
@@ -174,7 +174,7 @@ class ViewDetailWritingProcess extends Component {
                                 </div>
                                 <div className="form-group">
                                     <label class="control-label">Image Cover: </label>
-                                    {ImageCover != '' ? <div style={{ border: '1px solid black', width: 120, height: 130, backgroundImage: 'url(https://localhost:7248/Photos/' + ImageCover + ')' }} ></div> : null}
+                                    {ImageCover != '' ? <div style={{ border: '1px solid black', width: 120, height: 130, backgroundImage: 'url(https://localhost:7248/Photos/'+ImageCover+')' }} ></div> : null}
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">CreateDate:</label>

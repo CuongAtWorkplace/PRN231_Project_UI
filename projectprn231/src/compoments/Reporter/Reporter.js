@@ -2,6 +2,9 @@ import React, { Component, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import ReactQuill from "react-quill";
+import EditorToolbar, { modules, formats } from '../../EditorToolbar'
+//import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor.js'
 import PacmanLoader from "react-spinners/PacmanLoader";
 import "../../../src/App.css"
 
@@ -129,6 +132,11 @@ export class Reporter extends Component {
         this.SubmitFile();
     }
 
+    handleContentChange = (content, delta, source, editor) => {
+        this.setState({ Content: content });
+        //console.log(this.state.NewsDetail);
+    }
+
     render() {
         const { Title, Description, Content, CreateDate, IsChecked, ListDoc, loading } = this.state;
 
@@ -162,8 +170,8 @@ export class Reporter extends Component {
                                         <label className="control-label">Topic Description:</label>
                                         <div className="App">
                                             <CKEditor
-                                                editor={ClassicEditor}
-                                                data={Content}
+                                                //editor={ClassicEditor}
+                                                data={Description}
                                                 onReady={editor => {
                                                     console.log('Editor is ready to use!', editor);
                                                 }}
@@ -178,16 +186,14 @@ export class Reporter extends Component {
                                     <div className="form-group">
                                         <label className="control-label">Content:</label>
                                         <div className="App">
-                                            <CKEditor
-                                                editor={ClassicEditor}
-                                                data={Description}
-                                                onReady={editor => {
-                                                    console.log('Editor is ready to use!', editor);
-                                                }}
-                                                onChange={(event, editor) => {
-                                                    const data = editor.getData();
-                                                    this.setState({ Description: data })
-                                                }}
+                                            <EditorToolbar toolbarId={'t1'} />
+                                            <ReactQuill
+                                                theme="snow"
+                                                value={Content == null ? "" : Content}
+                                                onChange={this.handleContentChange}
+                                                placeholder={"Write something awesome..."}
+                                                modules={modules('t1')}
+                                                formats={formats}
                                             />
                                         </div>
                                     </div>

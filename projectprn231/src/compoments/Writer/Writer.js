@@ -2,6 +2,12 @@ import React, { Component, useEffect } from "react";
 import parse from 'html-react-parser';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+//import Image from '@ckeditor/ckeditor5-image/src/image';
+//import CKEditor from '../TestFile/CustomCKeditor';
+import ReactQuill from "react-quill";
+import EditorToolbar, { modules, formats } from '../../EditorToolbar'
+import "react-quill/dist/quill.snow.css";
+
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 import './Writer.css';
 import { toast } from "react-toastify";
@@ -116,6 +122,7 @@ class Writer extends Component {
                 description: this.state.Description,
                 content: this.state.NewsDetail,
                 image: this.state.PhotoFileName,
+                comment: this.state.Comment,
                 isChecked: false,
             })
         })
@@ -165,13 +172,18 @@ class Writer extends Component {
             })
     }
 
+    handleEditorChange = (content, delta, source, editor) => {
+        this.setState({ NewsDetail: content });
+        console.log(this.state.NewsDetail);
+    }
+
     render() {
         const { TopicName, ErrorTopicName, NewsDetail, Comment, Description, ErrorDescription,
             AssignTaskRequire, DescriptionTask, LeaderName, ReporterName, GenreName, ImageCover, CreateDate, CreateBy, PhotoFileName, PhotoPath,
             ReportTaskById, DescriptionReporter, ContentReporter, DocumentList, WritingTaskById, IsChecked } = this.state;
 
-        console.log(WritingTaskById);
-        console.log(PhotoFileName)
+        //console.log(WritingTaskById);
+        //console.log(PhotoFileName)
         return (
             <div className="container">
                 <div className="row">
@@ -207,14 +219,15 @@ class Writer extends Component {
 
                                 <div className="form-group">
                                     <label class="control-label">News Detail: </label>
-                                    <div className="App">
-                                        <CKEditor
-                                            editor={ClassicEditor}
-                                            data={NewsDetail != null && NewsDetail}
-                                            onChange={(event, editor) => {
-                                                const data = editor.getData();
-                                                this.setState({ NewsDetail: data })
-                                            }}
+                                    <div >
+                                        <EditorToolbar toolbarId={'t1'} />
+                                        <ReactQuill
+                                            theme="snow"
+                                            value={NewsDetail == null ? "" : NewsDetail}
+                                            onChange={this.handleEditorChange}
+                                            placeholder={"Write something awesome..."}
+                                            modules={modules('t1')}
+                                            formats={formats}
                                         />
                                     </div>
                                 </div>
@@ -236,7 +249,10 @@ class Writer extends Component {
                                     <div className="App">
                                         <CKEditor
                                             editor={ClassicEditor}
-                                            data={Comment == null ? "" : Comment}
+                                            data={Comment}
+                                            onReady={editor => {
+                                                console.log('Editor is ready to use!', editor);
+                                            }}
                                             onChange={(event, editor) => {
                                                 const data = editor.getData();
                                                 this.setState({ Comment: data })

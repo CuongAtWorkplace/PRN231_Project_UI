@@ -25,6 +25,7 @@ export class ListReportTask extends Component {
             Reason: '',
             CreateDate: '',
             CreateBy: '', 
+            EndDate: '',
             activePage: 1,
             itemsCountPerPage: 5,
             totalItemsCount: 0
@@ -67,6 +68,7 @@ export class ListReportTask extends Component {
             GenreName: e.genre.genreName,
             CreateDate: e.startDate,
             CreateBy: e.reporter.fullName,
+            EndDate: e.endDate,
             Status: 'N/A',
             activePage: 1,
             itemsCountPerPage: 10,
@@ -92,7 +94,9 @@ export class ListReportTask extends Component {
                 createBy: this.state.CreateBy,
                 createDate: this.state.CreateDate,
                 userId: this.state.UserId,
-                taskId: this.state.TaskId
+                taskId: this.state.TaskId, 
+                endDate: this.state.EndDate, 
+                isDeleted: false
             })
         })
             .then(res => res.json())
@@ -142,7 +146,6 @@ export class ListReportTask extends Component {
                     taskId: this.state.TaskId,
                     UserId: this.state.WriterId,
                     isReject: false,
-
                 })
             })
                 .then(res => res.json())

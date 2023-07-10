@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import parse from 'html-react-parser';
 import Pagination from 'react-js-pagination';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Leader } from "./Leader";
 //import ReactHtmlParser from 'react-html-parser';
 
@@ -10,6 +12,8 @@ export class ListAssignTask extends Component {
 
         this.state = {
             AssignTask: [],
+            ListWritingTask: [], 
+            ListReportTask: [],
             activePage: 1,
             itemsCountPerPage: 5,
             totalItemsCount: 0
@@ -26,6 +30,16 @@ export class ListAssignTask extends Component {
             .then(data => {
                 this.setState({ AssignTask: data, totalItemsCount: data.length });
             });
+        fetch("https://localhost:7248/api/WritingTask/GetAllWritingTask")
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ ListWritingTask: data });
+            });
+        fetch("https://localhost:7248/api/ReportTask/GetAllReportTask")
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ ListReportTask: data });
+            });
     }
 
     componentDidMount() {
@@ -40,8 +54,45 @@ export class ListAssignTask extends Component {
     }
 
     deleteClick = (e) => {
-        alert("Đã xóa");
-    } 
+        fetch("https://localhost:7248/api/AssignTask/DeleteAssignTask?Id="+e, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => res.json())
+            .then((result) => {
+                this.refreshList();
+                toast.success("Delete Successfull. Congratulation!!!")
+            }, (error) => {
+                toast.error("Delete Failed. Try again!!!")
+            })
+        const { ListReportTask, ListWritingTask } = this.state;
+        ListReportTask.map(task => {
+            if (task.taskId == e) {
+                fetch("https://localhost:7248/api/ReportTask/DeleteReportTask?Id="+e, {
+                    method: 'PUT',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                })
+            }
+        })
+
+        ListWritingTask.map(task => {
+            if (task.taskId == e) {
+                fetch("https://localhost:7248/api/WritingTask/DeleteWritingTask?Id=" + e, {
+                    method: 'PUT',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                })
+            }
+        })
+    }
 
     render() {
         const { AssignTask, activePage, itemsCountPerPage, totalItemsCount } = this.state;
@@ -94,6 +145,7 @@ export class ListAssignTask extends Component {
                         </thead>
                         <tbody>
                             {currentCustomers.map(ak =>
+                            
                                 <tr key={ak.id}>
                                     <td>{ak.id}</td>
                                     <td>{ak.title}</td>
@@ -114,7 +166,7 @@ export class ListAssignTask extends Component {
                                             </svg>
                                         </a>
 
-                                        <a onClick={() => this.deleteClick(ak.id)}>
+                                        <a href="#" onClick={() => this.deleteClick(ak.id)}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash-fill" viewBox="0 0 16 16">
                                                 <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
                                             </svg>
@@ -122,6 +174,8 @@ export class ListAssignTask extends Component {
 
                                     </td>
                                 </tr>
+                            
+
                             )}
                         </tbody>
                     </table>
