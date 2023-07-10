@@ -10,7 +10,24 @@ const columns = [
   { field: 'adType', headerName: 'Advertisement Type', width: 100 },
   { field: 'title', headerName: 'Title', width: 200 },
   { field: 'description', headerName: 'Description', width: 300 },
-  { field: 'image', headerName: 'Image', width: 300 },
+  {
+    field: 'image',
+    headerName: 'Image',
+    width: 300,
+    renderCell: (params) => {
+      const handleClick = () => {
+        const fileName = encodeURIComponent(params.value);
+        const url = `https://localhost:7248/api/User/DisplayImage?fileName=${fileName}`;
+        window.open(url, '_blank');
+      };
+    
+      return (
+        <a href="#" onClick={handleClick}>
+          View Image
+        </a>
+      );
+    }    
+  },
   { field: 'createdDate', headerName: 'Created Date', width: 300 },
   { field: 'endDate', headerName: 'Created Date', width: 300 },
 ];
