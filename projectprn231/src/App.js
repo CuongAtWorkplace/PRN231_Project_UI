@@ -21,6 +21,10 @@ import { Ok } from './Pages/Ok';
 import Advertisement from './compoments/advertise/advertisement';
 import { AdvertisementTable } from './compoments/table/AdvertisementTable';
 import SaveNews from './compoments/User/SaveNews';
+//import { AccountProfile } from './compoments/AccountProfile/AccountProfile';
+
+import { TestSocket } from './compoments/TestFile/TestSocket';
+
 function App() {
   return (
     <BrowserRouter>
@@ -47,8 +51,9 @@ function App() {
 
         <Route exact path="/Ok" component={Ok} />
         <Route exact path="/Ok/:amount" component={Ok} /> */}
-
-      
+      {/* <TestSocket/> */}
+      <SideBar/>
+      </Switch>
       <ToastContainer
         position="top-right"
         autoClose={5000}

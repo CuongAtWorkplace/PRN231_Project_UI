@@ -8,6 +8,31 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 export class NavBar extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            search: 'Search',
+        }
+    }
+
+    ChangeSearchValue(e) {
+        this.setState({
+            search: e.target.value
+        })
+    }
+
+    SearchAccount(event) {
+        if (this.state.search == "") {
+            return;
+        }
+
+        if (event.key === 'Enter') {
+            console.log('Enter key pressed');
+            alert(this.state.search);
+        }
+
+    }
 
     render() {
         return (
@@ -15,8 +40,12 @@ export class NavBar extends Component {
             <div className="navbar">
                 <div className="wrapper">
                     <div className="search">
-                        <input type="text" placeholder="Search  ... " />
+                        <input type="text" value={this.state.search} onChange={(e) => this.ChangeSearchValuee(e)} placeholder="Search  ... " onKeyDown={(event) => this.SearchAccount(event)}/>
                         <SearchIcon />
+                    </div>
+
+                    <div>
+                        <input type="text" placeholder="New Input ..."/>
                     </div>
 
                     <div className="items">
