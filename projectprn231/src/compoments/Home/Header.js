@@ -97,9 +97,6 @@ class Header extends Component {
         this.setState({ password: e.target.value });
     };
 
-    // const [email, setEmail] = useState('');
-    // const [password, setPassword] = useState('');
-    // const history = useHistory();
     handleLogin = async () => {
         const { email, password } = this.state;
         try {
@@ -118,12 +115,12 @@ class Header extends Component {
                 localStorage.setItem('token', token);
 
                 const decodedToken = jwtDecode(token);
+                localStorage.setItem('id', decodedToken.id);
                 console.log(token);
 
                 this.setState({ nameUser: decodedToken.FullName });
                 this.setState({ showModal: false , IsLogin : true})
 
-            
                 console.log('Đăng nhập thành công');
                 console.log(token);
 
@@ -205,7 +202,7 @@ class Header extends Component {
                     <div id="ad"> <img src="img/ad-blank.png" alt="" /> </div>
                 </div>
                 <div id="nav">
-                    {ListGenre.map(gen =>
+                    {ListGenre.slice(0, 5).map(gen =>
                         <ul key={gen.id}>
 
                             <li><a href={`/newsbygenre/${gen.id}`}>{gen.genreName}</a></li>
@@ -213,19 +210,7 @@ class Header extends Component {
                     )}
 
                 </div>
-                {/* <div id="sub-nav">
-                    <ul>
-                        <li class="title">Stay in the know:</li>
-                        <li><a href="#">Blogs</a></li>
-                        <li>|</li>
-                        <li><a href="#">Video Gallery</a></li>
-                        <li>|</li>
-                        <li><img src="img/icons/rss.png" alt="" /><a href="#">Subscribe</a></li>
-                        <li>|</li>
-                        <li><img src="img/icons/twitter.png" alt="" /><a href="#">Twitter</a></li>
-
-                    </ul>
-                </div> */}
+               
 
 
                 <Modal
@@ -254,7 +239,7 @@ class Header extends Component {
                                                         Profile: credentialResponse,
                                                         tokenFromSocial: credentialResponse.credential
                                                     })
-                                                    //localStorage.setItem('token', tokenFromSocial);
+                                                    localStorage.setItem('token', this.state.tokenFromSocial);
                                                 }}
                                                 onError={() => {
                                                     console.log('Login Failed');
@@ -265,11 +250,11 @@ class Header extends Component {
                                     <div>
                                         {/* <a href="#" class="btn btn-primary google-plus"> Login  with Google <i class="fa fa-google-plus"></i> </a> */}
                                         <LoginSocialFacebook
-                                            appId="233542922769686"
+                                            appId="1230730321091573"
                                             onResolve={(response) => {
                                                 console.log(response)
                                                 this.setState({ Profile: response.data, tokenFromSocial: response.data.accessToken });
-                                                //localStorage.setItem('token', tokenFromSocial);
+                                                localStorage.setItem('token', this.state.tokenFromSocial);
                                             }}
                                             
                                             onReject={(error) => {

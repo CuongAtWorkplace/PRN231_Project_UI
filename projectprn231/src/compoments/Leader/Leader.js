@@ -31,13 +31,22 @@ export class Leader extends Component {
     }
 
     refreshList() {
-        fetch("https://localhost:7248/api/Genre/GetAllGenre")
+        const jwt = localStorage.getItem('token');
+        fetch("https://localhost:7248/api/Genre/GetAllGenre", {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ Genre: data });
             });
 
-        fetch("https://localhost:7248/api/User/GetAllUser")
+        fetch("https://localhost:7248/api/User/GetAllUser", {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ User: data });
@@ -50,11 +59,13 @@ export class Leader extends Component {
 
 
     createAssignTask() {
+        const jwt = localStorage.getItem('token');
         fetch("https://localhost:7248/api/AssignTask/AddAssignTask", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
             },
             body: JSON.stringify({
                 title: this.state.TopicName,

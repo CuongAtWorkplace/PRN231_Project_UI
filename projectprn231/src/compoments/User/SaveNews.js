@@ -55,7 +55,7 @@ export class SaveNews extends Component {
                             <div class="col-md-4 border-right">
                                 <div class="d-flex flex-column align-items-center text-center">
                                     <ul class="p-3 py-5">
-                                    <li><a href="/user">Thông tin tài khoản</a></li>
+                                        <li><a href="/user">Thông tin tài khoản</a></li>
                                         <li><a href="/savenews/1">Tin Đã Xem</a></li>
                                         <li><a href="/savenews/2">Tin Đã Lưu</a></li>
                                         <li><a>Chat</a></li>

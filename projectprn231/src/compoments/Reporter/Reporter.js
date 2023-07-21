@@ -30,7 +30,13 @@ export class Reporter extends Component {
     }
 
     refreshList() {
-        fetch("https://localhost:7248/api/Document/GetAllDocumentByTaskId?TaskId=13")
+        //const id = localStorage.getItem('id');
+        const jwt = localStorage.getItem('token');
+        fetch("https://localhost:7248/api/Document/GetAllDocumentByTaskId?TaskId=13", {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ ListDoc: data });
@@ -61,11 +67,13 @@ export class Reporter extends Component {
         this.setState({
             loading: true
         })
+        const jwt = localStorage.getItem('token');
         fetch("https://localhost:7248/api/ReportTask/InsertReportTask", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
             },
             body: JSON.stringify({
                 title: this.state.Title,
@@ -93,10 +101,16 @@ export class Reporter extends Component {
     }
 
     SubmitFile() {
+        const jwt = localStorage.getItem('token');
         const formData = new FormData();
         formData.append('files', this.state.FileName);
         fetch("https://localhost:7248/api/ReportTask/UploadFile?TaskId=3", {
             method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
+            },
             body: formData
 
         }).then(res => res.json())
@@ -115,8 +129,14 @@ export class Reporter extends Component {
     }
 
     DownLoadFile(e) {
+        const jwt = localStorage.getItem('token');
         fetch("https://localhost:7248/api/ReportTask/DownLoadFile?id=" + e.id, {
             method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
+            },
         }).then(response => response.blob())
             .then(blob => {
                 const url = window.URL.createObjectURL(new Blob([blob]));

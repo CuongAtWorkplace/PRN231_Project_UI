@@ -37,7 +37,13 @@ export class ListWritingTask extends Component {
     }
 
     refreshList() {
-        fetch("https://localhost:7248/api/AssignTask/GetAllAssignTaskByWriterId?writerId=3")
+        const jwt = localStorage.getItem('token');
+        const id = localStorage.getItem('id');
+        fetch("https://localhost:7248/api/AssignTask/GetAllAssignTaskByWriterId?writerId=3", {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({
@@ -78,11 +84,13 @@ export class ListWritingTask extends Component {
     }
 
     acceptTask() {
+        const jwt = localStorage.getItem('token');
         fetch("https://localhost:7248/api/WritingTask/InsertWritingTask", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json', 
+                'Authorization': `Bearer ${jwt}`
             },
             body: JSON.stringify({
                 isChecked: false,
@@ -106,7 +114,8 @@ export class ListWritingTask extends Component {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json', 
+                'Authorization': `Bearer ${jwt}`
             },
             body: JSON.stringify({
                 id: this.state.TaskId,
@@ -129,11 +138,13 @@ export class ListWritingTask extends Component {
             toast.error("Reason is not empty");
             return;
         } else {
+            const jwt = localStorage.getItem('token');
             fetch("https://localhost:7248/api/RejectTask/AddRejectTask", {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json', 
+                    'Authorization': `Bearer ${jwt}`
                 },
                 body: JSON.stringify({
                     rejectId: 1,
@@ -155,7 +166,8 @@ export class ListWritingTask extends Component {
                 method: 'PUT',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json', 
+                    'Authorization': `Bearer ${jwt}`
                 },
                 body: JSON.stringify({
                     id: this.state.TaskId,

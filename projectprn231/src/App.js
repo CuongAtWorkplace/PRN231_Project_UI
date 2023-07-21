@@ -6,6 +6,7 @@ import { SideBar } from './compoments/SideBar/SideBar';
 import { Table } from './compoments/table/Table';
 import { Reporter } from './compoments/Reporter/Reporter';
 import { ListGenre } from './compoments/Leader/ListGenre';
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -20,21 +21,19 @@ import { Ok } from './Pages/Ok';
 import Advertisement from './compoments/advertise/advertisement';
 import { AdvertisementTable } from './compoments/table/AdvertisementTable';
 import SaveNews from './compoments/User/SaveNews';
-import { Admin_Home } from './Pages/Admin_Home';
+//import { AccountProfile } from './compoments/AccountProfile/AccountProfile';
+
+import { TestSocket } from './compoments/TestFile/TestSocket';
+
 function App() {
   return (
     <BrowserRouter>
-       <Route exact path="/" component={Advertisement} /> 
+      <Switch>
+        {/* <Switch>
+        <Route exact path="/" component={Advertisement} />
+        <Route exact path="/ad" component={AdvertisementTable} />
+      <Switch>
 
-        <Route path="/ad" component={AdvertisementTable} />
-        <Route path="/table" component={Table} />
-        <Route path="/comment" component={CommentBrowseTable} />
-        <Route path="/home" component={Admin_Home} />
-        <Route exact path="/Ok" component={Ok} />
-        <Route exact path="/Ok/:amount" component={Ok} /> 
-      </BrowserRouter>
-)
-{/*}
       <Route  path="/login"><Login/></Route>
         <Route exact path="/"><Home/></Route>
         <Route exact path="/Advertisement"><Advertisement/></Route>
@@ -52,5 +51,22 @@ function App() {
 
         <Route exact path="/Ok" component={Ok} />
         <Route exact path="/Ok/:amount" component={Ok} /> */}
-      }
+      {/* <TestSocket/> */}
+      <SideBar/>
+      </Switch>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+    </BrowserRouter>);
+}
+
 export default App;

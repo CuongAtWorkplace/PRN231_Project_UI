@@ -31,17 +31,42 @@ import Writer from "../Writer/Writer";
 import ViewDetailReportProcess from "../Leader/ViewDetailReportProcess";
 import ViewDetailWritingProcess from "../Leader/ViewDetailWritingProcess";
 import UpdateAssigTask from "../Leader/UpdateAssigTask";
+import AccountProfile from "../AccountProfile/AccountProfile";
+import ListUserSearch from "../AccountProfile/ListUserSearch";
 import { Leader } from "../Leader/Leader";
 import { ListAssignTask } from "../Leader/ListAssignTask";
 import {ViewReportProcess} from '../Leader/ViewReportProcess';
 import {ViewWritingProcess} from '../Leader/ViewWritingProcess';
-
-
-
-
-
+//import { Redirect } from 'react-router-dom';
+//import { Rout } from 'react-router-dom';
 
 export class SideBar extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            search: '',
+        }
+    }
+
+    ChangeSearchValue(e) {
+        this.setState({
+            search: e.target.value
+        })
+    }
+
+    SearchAccount(event) {
+        if (this.state.search == "") {
+            return;
+        }
+
+        if (event.key === 'Enter') {
+            //<Route to={`/listUserSearch/${this.state.search}`} />;
+
+            window.location.href=`/listUserSearch/${this.state.search}`;
+        }
+    }
 
     render() {
         return (
@@ -149,12 +174,6 @@ export class SideBar extends Component {
 
                             </a>
 
-
-
-
-
-                         
-
                             <a href="/comment">
 
                                 <li>
@@ -191,7 +210,7 @@ export class SideBar extends Component {
                     <div className="navbar">
                         <div className="wrapper">
                             <div className="search">
-                                <input type="text" placeholder="Search  ... " />
+                                <input type="text" value={this.state.search} onChange={(e) => this.ChangeSearchValue(e)} placeholder="Search  ... " onKeyDown={(event) => this.SearchAccount(event)} />
                                 <SearchIcon />
                             </div>
 
@@ -254,13 +273,12 @@ export class SideBar extends Component {
                         {/* Writer */}
                         <Route path="/listWritingTask" component={ListWritingTask} />
                         <Route path="/listTodoWriting" component={ToDoWritingTask} />
-
-
                         <Route path="/listReport" component={ListReportTask} />
-                        {/* <Route path="/dashboard" component={Dashboard} /> */}
-                        {/* <Route path="/Reporter" component={Test} /> */}
-                        {/* <Route path="/test/:id" component={Test}/> */}
                         <Route path="/writer/:id" component={Writer} />
+
+                        {/* AccountProfile */}
+                        <Route path='/account/:id' component={AccountProfile}/>
+                        <Route path='/listUserSearch/:search' component={ListUserSearch}/>
                     </div>
                 </div>
             </div>
