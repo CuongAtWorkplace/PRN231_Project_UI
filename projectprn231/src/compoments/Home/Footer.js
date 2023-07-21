@@ -2,11 +2,61 @@ import React from "react";
 import { Component } from "react";
 import { withRouter } from "react-router-dom/cjs/react-router-dom";
 class Footer extends Component {
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+            NewsHome: [],
+        }
+    }
+    refreshList() {
+        fetch("https://localhost:7248/api/News/getAllNews")
+          .then(response => response.json())
+          .then(data => {
+            this.setState({ NewsHome: data });
+          });
+      }
     render() {
+        const {NewsHome} = this.state;
         return (
-            <div>
-                <div class="d-flex flex-column h-100">
 
+            <div>
+                <div id="extras">
+                    <div id="recommended">
+                        <h2 class="heading">Recommended Stories</h2>
+                        {NewsHome.slice(3, 8).map(news => (
+                            <div>
+                                <ul>
+                                    <li><a href="#">{news.title}</a></li>
+                                </ul>
+                            </div>
+                        ))}
+
+                    </div>
+                    <div id="programs">
+                        <h2 class="heading">What's On Tonight</h2>
+                        {NewsHome.slice(3, 8).map(news => (
+                            <div>
+                                <ul>
+                                    <li><a href="#">{news.title}</a></li>
+                                </ul>
+                            </div>
+                        ))}
+                        {/* <img src="img/rick.jpg" alt="" /> <img src="img/cbc.png" alt="" /> */}
+                    </div>
+                    <div id="cartoon">
+                        <h2 class="heading">Humour</h2>
+                        {NewsHome.slice(3, 8).map(news => (
+                            <div>
+                                <ul>
+                                    <li><a href="#">{news.title}</a></li>
+                                </ul>
+                            </div>
+                        ))}
+                        {/* <img src="img/cartoon.jpg" alt="" /> */}
+                    </div>
+                </div>
+                <div class="d-flex flex-column h-100">
                     <footer class="w-100 py-4 flex-shrink-0">
                         <div class="container py-4">
                             <div class="row gy-4 gx-5">
@@ -38,8 +88,8 @@ class Footer extends Component {
                                     <p class="small text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
                                     <form action="#">
                                         <div class="input-group mb-3">
-                                            <input class="form-control" type="text" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2"/>
-                                                <button class="btn btn-primary" id="button-addon2" type="button"><i class="fas fa-paper-plane"></i></button>
+                                            <input class="form-control" type="text" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2" />
+                                            <button class="btn btn-primary" id="button-addon2" type="button"><i class="fas fa-paper-plane"></i></button>
                                         </div>
                                     </form>
                                 </div>

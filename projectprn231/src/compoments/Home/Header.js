@@ -123,7 +123,6 @@ class Header extends Component {
                 this.setState({ nameUser: decodedToken.FullName });
                 this.setState({ showModal: false , IsLogin : true})
 
-            
                 console.log('Đăng nhập thành công');
                 console.log(token);
 
@@ -205,7 +204,7 @@ class Header extends Component {
                     <div id="ad"> <img src="img/ad-blank.png" alt="" /> </div>
                 </div>
                 <div id="nav">
-                    {ListGenre.map(gen =>
+                    {ListGenre.slice(0, 5).map(gen =>
                         <ul key={gen.id}>
 
                             <li><a href={`/newsbygenre/${gen.id}`}>{gen.genreName}</a></li>
@@ -213,19 +212,7 @@ class Header extends Component {
                     )}
 
                 </div>
-                {/* <div id="sub-nav">
-                    <ul>
-                        <li class="title">Stay in the know:</li>
-                        <li><a href="#">Blogs</a></li>
-                        <li>|</li>
-                        <li><a href="#">Video Gallery</a></li>
-                        <li>|</li>
-                        <li><img src="img/icons/rss.png" alt="" /><a href="#">Subscribe</a></li>
-                        <li>|</li>
-                        <li><img src="img/icons/twitter.png" alt="" /><a href="#">Twitter</a></li>
-
-                    </ul>
-                </div> */}
+               
 
 
                 <Modal

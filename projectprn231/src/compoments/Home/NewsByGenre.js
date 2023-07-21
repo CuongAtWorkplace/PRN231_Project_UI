@@ -17,13 +17,16 @@ class NewsByGenre extends Component {
             email: '',
             password: '',
             data: [], // Array to hold the data
+            dataList:[],
             page: 1, // Current page of data
+            page1:1,
             hasMore: true,
+            hasMore1:true,
         }
     }
+
     fetchData = () => {
         const { page } = this.state;
-    
         // Make an API call to fetch data
         fetch(`https://localhost:7248/api/News/GetData?page=${page}`)
           .then(response => response.json())
@@ -44,7 +47,28 @@ class NewsByGenre extends Component {
           });
         }
 
-        
+        fetchDataList = () =>{
+            const { page1 } = this.state;
+            const { Gid } = this.props.match.params;
+        // Make an API call to fetch data
+        fetch(`https://localhost:7248/api/News/getNewByGenreId?page=${page1}&id=${Gid}`)
+          .then(response => response.json())
+          .then(newdata => {
+           
+            if (newdata.length === 0) {
+                this.setState({ hasMore1: false });
+                return;
+              }
+            this.setState(prevState => ({
+                dataList : [...prevState.dataList, ...newdata], // Appending new items to the existing array
+                page1: prevState.page1 + 1, // Incrementing the page number
+              // Checking if there are more items to load
+            }));
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+        }
     refreshListByGenre() {
         const { Gid } = this.props.match.params;
         fetch(`https://localhost:7248/api/News/getNewByGenreId?id=${Gid}`)
@@ -77,31 +101,34 @@ class NewsByGenre extends Component {
         localStorage.removeItem('token');
     };
     render() {
-        const { NewsHome, ListGenre, NewsHomeByDate, NewsByGenre,data,hasMore } = this.state;
+        const { NewsHome, ListGenre, NewsHomeByDate, dataList,NewsByGenre,data,hasMore ,hasMore1} = this.state;
       
         return (
             <div className="App">
                  <Header/>
-
                 <div id="content-wrapper">
                     <div id="content">
-                       
-                            {NewsByGenre.map(news =>
+                    <InfiniteScroll
+                     dataLength={dataList.length} //This is important field to render the next data
+                     next={this.fetchDataList}
+                     hasMore={hasMore1}
+                     loader={<h4>Loading...</h4>}
+                     endMessage={<p>No more data to load.</p>}
+                    >
+                            {dataList.map(news =>
                             <div key={news.key}>
                                 <div class="row p-2 bg-white border rounded">
-
                                     <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="https://i.imgur.com/QpjAiHq.jpg" /></div>
                                     <div class="col-md-9 mt-1">
                                         <h5> <a href={`/newsdetail/${news.id}`}>{news.title}</a> </h5>
-                                        
                                         <p class="">{news.description}<br /><br /></p>
-                                     
                                     </div>
 
                                 </div>
                             </div>
 
                         )}
+                             </InfiniteScroll>
                     </div>
                      <div id="sidebars">
                     <InfiniteScroll
