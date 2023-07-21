@@ -18,7 +18,6 @@ import { Route } from "react-router-dom";
 import { CommentBrowseTable } from "../table/CommentBrowseTable";
 import { ListReportTask } from "../Reporter/ListReportTask";
 
-
 import { ToDoReportTask } from "../Reporter/ToDoReportTask";
 import { ListGenre } from '../Leader/ListGenre';
 import { ListReject } from "../Leader/ListReject"
@@ -231,10 +230,9 @@ export class SideBar extends Component {
                          {/* Admin */}
                         <Route path="/table" component={Table} />
                         <Route path="/comment" component={CommentBrowseTable} />
-                        {/* <Route path="/AdminDashBoard" component={Admin_Home} /> */}
-                        {/* <Route path="/Advertisement" component={Advertisement} /> */}
-                        {/* <Route path="/Ok" component={Ok}/>   */}
-
+                        {/* <Route path="/Advertisement" component={Advertisement} /> 
+                        {/* <Route path="/Ok" component={Ok}/>   
+                        
 
                         {/* Leader */}
                         <Route path="/addAssignTask" component={Leader}/>

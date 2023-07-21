@@ -14,11 +14,10 @@ export class Chart extends Component {
     }
   }
 
-
   getMonthUserData() {
     const months = [0, 30, 60, 90, 120, 150];
     const requests = months.map((begin) =>
-      fetch(`https://localhost:7248/api/News/getNewsByDate?begin=${begin}&end=${begin + 30}`)
+      fetch(`https://localhost:7248/api/News/getNewsByDate2?begin=${begin}&end=${begin + 30}`)
     );
 
     Promise.all(requests)
@@ -26,9 +25,7 @@ export class Chart extends Component {
       .then((data) => {
         const monthData = data.map((item, index) => ({
           name: `Month ${months[index] / 30}`,
-          uv: item,
-          pv: 0,
-          amt: 0,
+          uv: item.length, // Chỉ sử dụng độ dài của mảng để hiển thị số lượng tin tức trong tháng
         }));
         this.setState({ monthData, isDataLoaded: true });
       })
