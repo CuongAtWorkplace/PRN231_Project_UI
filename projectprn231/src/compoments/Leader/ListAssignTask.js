@@ -25,17 +25,30 @@ export class ListAssignTask extends Component {
     }
 
     refreshList() {
-        fetch("https://localhost:7248/api/AssignTask/GetAllAssignTask")
+        const jwt = localStorage.getItem('token');
+        fetch("https://localhost:7248/api/AssignTask/GetAllAssignTask", {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ AssignTask: data, totalItemsCount: data.length });
             });
-        fetch("https://localhost:7248/api/WritingTask/GetAllWritingTask")
+        fetch("https://localhost:7248/api/WritingTask/GetAllWritingTask", {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ ListWritingTask: data });
             });
-        fetch("https://localhost:7248/api/ReportTask/GetAllReportTask")
+        fetch("https://localhost:7248/api/ReportTask/GetAllReportTask", {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ ListReportTask: data });
@@ -54,11 +67,13 @@ export class ListAssignTask extends Component {
     }
 
     deleteClick = (e) => {
+        const jwt = localStorage.getItem('token');
         fetch("https://localhost:7248/api/AssignTask/DeleteAssignTask?Id="+e, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json', 
+                'Authorization': `Bearer ${jwt}`
             }
         })
             .then(res => res.json())
@@ -75,7 +90,8 @@ export class ListAssignTask extends Component {
                     method: 'PUT',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${jwt}`
                     }
                 })
             }
@@ -87,7 +103,8 @@ export class ListAssignTask extends Component {
                     method: 'PUT',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json', 
+                        'Authorization': `Bearer ${jwt}`
                     }
                 })
             }

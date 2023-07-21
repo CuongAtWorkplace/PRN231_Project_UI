@@ -23,7 +23,12 @@ export class ViewReportProcess extends Component {
     }
 
     refreshList() {
-        fetch("https://localhost:7248/api/ReportTask/GetAllReportTask")
+        const jwt = localStorage.getItem('token');
+        fetch("https://localhost:7248/api/ReportTask/GetAllReportTask", {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ ListReport: data, totalItemsCount: data.length });

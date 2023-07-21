@@ -97,9 +97,6 @@ class Header extends Component {
         this.setState({ password: e.target.value });
     };
 
-    // const [email, setEmail] = useState('');
-    // const [password, setPassword] = useState('');
-    // const history = useHistory();
     handleLogin = async () => {
         const { email, password } = this.state;
         try {
@@ -118,6 +115,7 @@ class Header extends Component {
                 localStorage.setItem('token', token);
 
                 const decodedToken = jwtDecode(token);
+                localStorage.setItem('id', decodedToken.id);
                 console.log(token);
 
                 this.setState({ nameUser: decodedToken.FullName });
@@ -241,7 +239,7 @@ class Header extends Component {
                                                         Profile: credentialResponse,
                                                         tokenFromSocial: credentialResponse.credential
                                                     })
-                                                    //localStorage.setItem('token', tokenFromSocial);
+                                                    localStorage.setItem('token', this.state.tokenFromSocial);
                                                 }}
                                                 onError={() => {
                                                     console.log('Login Failed');
@@ -252,11 +250,11 @@ class Header extends Component {
                                     <div>
                                         {/* <a href="#" class="btn btn-primary google-plus"> Login  with Google <i class="fa fa-google-plus"></i> </a> */}
                                         <LoginSocialFacebook
-                                            appId="233542922769686"
+                                            appId="1230730321091573"
                                             onResolve={(response) => {
                                                 console.log(response)
                                                 this.setState({ Profile: response.data, tokenFromSocial: response.data.accessToken });
-                                                //localStorage.setItem('token', tokenFromSocial);
+                                                localStorage.setItem('token', this.state.tokenFromSocial);
                                             }}
                                             
                                             onReject={(error) => {

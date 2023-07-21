@@ -28,7 +28,12 @@ export class ListReject extends Component {
     }
 
     refreshList() {
-        fetch("https://localhost:7248/api/RejectTask/GetAllRejectTaskPending")
+        const jwt = localStorage.getItem('token');
+        fetch("https://localhost:7248/api/RejectTask/GetAllRejectTaskPending", {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({
@@ -37,7 +42,11 @@ export class ListReject extends Component {
                 });
             });
 
-        fetch("https://localhost:7248/api/RejectTask/GetAllRejectTaskAccept")
+        fetch("https://localhost:7248/api/RejectTask/GetAllRejectTaskAccept", {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ RejectTaskAccept: data, totalItemsCount1: data.length });
@@ -67,12 +76,14 @@ export class ListReject extends Component {
     }
 
     acceptRejectTask = () => {
+        const jwt = localStorage.getItem('token');
         if (window.confirm("Do you want to accept?")) {
             fetch("https://localhost:7248/api/RejectTask/UpdateRejectTask", {
                 method: 'PUT',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json', 
+                    'Authorization': `Bearer ${jwt}`
                 },
                 body: JSON.stringify({
                     id: this.state.RejectId,
@@ -90,12 +101,14 @@ export class ListReject extends Component {
     }
 
     rejectTask = () => {
+        const jwt = localStorage.getItem('token');
         if (window.confirm("Do you want to reject?")) {
             fetch("https://localhost:7248/api/RejectTask/DeleteRejectTask?Id=" + this.state.RejectId, {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json', 
+                    'Authorization': `Bearer ${jwt}`
                 }
             })
                 .then(res => res.json())

@@ -28,18 +28,31 @@ class AccountProfile extends Component {
 
     refreshList() {
         const { id } = this.props.match.params;
-        fetch("https://localhost:7248/api/User/GetUserById?id="+id)
+        const jwt = localStorage.getItem('jwt');
+        fetch("https://localhost:7248/api/User/GetUserById?id="+id, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ User: data, RoleName: data.role.roleName });
             });
 
-        fetch("https://localhost:7248/api/WritingTask/GetWritingByUserId?Id="+id)
+        fetch("https://localhost:7248/api/WritingTask/GetWritingByUserId?Id="+id, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ WritingTask: data });
             });
-        fetch("https://localhost:7248/api/ReportTask/GetReportTaskByUserId?Id="+id)
+        fetch("https://localhost:7248/api/ReportTask/GetReportTaskByUserId?Id="+id, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ ReportTask: data });
@@ -47,21 +60,35 @@ class AccountProfile extends Component {
     }
 
     ViewClick(e) {
+        const jwt = localStorage.getItem('jwt');
+
         {this.state.RoleName == "Reporter" && 
-        fetch("https://localhost:7248/api/ReportTask/GetReportTaskByTaskId?taskId=" + e)
+        fetch("https://localhost:7248/api/ReportTask/GetReportTaskByTaskId?taskId=" + e, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ Rep: data, RepDes: data.description, RepCon: data.content });
             });
         }
 
-        fetch("https://localhost:7248/api/WritingTask/GetWritingTaskByTaskId?taskId="+e)
+        fetch("https://localhost:7248/api/WritingTask/GetWritingTaskByTaskId?taskId="+e, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ Wri: data });
             });
 
-        fetch("https://localhost:7248/api/Document/GetAllDocumentByTaskId?taskId="+e)
+        fetch("https://localhost:7248/api/Document/GetAllDocumentByTaskId?taskId="+e, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ DocumentList: data });
