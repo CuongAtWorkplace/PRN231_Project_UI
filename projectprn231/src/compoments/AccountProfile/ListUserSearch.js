@@ -13,7 +13,12 @@ class ListUserSearch extends Component {
 
     refreshList() {
         const { search } = this.props.match.params;
-        fetch("https://localhost:7248/api/User/GetUserByEmail?email=" + search)
+        const jwt = localStorage.getItem('jwt');
+        fetch("https://localhost:7248/api/User/GetUserByEmail?email=" + search, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ ListUser: data });//ImageCover: data.ImageCover

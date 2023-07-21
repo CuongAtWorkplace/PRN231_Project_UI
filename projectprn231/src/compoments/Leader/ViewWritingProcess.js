@@ -16,7 +16,12 @@ export class ViewWritingProcess extends Component {
     }
 
     refreshList() {
-        fetch("https://localhost:7248/api/WritingTask/GetAllWritingTask")
+        const jwt = localStorage.getItem('token');
+        fetch("https://localhost:7248/api/WritingTask/GetAllWritingTask", {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ ListWriting: data, totalItemsCount: data.length });

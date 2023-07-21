@@ -53,7 +53,12 @@ export class ToDoReportTask extends Component {
     }
 
     refreshList() {
-        fetch("https://localhost:7248/api/ReportTask/GetAllReportTask")
+        const jwt = localStorage.getItem('token');
+        fetch("https://localhost:7248/api/ReportTask/GetAllReportTask", {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ ToDoWritingTask: data, totalItemsCount: data.length });
@@ -81,11 +86,13 @@ export class ToDoReportTask extends Component {
     }
 
     checkDeadLine(task) {
+        const jwt = localStorage.getItem('token');
         fetch("https://localhost:7248/api/ReportTask/CheckDeadLine?taskId="+task.id+"&IsLated=true", {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
             }
         })
             .then(res => res.json())
@@ -120,6 +127,7 @@ export class ToDoReportTask extends Component {
     }
 
     SubmitFile() {
+        const jwt = localStorage.getItem('token');
         if (this.state.FileName == '') {
             return;
         }
@@ -127,6 +135,11 @@ export class ToDoReportTask extends Component {
         formData.append('files', this.state.FileName);
         fetch("https://localhost:7248/api/ReportTask/UploadFile?TaskId=3", {
             method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
+            },
             body: formData
 
         }).then(res => res.json())
@@ -139,8 +152,14 @@ export class ToDoReportTask extends Component {
     }
 
     DownLoadFile(e) {
+        const jwt = localStorage.getItem('token');
         fetch("https://localhost:7248/api/ReportTask/DownLoadFile?id="+e.id, {
             method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
+            }
         }).then(response => response.blob())
             .then(blob => {
                 const url = window.URL.createObjectURL(new Blob([blob]));
@@ -154,7 +173,12 @@ export class ToDoReportTask extends Component {
 
 
     editClick = (e) => {
-        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id="+e.taskId)
+        const jwt = localStorage.getItem('token');
+        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id="+e.taskId, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({
@@ -165,13 +189,21 @@ export class ToDoReportTask extends Component {
                 });
             });
 
-        fetch("https://localhost:7248/api/ReportTask/GetReportTaskByTaskId?taskId="+e.taskId)
+        fetch("https://localhost:7248/api/ReportTask/GetReportTaskByTaskId?taskId="+e.taskId, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ ReportTaskById: data, TopicName: data.title, TodoDescription: data.description, Content: data.content, ImageCover: data.image });
             });
 
-        fetch("https://localhost:7248/api/Document/GetAllDocumentByTaskId?TaskId="+e.taskId)
+        fetch("https://localhost:7248/api/Document/GetAllDocumentByTaskId?TaskId="+e.taskId, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ DocumentList: data });
@@ -184,12 +216,14 @@ export class ToDoReportTask extends Component {
     }
 
     CancelFile(e) {
+        const jwt = localStorage.getItem('token');
         if (window.confirm("Do you want to delete?")) {
             fetch("https://localhost:7248/api/Document/DeleteDocument?id="+e, {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwt}`
                 }
             })
                 .then((result) => {
@@ -202,12 +236,15 @@ export class ToDoReportTask extends Component {
     }
 
     onAddAssign() {
+        
         this.SubmitFile();
+        const jwt = localStorage.getItem('token');
         fetch("https://localhost:7248/api/ReportTask/UpdateReportTask", {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
             },
             body: JSON.stringify({
                 id: this.state.Id,
@@ -229,13 +266,19 @@ export class ToDoReportTask extends Component {
 
     imageUpload = (e) => {
         e.preventDefault();
+        const jwt = localStorage.getItem('token');
 
         const formData = new FormData();
         formData.append("file", e.target.files[0], e.target.files[0].name);
 
         fetch('https://localhost:7248/api/WritingTask/SaveFile', {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
+            },
         })
             .then(res => res.json())
             .then(data => {

@@ -351,7 +351,12 @@ export class ToDoWritingTask extends Component {
     }
 
     refreshList() {
-        fetch("https://localhost:7248/api/WritingTask/GetAllWritingTask")
+        const jwt = localStorage.getItem('token');
+        fetch("https://localhost:7248/api/WritingTask/GetAllWritingTask", {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
 
@@ -387,12 +392,14 @@ export class ToDoWritingTask extends Component {
     }
 
     checkDeadLine(task) {
+        const jwt = localStorage.getItem('token');
         fetch("https://localhost:7248/api/WritingTask/CheckDeadLine?taskId="+task.id+"&IsLated=true", {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json', 
+                'Authorization': `Bearer ${jwt}`
+            },
         })
             .then(res => res.json())
             .then((result) => {

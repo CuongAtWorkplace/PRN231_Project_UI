@@ -48,7 +48,12 @@ export class ListGenre extends Component {
     }
 
     refreshList() {
-        fetch("https://localhost:7248/api/Genre/GetAllGenre")
+        const jwt = localStorage.getItem('token');
+        fetch("https://localhost:7248/api/Genre/GetAllGenre", {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ Genre: data, totalItemsCount: data.length });
@@ -73,11 +78,13 @@ export class ListGenre extends Component {
     }
 
     createClick() {
+        const jwt = localStorage.getItem('token');
         fetch("https://localhost:7248/api/Genre/InsertGenre", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
             },
             body: JSON.stringify({
                 genreName: this.state.GenreName,
@@ -102,12 +109,14 @@ export class ListGenre extends Component {
     }
 
     updateClick = () => {
+        const jwt = localStorage.getItem('token');
         if (window.confirm("Do you want to update?")) {
             fetch("https://localhost:7248/api/Genre/UpdateGenre", {
                 method: 'PUT',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwt}`
                 },
                 body: JSON.stringify({
                     id: this.state.GenreId,
@@ -126,12 +135,14 @@ export class ListGenre extends Component {
     }
 
     deleteClick = (e) => {
+        const jwt = localStorage.getItem('token');
         if (window.confirm("Do you want to delete?")) {
             fetch("https://localhost:7248/api/Genre/DeleteGenre?Id="+e, {
                 method: 'PUT',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwt}`
                 }
             })
                 .then((result) => {
