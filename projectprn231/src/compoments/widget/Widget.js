@@ -62,16 +62,18 @@ export class Widget extends Component {
   }
 
   getMonthNewsData() {
-    const url = "https://localhost:7248/api/News/getNewsByDate?begin=0&end=30";
+    const url = "https://localhost:7248/api/News/getNewsByDate2?begin=0&end=100";
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        this.setState({ amount: data });
+        const amount = data.length; // Trích xuất số lượng tin tức từ data
+        this.setState({ amount: amount });
       })
       .catch((error) => {
         console.error("Lỗi khi lấy dữ liệu tin tức:", error);
       });
   }
+  
 
   render() {
     const { type } = this.props;
