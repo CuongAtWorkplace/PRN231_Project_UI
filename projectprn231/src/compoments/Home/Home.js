@@ -27,8 +27,16 @@ class Home extends Component {
       data1: [], // the thao
       data2: [], // kinh doanh
       data3: [], // du lich
-      page: 1, // Current page of data
+      page: 1,
+      page1: 1,
+      page2: 1, // Current page of data
+      page3: 1,
+      page4: 1,
       hasMore: true,
+      hasMore1: true,
+      hasMore2: true,
+      hasMore3: true,
+      hasMore4: true,
       NewsFirst: {},
 
     }
@@ -58,20 +66,20 @@ class Home extends Component {
 
 
   fetchData = () => {
-    const { page } = this.state;
+    const { page1 } = this.state;
 
     // Make an API call to fetch data
-    fetch(`https://localhost:7248/api/News/getNewByGenreFirst?page=${page}`)
+    fetch(`https://localhost:7248/api/News/getNewByGenreFirst?page=${page1}`)
       .then(response => response.json())
       .then(newdata => {
 
         if (newdata.length === 0) {
-          this.setState({ hasMore: false });
+          this.setState({ hasMore1: false });
           return;
         }
         this.setState(prevState => ({
           data: [...prevState.data, ...newdata], // Appending new items to the existing array
-          page: prevState.page + 1, // Incrementing the page number
+          page1: prevState.page1 + 1, // Incrementing the page number
           // Checking if there are more items to load
         }));
       })
@@ -81,20 +89,20 @@ class Home extends Component {
   }
 
   fetchData1 = () => {
-    const { page } = this.state;
+    const { page2 } = this.state;
 
     // Make an API call to fetch data
-    fetch(`https://localhost:7248/api/News/getNewByGenreSecond?page=${page}`)
+    fetch(`https://localhost:7248/api/News/getNewByGenreSecond?page=${page2}`)
       .then(response => response.json())
       .then(newdata1 => {
 
         if (newdata1.length === 0) {
-          this.setState({ hasMore: false });
+          this.setState({ hasMore2: false });
           return;
         }
         this.setState(prevState => ({
           data1: [...prevState.data1, ...newdata1], // Appending new items to the existing array
-          page: prevState.page + 1, // Incrementing the page number
+          page2: prevState.page2 + 1, // Incrementing the page number
           // Checking if there are more items to load
         }));
       })
@@ -104,20 +112,20 @@ class Home extends Component {
   }
 
   fetchData2 = () => {
-    const { page } = this.state;
+    const { page3 } = this.state;
 
     // Make an API call to fetch data
-    fetch(`https://localhost:7248/api/News/getNewByGenreFirst?page=${page}`)
+    fetch(`https://localhost:7248/api/News/getNewByGenreFirst?page=${page3}`)
       .then(response => response.json())
       .then(newdata => {
 
         if (newdata.length === 0) {
-          this.setState({ hasMore: false });
+          this.setState({ hasMore3: false });
           return;
         }
         this.setState(prevState => ({
           data2: [...prevState.data2, ...newdata], // Appending new items to the existing array
-          page: prevState.page + 1, // Incrementing the page number
+          page3: prevState.page3 + 1, // Incrementing the page number
           // Checking if there are more items to load
         }));
       })
@@ -127,20 +135,20 @@ class Home extends Component {
   }
 
   fetchData3 = () => {
-    const { page } = this.state;
+    const { page4 } = this.state;
 
     // Make an API call to fetch data
-    fetch(`https://localhost:7248/api/News/getNewByGenreThree?page=${page}`)
+    fetch(`https://localhost:7248/api/News/getNewByGenreThree?page=${page4}`)
       .then(response => response.json())
       .then(newdata => {
 
         if (newdata.length === 0) {
-          this.setState({ hasMore: false });
+          this.setState({ hasMore4: false });
           return;
         }
         this.setState(prevState => ({
           data3: [...prevState.data3, ...newdata], // Appending new items to the existing array
-          page: prevState.page + 1, // Incrementing the page number
+          page4: prevState.page4 + 1, // Incrementing the page number
           // Checking if there are more items to load
         }));
       })
@@ -234,7 +242,7 @@ class Home extends Component {
   }
   render() {
 
-    const { NewsFirst, hasMore, data, data1, data2, data3, dataall, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId } = this.state;
+    const { NewsFirst, hasMore,hasMore1,hasMore2,hasMore3,hasMore4, data, data1, data2, data3, dataall, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId } = this.state;
 
 
     return (
@@ -244,14 +252,12 @@ class Home extends Component {
         <div id="content-wrapper">
           <div id="content">
 
-            {NewsHome.map
-
-            }
+            
 
             <div class="feature clearfloat" id="lead">
               <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-zQfyRzI4bm_31zRRBKBPPjapxMgtc_YSYnnBHBI6iT7LLf4Prooy7t1w0Z2CFkef5z8&usqp=CAU" alt="" id="leadpic" /></a>
               <h3>
-                <a href="#">Lead Sto {NewsFirst.title}</a><br />
+                <a href="#">Mới Nhất :</a><br />
               </h3>
               <a href="#" class="title"> {NewsFirst.title} </a>
               <a> {NewsFirst.description}</a><br />
@@ -287,11 +293,11 @@ class Home extends Component {
             </div>
             <div id="rightcol">
               <div class="clearfloat">
-                <h3><a href="#">Thể Thao</a></h3>
+                <h2><a href="#">Thể Thao</a></h2>
                 <InfiniteScroll
                   dataLength={data1.length} //This is important field to render the next data
                   next={this.fetchData1}
-                  hasMore={hasMore}
+                  hasMore={hasMore1}
                   loader={<h4>Loading...</h4>}
                   endMessage={<p>No more data to load.</p>}>
                   {data1.map(item1 => (
@@ -311,7 +317,7 @@ class Home extends Component {
                 <InfiniteScroll
                   dataLength={data1.length} //This is important field to render the next data
                   next={this.fetchData2}
-                  hasMore={hasMore}
+                  hasMore={hasMore1}
                   loader={<h4>Loading...</h4>}
                   endMessage={<p>No more data to load.</p>}>
                   {data2.map(item2 => (
@@ -330,7 +336,7 @@ class Home extends Component {
                 <InfiniteScroll
                   dataLength={data1.length} //This is important field to render the next data
                   next={this.fetchData3}
-                  hasMore={hasMore}
+                  hasMore={hasMore2}
                   loader={<h4>Loading...</h4>}
                   endMessage={<p>No more data to load.</p>}>
                   {data3.map(item3 => (
@@ -358,7 +364,10 @@ class Home extends Component {
 
 
                 <div key={d.id}>
-                  <a href="#"><img src="img/side-ad.png" alt="" class="ad" /></a> <a href="#"><img src="img/side-ad.png" alt="" class="ad-right" /></a> <a href="#"><img src="img/side-ad.png" alt="" class="ad" /></a> <a href="#"><img src="img/side-ad.png" alt="" class="ad-right" /></a>
+                  <a href="#"><img src="img/side-ad.png" alt="" class="ad" /></a> 
+                  <a href="#"><img src="img/side-ad.png" alt="" class="ad-right" /></a> 
+                  <a href="#"><img src="img/side-ad.png" alt="" class="ad" /></a> 
+                  <a href="#"><img src="img/side-ad.png" alt="" class="ad-right" /></a>
 
                   <h2 class="heading-blue"></h2>
                   <img src="img/wayne.jpg" alt="" />
@@ -375,7 +384,7 @@ class Home extends Component {
           </div>
 
         </div>
-        <div id="extras">
+        {/* <div id="extras">
           <div id="recommended">
             <h2 class="heading">Recommended Stories</h2>
             {NewsHome.slice(0, 5).map(news => (
@@ -395,7 +404,7 @@ class Home extends Component {
             <h2 class="heading">Humour</h2>
             <img src="img/cartoon.jpg" alt="" />
           </div>
-        </div>
+        </div> */}
         <Footer />
 
       </div>
