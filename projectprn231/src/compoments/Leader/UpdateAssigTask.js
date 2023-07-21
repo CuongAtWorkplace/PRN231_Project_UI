@@ -33,18 +33,31 @@ class UpdateAssignTask extends Component {
 
     refreshList() {
         const { id } = this.props.match.params;
-        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id="+id)
+        const jwt = localStorage.getItem('token');
+        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id="+id, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({AssignTask: data, AssignTaskId: data.id, TopicName:data.title, Description: data.description, StartDate: data.startDate, EndDate:data.endDate, WriterId: data.WriterId, ReporterId: data.ReporterId, GenreId: data.GenreId, GenreName: data.genre.genreName });
             });
-        fetch("https://localhost:7248/api/Genre/GetAllGenre")
+        fetch("https://localhost:7248/api/Genre/GetAllGenre", {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ Genre: data });
             });
 
-        fetch("https://localhost:7248/api/User/GetAllUser")
+        fetch("https://localhost:7248/api/User/GetAllUser", {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ User: data });
@@ -68,11 +81,13 @@ class UpdateAssignTask extends Component {
     }
 
     updateClick() {
+        const jwt = localStorage.getItem('token');
         fetch('https://localhost:7248/api/AssignTask/UpdateAssignTask', {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
             },
             body: JSON.stringify({
                 id: this.state.AssignTaskId,

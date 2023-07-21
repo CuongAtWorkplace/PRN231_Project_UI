@@ -38,18 +38,31 @@ class ViewDetailReportProcess extends Component {
 
     refreshList() {
         const { id } = this.props.match.params;
-        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id=" + id)
+        const jwt = localStorage.getItem('token');
+        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id=" + id, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ AssignTaskRequire: data, DescriptionTask: data.description, LeaderName: data.leader.fullName, WriterName: data.writer.fullName, GenreName: data.genre.genreName});//ImageCover: data.ImageCover
             });
-        fetch("https://localhost:7248/api/ReportTask/GetReportTaskByTaskId?taskId=" + id)
+        fetch("https://localhost:7248/api/ReportTask/GetReportTaskByTaskId?taskId=" + id, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ ReportTaskById: data, Title: data.title , Description: data.description, Content: data.content, CreateDate: data.createDate, CreateBy: data.createBy, Id: data.id, IsChecked: data.isChecked, ImageCover: data.image });
             });
 
-        fetch("https://localhost:7248/api/Document/GetAllDocumentByTaskId?TaskId=" + id)
+        fetch("https://localhost:7248/api/Document/GetAllDocumentByTaskId?TaskId=" + id, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ DocumentList: data });
@@ -65,14 +78,16 @@ class ViewDetailReportProcess extends Component {
     }
 
     AcceptTask() {
-        alert(this.state.Id)
+        //alert(this.state.Id)
+        const jwt = localStorage.getItem('token');
         if (window.confirm("Do you want to accept?")) {
 
             fetch("https://localhost:7248/api/ReportTask/AcceptTask?Id=" + this.state.Id, {
                 method: 'Put',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json', 
+                    'Authorization': `Bearer ${jwt}`
                 },
             })
                 .then(res => res.json())

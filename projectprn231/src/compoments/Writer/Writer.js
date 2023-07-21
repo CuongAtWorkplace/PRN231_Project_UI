@@ -50,24 +50,41 @@ class Writer extends Component {
 
     refreshList() {
         const { id } = this.props.match.params;
-        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id=" + id)
+        const jwt = localStorage.getItem('token');
+        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskById?Id=" + id, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ AssignTaskRequire: data, DescriptionTask: data.description, LeaderName: data.leader.fullName, ReporterName: data.reporter.fullName, GenreName: data.genre.genreName, ImageCover: data.ImageCover });
             });
-        fetch("https://localhost:7248/api/ReportTask/GetReportTaskByTaskId?taskId=" + id)
+        fetch("https://localhost:7248/api/ReportTask/GetReportTaskByTaskId?taskId=" + id, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ ReportTaskById: data, DescriptionReporter: data.description, ContentReporter: data.content });
             });
 
-        fetch("https://localhost:7248/api/WritingTask/GetWritingTaskByTaskId?taskId=" + id)
+        fetch("https://localhost:7248/api/WritingTask/GetWritingTaskByTaskId?taskId=" + id, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ WritingTaskById: data, Id: data.id, TopicName: data.title, Description: data.description, NewsDetail: data.content, Comment: data.comment, CreateBy: data.createBy, CreateDate: data.createDate, ImageCover: data.image, IsChecked: data.isChecked });
             });
 
-        fetch("https://localhost:7248/api/Document/GetAllDocumentByTaskId?TaskId=" + id)
+        fetch("https://localhost:7248/api/Document/GetAllDocumentByTaskId?TaskId=" + id, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            },
+            })
             .then(response => response.json())
             .then(data => {
                 this.setState({ DocumentList: data });
@@ -110,11 +127,13 @@ class Writer extends Component {
 
 
     UpdateWritingTask() {
+        const jwt = localStorage.getItem('token');
         fetch("https://localhost:7248/api/WritingTask/UpdateWritingTask", {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json', 
+                'Authorization': `Bearer ${jwt}`
             },
             body: JSON.stringify({
                 id: this.state.Id,
@@ -140,8 +159,14 @@ class Writer extends Component {
     }
 
     DownLoadFile(e) {
+        const jwt = localStorage.getItem('token');
         fetch("https://localhost:7248/api/ReportTask/DownLoadFile?id=" + e.id, {
             method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json', 
+                'Authorization': `Bearer ${jwt}`
+            },
         }).then(response => response.blob())
             .then(blob => {
                 const url = window.URL.createObjectURL(new Blob([blob]));
@@ -155,6 +180,7 @@ class Writer extends Component {
 
     imageUpload = (e) => {
         e.preventDefault();
+        const jwt = localStorage.getItem('token');
 
         this.setState({
             ImageCover: e.target.files[0].name
@@ -164,6 +190,11 @@ class Writer extends Component {
 
         fetch('https://localhost:7248/api/WritingTask/SaveFile', {
             method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json', 
+                'Authorization': `Bearer ${jwt}`
+            },
             body: formData
         })
             .then(res => res.json())
