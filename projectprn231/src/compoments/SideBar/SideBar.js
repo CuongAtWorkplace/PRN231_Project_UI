@@ -18,7 +18,6 @@ import { Route , Redirect  } from "react-router-dom";
 import { CommentBrowseTable } from "../table/CommentBrowseTable";
 import { ListReportTask } from "../Reporter/ListReportTask";
 
-
 import { ToDoReportTask } from "../Reporter/ToDoReportTask";
 import { ListGenre } from '../Leader/ListGenre';
 import { ListReject } from "../Leader/ListReject"
@@ -279,6 +278,7 @@ export class SideBar extends Component {
                     </div>
 
                     <div className="Content">
+
                         {/* Admin */}
                         <Route path="/manager/table" component={Table} />
                         <Route path="/manager/comment" component={CommentBrowseTable} />

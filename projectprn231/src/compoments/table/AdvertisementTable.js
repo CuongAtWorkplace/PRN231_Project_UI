@@ -20,7 +20,6 @@ const columns = [
         const url = `https://localhost:7248/api/User/DisplayImage?fileName=${fileName}`;
         window.open(url, '_blank');
       };
-    
       return (
         <a href="#" onClick={handleClick}>
           View Image
