@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./home.css"
-import { withRouter,Route } from "react-router-dom/cjs/react-router-dom";
+import { withRouter, Route } from "react-router-dom/cjs/react-router-dom";
 import jwtDecode from 'jwt-decode'
 
 import Button from 'react-bootstrap/Button';
@@ -27,9 +27,9 @@ class Header extends Component {
             currentTime: new Date(),
             nameUser: '',
             showModal: false,
-            Profile: null, 
+            Profile: null,
             tokenFromSocial: '',
-            IsLogin : false,
+            IsLogin: false,
             PhotoFileName: '',
         }
     }
@@ -82,12 +82,23 @@ class Header extends Component {
         this.timerID = setInterval(() => this.tick(), 1000);
         this.refreshDataWeather();
         this.refreshListGenre();
+        const token = localStorage.getItem("token");
+        
+        if(token != null){
+            const decodedToken = jwtDecode(token);
+            this.setState({ nameUser: decodedToken.fullname });
+            this.setState({ showModal: false, IsLogin: true });
+        }
+        
        
+        
     }
 
     handleClick = () => {
-       
         localStorage.removeItem('token');
+        localStorage.removeItem('roleid');
+        localStorage.removeItem('id');
+        this.setState({ IsLogin : false })
     };
     handleEmailChange = (e) => {
         this.setState({ email: e.target.value });
@@ -116,26 +127,24 @@ class Header extends Component {
 
                 const decodedToken = jwtDecode(token);
                 localStorage.setItem('id', decodedToken.id);
-                console.log(token);
+                localStorage.setItem('roleid', decodedToken.roleid);
 
-                this.setState({ nameUser: decodedToken.FullName });
-                this.setState({ showModal: false , IsLogin : true})
+
+                this.setState({ nameUser: decodedToken.fullname });
+                this.setState({ showModal: false, IsLogin: true })
 
                 console.log('Đăng nhập thành công');
-                console.log(token);
-
-                // this.setState({ nameUser: decodedToken.FullName });
-                // this.setState({ showModal: false })
-                
               
-                alert("ok");
               
+                if (decodedToken.id == 2 ) {
+                    window.location.href="/";
+                } 
+                if (decodedToken.id == 1 || decodedToken.id == 3 || decodedToken.id == 4||decodedToken.id == 5) {
+                    window.location.href="/manager";
+                }
 
 
             } else {
-                // Xử lý lỗi đăng nhập, hiển thị thông báo lỗi cho người dùng
-                console.log(email);
-                console.log(password);
                 console.log('Đăng nhập thất bại');
 
             }
@@ -152,41 +161,32 @@ class Header extends Component {
         this.setState({ showModal: false })
     }
     render() {
-      
-        const { PhotoFileName , IsLogin, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal } = this.state;
-        
+
+        const { PhotoFileName, IsLogin, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal } = this.state;
+
         return (
             <div>
                 <div id="top">
                     <ul id="right">
-                        <li><a href="#">Hello {nameUser}</a></li>
-                        {/* <li> <button onClick={this.handleClickName} type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Login
-                        </button></li> */}
 
-                         <Button variant="secondary" onClick={this.handleShow} />
-                      
-                        <li><a href="#">Hello { nameUser}</a></li>
-                        {/* <li> <button onClick={this.handleClickName} type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Login
-                        </button></li> */}
-                      
-                     
-                        {/* <li> <button onClick={this.handleClickName} type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Login
-                        </button></li> */}
-                        { IsLogin == false  &&
-                            <Button type="button" variant="secondary" onClick={this.handleShow}>
-                            Login
-                        </Button>
+                        {IsLogin == true &&
+
+                            <li><a href="/user">Hello  { nameUser}| </a></li>
                         }
-                         { IsLogin == true  &&
-                             <Button variant="secondary" onClick={this.handleClick}>
-                             Logout
-                         </Button>
+                        {IsLogin == false &&
+                            <a type="button" variant="secondary" onClick={this.handleShow}>
+                                Login
+                            </a>
                         }
-                        {/* <li><button onClick={this.handleClick}>Logout</button></li> */}
-                       
+
+                        {IsLogin == true &&
+
+                            <a variant="secondary" onClick={this.handleClick}>
+                                Logout
+                            </a>
+                        }
+                        
+
                     </ul>
                     <ul id="left">
                         <li><a href="/">LOGO  </a></li>
@@ -210,7 +210,7 @@ class Header extends Component {
                     )}
 
                 </div>
-               
+
 
 
                 <Modal
@@ -220,7 +220,7 @@ class Header extends Component {
                     keyboard={false}
                 >
                     <Modal.Header closeButton>
-                       
+
                     </Modal.Header>
                     <Modal.Body>
 
@@ -256,7 +256,7 @@ class Header extends Component {
                                                 this.setState({ Profile: response.data, tokenFromSocial: response.data.accessToken });
                                                 localStorage.setItem('token', this.state.tokenFromSocial);
                                             }}
-                                            
+
                                             onReject={(error) => {
                                                 console.log(error)
                                             }}
@@ -291,7 +291,7 @@ class Header extends Component {
                                         </a>
                                     </div>
                                     <div class="login_btn_wrapper">
-                                       
+
                                         <button type="button" onClick={this.handleLogin} class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
                                     </div>
                                 </form>
@@ -304,7 +304,7 @@ class Header extends Component {
 
 
                     </Modal.Body>
-                   
+
                 </Modal>
 
             </div>
