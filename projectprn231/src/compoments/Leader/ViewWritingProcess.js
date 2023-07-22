@@ -93,7 +93,7 @@ export class ViewWritingProcess extends Component {
                                     <td>{gen.isChecked == true ? <p style={{ color: 'green' }}><b>Accepted</b></p> : <p style={{ color: 'red' }}><b>Pending</b></p>}</td>
                                     <td>
 
-                                        <a href={`/viewDetailWritingProcess/${gen.taskId}`}>
+                                        <a href={`/manager/viewDetailWritingProcess/${gen.taskId}`}>
                                             {/* <button type="button"
                                                 className="btn btn-light mr-1"
                                                 data-bs-toggle="modal"

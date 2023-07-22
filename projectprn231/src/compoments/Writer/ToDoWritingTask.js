@@ -465,7 +465,7 @@ export class ToDoWritingTask extends Component {
                                     <td>{gen.isChecked == true ? <b style={{color:'green'}}>Accpeting</b> : <b style={{color: 'red'}}>Pending</b>}</td>
                                     <th>{gen.isLated == true ? <b style={{color:'red'}}>Lated</b>: ""}</th>
                                     <td>
-                                        <a href={`/writer/${gen.taskId}`}>
+                                        <a href={`/manager/writer/${gen.taskId}`}>
                                             {/* <button type="button"
                                                 className="btn btn-light mr-1"
                                                 data-bs-toggle="modal"

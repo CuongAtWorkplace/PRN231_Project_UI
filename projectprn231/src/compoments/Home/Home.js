@@ -246,7 +246,7 @@ class Home extends Component {
 
 
     return (
-      <div className="App">
+      <div >
 
         <Header />
         <div id="content-wrapper">

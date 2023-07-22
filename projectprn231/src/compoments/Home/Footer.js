@@ -16,6 +16,11 @@ class Footer extends Component {
             this.setState({ NewsHome: data });
           });
       }
+      componentDidMount() {
+       this.refreshList(); 
+    
+      }
+    
     render() {
         const {NewsHome} = this.state;
         return (
