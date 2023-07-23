@@ -284,7 +284,13 @@
 }
 
 .right-column {
-  margin-top: 150px;
+  margin-top: 50px;
   grid-column: 2 / 3;
+}
+ .avatar-preview {
+  max-width: 200px; /* Set the maximum width of the image */
+  max-height: 200px; /* Set the maximum height of the image */
+  grid-column: 2 / 3;
+
 }
 
