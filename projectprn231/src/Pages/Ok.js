@@ -14,6 +14,7 @@ export class Ok extends Component {
       image: null,
       imageName: "",
       title: "",
+      imageUrl: "",
       description: "",
     };
   }
@@ -205,7 +206,7 @@ export class Ok extends Component {
 
   handleFileChange = (event) => {
     const file = event.target.files[0];
-    this.setState({ image: file, imageName: file.name });
+    this.setState({ image: file, imageName: file.name,imageUrl: URL.createObjectURL(file)});
   };
 
 
@@ -214,7 +215,7 @@ export class Ok extends Component {
   }
 
   render() {
-    const { UserId, amount, saveButtonDisabled } = this.state;
+    const { UserId, amount, saveButtonDisabled ,imageUrl } = this.state;
 
     return (
       <div>
@@ -243,6 +244,11 @@ export class Ok extends Component {
                 type="file"
                 onChange={this.handleFileChange}
               />
+              {imageUrl && (
+                <div className="right-column">
+                  <img src={imageUrl} alt="Avatar" className="avatar-preview" />
+                </div>
+              )}
             </div>
             <div className="modal-footer">
               <button

@@ -53,7 +53,6 @@ function App() {
       <Route exact path="/Ok" component={Ok} />
       <Route exact path="/Ok/:amount" component={Ok} /> */}
     {/* <TestSocket/> */}
-    <SideBar/>
     </Switch>
     <ToastContainer
       position="top-right"
