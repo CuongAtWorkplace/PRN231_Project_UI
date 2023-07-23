@@ -135,7 +135,7 @@ export class AdvertisementTable extends Component {
   render() {
     return (
       <div>
-        <h2>Comment Management </h2>
+        <h2>Advertisement Management </h2>
 
         <div className='TableLayout'>
           <div style={{ height: 400, width: '100%' }}>
