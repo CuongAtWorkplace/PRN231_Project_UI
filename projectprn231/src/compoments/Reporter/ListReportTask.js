@@ -33,9 +33,9 @@ export class ListReportTask extends Component {
     }
 
     refreshList() {
-        //const id = localStorage.getItem('id');
+        const id = localStorage.getItem('id');
         const jwt = localStorage.getItem('token');
-        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskByReporterId?reportId=4", {
+        fetch("https://localhost:7248/api/AssignTask/GetAssignTaskByReporterId?reportId="+id, {
             headers: {
                 'Authorization': `Bearer ${jwt}`
             },
@@ -182,9 +182,9 @@ export class ListReportTask extends Component {
             .then(res => res.json())
             .then((result) => {
                 this.refreshList();
-                //toast.success(" Task Pending. Congratulation!!!")
+                toast.success(" Task Pending. Congratulation!!!")
             }, (error) => {
-                //toast.error("Accept Task failed. Try Again!!!");
+                toast.error("Accept Task failed. Try Again!!!");
             })
         }
     }
@@ -192,8 +192,6 @@ export class ListReportTask extends Component {
     render() {
         const { AssignTask, TaskId, Reason, modalTitle, LeaderName, Title, Description, GenreName, WriterName,
             activePage, itemsCountPerPage, totalItemsCount } = this.state;
-        //console.log(AssignTask)
-
         const indexOfLastCustomer = activePage * itemsCountPerPage;
         const indexOfFirstCustomer = indexOfLastCustomer - itemsCountPerPage;
         const currentCustomers = AssignTask.slice(indexOfFirstCustomer, indexOfLastCustomer);

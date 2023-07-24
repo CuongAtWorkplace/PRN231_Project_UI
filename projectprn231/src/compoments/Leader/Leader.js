@@ -42,11 +42,7 @@ export class Leader extends Component {
                 this.setState({ Genre: data });
             });
 
-        fetch("https://localhost:7248/api/User/GetAllUser", {
-            headers: {
-                'Authorization': `Bearer ${jwt}`
-            },
-            })
+        fetch("https://localhost:7248/api/User/GetAllUser")
             .then(response => response.json())
             .then(data => {
                 this.setState({ User: data });
@@ -75,13 +71,15 @@ export class Leader extends Component {
                 reporterId: this.state.ReporterId,
                 genreId: this.state.GenreId,
                 startDate: this.state.StartDate,
-                endDate: this.state.EndDate
+                endDate: this.state.EndDate,
+                isDeleted: 0
             })
         })
             .then(res => res.json())
             .then((result) => {
                 toast.success("Insert successfull. Congratulation!!!")
                 this.refreshList();
+                window.location.href="/manager/listAssign"
             }, (error) => {
                 toast.error("Insert failed. Try Again!!!")
             })
@@ -90,7 +88,7 @@ export class Leader extends Component {
     onChangeTopicName = (e) => {
         if (e.target.value == '') {
             this.setState({ ErrorTopicName: 'Topic Name is not empty' });
-        } else if (e.target.value.length < 5 || e.target.value.length > 50) {
+        } else if (e.target.value.length < 5 || e.target.value.length > 5000) {
             this.setState({ ErrorTopicName: 'Topic Name is between 5 to 50' });
         } else {
             this.setState({ ErrorTopicName: null });
@@ -100,7 +98,7 @@ export class Leader extends Component {
 
     render() {
         const { Genre, User, TopicName, ErrorTopicName, Description, GenreId, WriterId, ReporterId, StartDate, EndDate } = this.state;
-        console.log(User)
+        //console.log(User)
         return (
             <div className="container">
                 <div className="row">

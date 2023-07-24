@@ -184,17 +184,18 @@ export class SideBar extends Component {
                             {/* Writer */}
                             {
                                 this.state.role == '4' && <>
-                                    <a href="/manager/listTodoWriting">
-                                        <li>
-                                            <InsertEmoticonIcon className="icon" />
-                                            <span>List ToDoWritingTask</span>
-                                        </li>
-                                    </a>
 
                                     <a href="/manager/listWritingTask">
                                         <li>
                                             <InsertEmoticonIcon className="icon" />
                                             <span>List WritingTask</span>
+                                        </li>
+                                    </a>
+
+                                    <a href="/manager/listTodoWriting">
+                                        <li>
+                                            <InsertEmoticonIcon className="icon" />
+                                            <span>List ToDoWritingTask</span>
                                         </li>
                                     </a>
 
