@@ -207,7 +207,7 @@ export class SideBar extends Component {
                                 this.state.role == '1' && <>  <a href="/manager/table">
                                     <li>
                                         <ProductionQuantityLimitsIcon className="icon" />
-                                        <span>Product</span>
+                                        <span>List User</span>
                                     </li>
                                 </a>
 
@@ -215,7 +215,7 @@ export class SideBar extends Component {
 
                                         <li>
                                             <NewspaperIcon className="icon" />
-                                            <span>News</span>
+                                            <span>List Comment</span>
                                         </li>
                                     </a>
                                 </>
