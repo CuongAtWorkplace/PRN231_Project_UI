@@ -11,11 +11,11 @@ export class UserDetail extends Component {
         this.state = {
             userdetail: {},
             userid: null,
-                id: null,
-                addDate: null,
-                newsId: null,
-                cateId: null,
-           
+            id: null,
+            addDate: null,
+            newsId: null,
+            cateId: null,
+
         }
     }
 
@@ -28,7 +28,7 @@ export class UserDetail extends Component {
             });
     }
 
-   
+
 
     componentDidMount() {
         const token = localStorage.getItem("token");
@@ -39,8 +39,8 @@ export class UserDetail extends Component {
             const decodedToken = jwtDecode(token);
 
             const userid = decodedToken.id;
-           
-            this.setState({userid }, () => {
+
+            this.setState({ userid }, () => {
                 this.refreshUser();
             });
 
@@ -55,20 +55,16 @@ export class UserDetail extends Component {
         return (
             <div>
                 <Header />
-                <div>
+                <div id="content-wrapper">
                     <div class="container rounded bg-white mt-5 mb-5">
                         <div class="row">
                             <div class="col-md-4 border-right">
-                                <div class="d-flex flex-column align-items-center text-center">
-                                    <ul class="p-3 py-5">
-                                        <li><a href="/user">Thông tin tài khoản</a></li>
-                                        <li><a href="/savenews/1">Tin Đã Xem</a></li>
-                                        <li><a href="/savenews/2">Tin Đã Lưu</a></li>
-                                        <li><a>Chat</a></li>
-
-                                    </ul>
-                                </div>
-
+                                <ul class="list-group">
+                                    <li class="list-group-item"><a href="/user">Thông tin tài khoản</a></li>
+                                    <li class="list-group-item"><a href="/savenews/1">Tin Đã Xem</a></li>
+                                    <li class="list-group-item"><a href="/savenews/2">Tin Đã Lưu</a></li>
+                                    <li class="list-group-item"><a href="#" >Order Detail</a></li>
+                                </ul>
                             </div>
                             <div class="col-md-2 border-right">
                                 <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" /><span class="font-weight-bold">{userdetail.fullName}</span><span> </span></div>
@@ -85,6 +81,9 @@ export class UserDetail extends Component {
                                         <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control" placeholder="enter email" value={userdetail.email} /></div>
                                         <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text" class="form-control" placeholder="enter phone number" value={userdetail.phone} /></div>
                                         <div class="col-md-12"><label class="labels">Address </label><input type="text" class="form-control" placeholder="enter address " value={userdetail.address} /></div>
+                                        <div class="col-md-12"><label class="labels">Password </label><input type="text" class="form-control" placeholder="enter address "  /></div>
+
+                                   
                                     </div>
                                     {/* <div class="row mt-3">
                                         <div class="col-md-6"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" value="" /></div>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './ad.css';
-
+import Header from '../Home/Header';
+import Footer from '../Home/Footer';
 class Advertisement extends Component {
 
   handleJoinNowClick = (amount) => {
@@ -17,7 +18,9 @@ class Advertisement extends Component {
           <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
           <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" />
         </head>
+        
         <body>
+          <Header/>
           <section className="container">
             <div className="row white">
               <div className="block">
@@ -106,6 +109,7 @@ class Advertisement extends Component {
               </div>
             </div>
           </section>
+          <Footer/>
           <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         </body>
       </div>
