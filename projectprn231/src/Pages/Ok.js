@@ -103,16 +103,12 @@ export class Ok extends Component {
             })
               .then(response => response.json())
               .then(advertisementOrder => {
-                const adId = advertisementOrder.id;
-                this.sendEmail(adId);
+                
                 setTimeout(() => {
                   window.location.href = "http://localhost:3000/";
                 }, 10000);
               })
-              .catch(error => {
-                toast.error("An error occurred. Please try again later.");
-                this.setState({ saveButtonDisabled: false });
-              });
+            
           })
           .catch(error => {
             toast.error("An error occurred. Please try again later.");
