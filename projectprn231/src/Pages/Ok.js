@@ -126,54 +126,7 @@ export class Ok extends Component {
   
   
 
-  sendEmail = (adId) => {
-    const userId = this.state.UserId; // ID người dùng cần lấy từ API
-    const amount = this.state.amount; // Lấy giá trị amount từ trạng thái ứng dụng
   
-    fetch(`https://localhost:7248/api/User/GetUserById?id=${userId}`)
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Error fetching user data');
-        }
-      })
-      .then(user => {
-        const emailData = {
-          to: user.email, // Email người nhận từ đối tượng user
-          subject: 'Payment Announcement', // Tiêu đề email
-          text: `You can pay your payment in this link: http://localhost:16262/vnpay_pay.aspx?amount=${amount}&adId=${adId}` // Nội dung email với liên kết có giá trị amount và adId từ trạng thái
-        };
-  
-        fetch('https://localhost:7248/api/Email', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(emailData)
-        })
-          .then(response => {
-            if (response.ok) {
-              toast.success("Send Email Successfully!");
-              return response.text();
-            } else {
-              throw new Error('Error sending email');
-            }
-          })
-          .then(result => {
-            console.log(result);
-            // Xử lý kết quả, ví dụ: hiển thị thông báo gửi email thành công
-          })
-          .catch(error => {
-            console.error(error);
-            // Xử lý lỗi, ví dụ: hiển thị thông báo lỗi
-          });
-      })
-      .catch(error => {
-        console.error(error);
-        // Xử lý lỗi khi lấy dữ liệu người dùng, ví dụ: hiển thị thông báo lỗi
-      });
-  };
   
     
 

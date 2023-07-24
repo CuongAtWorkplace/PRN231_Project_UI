@@ -47,11 +47,13 @@ function App() {
     
       {/* <Route exact path="/" component={Advertisement} /> */}
 
-      {/* <Route path="/" component={Advertisement} />
-      <Route path="/ad" component={AdvertisementTable} />
+      <Route exact path="/" component={Advertisement} />
+      <Route exact path="/ad" component={AdvertisementTable} />
 
       <Route exact path="/Ok" component={Ok} />
-      <Route exact path="/Ok/:amount" component={Ok} /> */}
+      <Route exact path="/Ok/:amount" component={Ok} /> 
+
+
     {/* <TestSocket/> */}
     </Switch>
     <ToastContainer
