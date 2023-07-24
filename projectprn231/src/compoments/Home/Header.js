@@ -183,11 +183,11 @@ class Header extends Component {
 
         return (
             <div>
-                <div id="top">
+                <div id="top" >
 
-                    <ul id="right" style={{display:'flex'}}>
+                    <ul id="right" style={{display:'flex' }}>
                         <li><div className="search">
-                            <input type="text" value={this.state.search} onChange={(e) => this.ChangeSearchValue(e)} placeholder="Search  ... " onKeyDown={(event) => this.SearchAccount(event)} />
+                            <input type="text" value={this.state.search} onChange={(e) => this.ChangeSearchValue(e)} placeholder="Search  .... " onKeyDown={(event) => this.SearchAccount(event)} />
 
                         </div></li>
                         {IsLogin == true &&
