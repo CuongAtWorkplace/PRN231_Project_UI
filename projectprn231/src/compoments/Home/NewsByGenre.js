@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom/cjs/react-router-dom";
 import jwtDecode from 'jwt-decode';
 import InfiniteScroll from "react-infinite-scroll-component";
 import Header from "./Header";
+import Footer from "./Footer";
 class NewsByGenre extends Component {
     constructor(props) {
         super(props);
@@ -254,6 +255,7 @@ class NewsByGenre extends Component {
                         </div>
                     </div>
                 </div>
+                <Footer/>
             </div>
         )
     }

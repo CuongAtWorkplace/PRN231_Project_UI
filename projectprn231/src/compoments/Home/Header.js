@@ -31,7 +31,7 @@ class Header extends Component {
             tokenFromSocial: '',
             IsLogin: false,
             PhotoFileName: '',
-            search:'',
+            search: '',
         }
     }
     imageUpload = (e) => {
@@ -184,29 +184,29 @@ class Header extends Component {
         return (
             <div>
                 <div id="top" >
+                    <ul id="right" style={{ display: 'flex' }}>
+                        <div>
 
-                    <ul id="right" style={{display:'flex' }}>
-                        <li><div className="search">
-                            <input type="text" value={this.state.search} onChange={(e) => this.ChangeSearchValue(e)} placeholder="Search  .... " onKeyDown={(event) => this.SearchAccount(event)} />
 
-                        </div></li>
-                        {IsLogin == true &&
+                            <input type="text" value={this.state.search} onChange={(e) => this.ChangeSearchValue(e)} placeholder="Search  ... " onKeyDown={(event) => this.SearchAccount(event)} />
 
-                            <li><a href="/user">Hello  {nameUser}| </a></li>
-                        }
-                        {IsLogin == false &&
-                            <a type="button" variant="secondary" onClick={this.handleShow}>
-                                Login
-                            </a>
-                        }
+                            {IsLogin == true &&
 
-                        {IsLogin == true &&
+                                <li><a href="/user">Hello  {nameUser}| </a></li>
+                            }
+                            {IsLogin == false &&
+                                <a type="button" variant="secondary" onClick={this.handleShow}>
+                                    Login
+                                </a>
+                            }
 
-                            <a variant="secondary" onClick={this.handleClick}>
-                                Logout
-                            </a>
-                        }
+                            {IsLogin == true &&
 
+                                <a variant="secondary" onClick={this.handleClick}>
+                                    Logout
+                                </a>
+                            }
+                        </div>
 
                     </ul>
                     <ul id="left">

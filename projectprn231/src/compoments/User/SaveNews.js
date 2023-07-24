@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Header from "../Home/Header";
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 import jwtDecode from "jwt-decode";
-
+import Footer from "../Home/Footer";
 export class SaveNews extends Component {
     constructor(props) {
         super(props);
@@ -58,7 +58,7 @@ export class SaveNews extends Component {
                                     <li class="list-group-item"><a href="/user">Thông tin tài khoản</a></li>
                                     <li class="list-group-item"><a href="/savenews/1">Tin Đã Xem</a></li>
                                     <li class="list-group-item"><a href="/savenews/2">Tin Đã Lưu</a></li>
-                                    <li class="list-group-item"><a href="#" >Order Detail</a></li>
+                                    <li class="list-group-item"><a href="/listadvertisement" >Danh Sách Mua Hàng</a></li>
                                 </ul>
                                
 
@@ -86,6 +86,7 @@ export class SaveNews extends Component {
                         </div>
                     </div>
                 </div>
+                <Footer/>
             </div>
 
         );
