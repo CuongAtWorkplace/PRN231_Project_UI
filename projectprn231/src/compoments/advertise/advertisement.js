@@ -21,8 +21,10 @@ class Advertisement extends Component {
         
         <body>
           <Header/>
-          <section className="container">
-            <div className="row white">
+
+          <section className="container" style={{marginTop:"20px"}}>
+            <div className="row white"> 
+
               <div className="block">
 
                 <div className="col-xs-12 col-sm-6 col-md-3">

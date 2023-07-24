@@ -59,6 +59,7 @@ export class UserDetail extends Component {
                     <div class="container rounded bg-white mt-5 mb-5">
                         <div class="row">
                             <div class="col-md-4 border-right">
+
                            
                                 <ul class="list-group">
                                     <li class="list-group-item"><a href="/user">Thông tin tài khoản</a></li>
@@ -67,6 +68,7 @@ export class UserDetail extends Component {
                                     <li class="list-group-item" ><a href="/listadvertisement">Danh Sách Mua Hàng</a></li>
                                 </ul>
                                
+
                             </div>
                             <div class="col-md-2 border-right">
                                 <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" /><span class="font-weight-bold">{userdetail.fullName}</span><span> </span></div>

@@ -47,7 +47,11 @@ class Footer extends Component {
                                 </ul>
                             </div>
                         ))}
+<<<<<<< HEAD
+                      
+=======
                        
+>>>>>>> cb477c135ce0f479a85711c7341e1252127ca73d
                     </div>
                     <div id="cartoon">
                         <h2 class="heading">Humour</h2>
@@ -58,7 +62,7 @@ class Footer extends Component {
                                 </ul>
                             </div>
                         ))}
-                       
+
                     </div>
                 </div> */}
                 <div class="d-flex flex-column h-100">
@@ -76,7 +80,7 @@ class Footer extends Component {
                                         <li><a href="#">Home</a></li>
                                         <li><a href="#">About</a></li>
                                         <li><a href="#">Get started</a></li>
-                                        <li><a href="#">FAQ</a></li>
+                                        <li><a href="/advertisement">Quang cao</a></li>
                                     </ul>
                                 </div>
                                 <div class="col-lg-2 col-md-6">

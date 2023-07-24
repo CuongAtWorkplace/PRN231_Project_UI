@@ -297,9 +297,9 @@ class NewsDetail extends React.Component {
                                     <a> <i class="bi bi-save-fill"></i></a>
                                     <p style={{ float: 'right' }}>
                                         <b>{object.createBy}</b>
-                                        <BsBookmarkPlusFill size={20} color="red" onClick={this.handleClick} />
+                                        
                                     </p>
-
+                                    <BsBookmarkPlusFill size={20} color="red" onClick={this.handleClick} />
 
                                 </div>
                             </div>
