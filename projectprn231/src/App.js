@@ -30,6 +30,7 @@ import { TestSocket } from './compoments/TestFile/TestSocket';
 function App() {
   return (
     <BrowserRouter>
+
       <Switch>
        
         <Route exact path="/"><Home/></Route>
