@@ -14,7 +14,7 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import React, { Component } from "react";
 import { Table } from "../table/Table";
-import { Route } from "react-router-dom";
+import { Route , Redirect  } from "react-router-dom";
 import { CommentBrowseTable } from "../table/CommentBrowseTable";
 import { ListReportTask } from "../Reporter/ListReportTask";
 
@@ -35,8 +35,9 @@ import AccountProfile from "../AccountProfile/AccountProfile";
 import ListUserSearch from "../AccountProfile/ListUserSearch";
 import { Leader } from "../Leader/Leader";
 import { ListAssignTask } from "../Leader/ListAssignTask";
-import {ViewReportProcess} from '../Leader/ViewReportProcess';
-import {ViewWritingProcess} from '../Leader/ViewWritingProcess';
+import { ViewReportProcess } from '../Leader/ViewReportProcess';
+import { ViewWritingProcess } from '../Leader/ViewWritingProcess';
+
 //import { Redirect } from 'react-router-dom';
 //import { Rout } from 'react-router-dom';
 
@@ -47,6 +48,8 @@ export class SideBar extends Component {
 
         this.state = {
             search: '',
+            role: '',
+            roleid : 1,
         }
     }
 
@@ -64,12 +67,38 @@ export class SideBar extends Component {
         if (event.key === 'Enter') {
             //<Route to={`/listUserSearch/${this.state.search}`} />;
 
-            window.location.href=`/listUserSearch/${this.state.search}`;
+            window.location.href = `/manager/listUserSearch/${this.state.search}`;
         }
     }
+    componentDidMount() {
 
+        const roleid = localStorage.getItem('roleid');
+        // if (roleid == 1 ) {
+        //     window.location.href ="/manager";
+        //  } else {
+        //     window.location.href ="/";
+        //   }
+        this.setState({
+            roleid: roleid
+        })
+        this.setState({
+            role: localStorage.getItem('roleid')
+        })
+    }
+    handleClick = () => {
+        window.location.href = "/";
+        localStorage.removeItem('token');
+        localStorage.removeItem('roleid');
+        localStorage.removeItem('id');
+
+    };
     render() {
-        return (
+        const { role ,roleid} = this.state;
+        
+        if (roleid == 2  ) {
+            // Nếu không có quyền truy cập, chuyển hướng đến trang không cho phép truy cập hoặc trang login
+            return <Redirect to="/" />;
+        } return (
             <div className="layout">
 
                 <div className="sidebar">
@@ -82,7 +111,7 @@ export class SideBar extends Component {
                     <div className="center">
                         <ul>
                             <p className="Title">Main</p>
-                            <a href="/AdminDashBoard">
+                            <a href="/manager/AdminDashBoard">
                                 <li>
                                     <DashboardIcon className="icon" />
                                     <span>Dashboard</span>
@@ -91,108 +120,111 @@ export class SideBar extends Component {
                             <p className="Title">Lists</p>
 
                             {/* Leader */}
-                            <a href="/listGenre">
-                                <li>
-                                    <InsertEmoticonIcon className="icon" />
-                                    <span>List Genre</span>
-                                </li>
-                            </a>
+                            {
+                                this.state.role == '3' && <>
+                                    <a href="/manager/listGenre">
+                                        <li>
+                                            <InsertEmoticonIcon className="icon" />
+                                            <span>List Genre</span>
+                                        </li>
+                                    </a>
 
-                            <a href="/listAssign">
-                                <li>
-                                    <InsertEmoticonIcon className="icon" />
-                                    <span>AssignTask</span>
-                                </li>
-                            </a>
+                                    <a href="/manager/listAssign">
+                                        <li>
+                                            <InsertEmoticonIcon className="icon" />
+                                            <span>AssignTask</span>
+                                        </li>
+                                    </a>
 
-                            <a href="/viewReportProcess">
+                                    <a href="/manager/viewReportProcess">
 
-                                <li>
-                                    <InsertEmoticonIcon className="icon" />
-                                    <span>Report Process</span>
-                                </li>
-                            </a>
+                                        <li>
+                                            <InsertEmoticonIcon className="icon" />
+                                            <span>Report Process</span>
+                                        </li>
+                                    </a>
 
-                            <a href="/viewWritingProcess">
+                                    <a href="/manager/viewWritingProcess">
 
-                                <li>
-                                    <InsertEmoticonIcon className="icon" />
-                                    <span>Writing Process</span>
-                                </li>
-                            </a>
+                                        <li>
+                                            <InsertEmoticonIcon className="icon" />
+                                            <span>Writing Process</span>
+                                        </li>
+                                    </a>
+                                    <a href="/manager/listReject">
 
+                                        <li>
+                                            <InsertEmoticonIcon className="icon" />
+                                            <span>List Reject</span>
+                                        </li>
+                                    </a>
+                                </>
 
-
-
-                            <a href="/listReject">
-
-                                <li>
-                                    <InsertEmoticonIcon className="icon" />
-                                    <span>List Reject</span>
-                                </li>
-                            </a>
-
-
+                            }
                             {/* Reporter */}
-                            <a href="/listReportTask">
+                            {
+                                this.state.role == '5' && <> <a href="/manager/listReportTask">
+                                    <li>
+                                        <InsertEmoticonIcon className="icon" />
+                                        <span>List AssignReportTask</span>
+                                    </li>
+                                </a>
+                                    <a href="/manager/listTodoTask">
+                                        <li>
+                                            <InsertEmoticonIcon className="icon" />
+                                            <span>List ToDoReportTask</span>
+                                        </li>
+                                    </a>
+                                </>
+                            }
 
 
-                                <li>
-                                    <InsertEmoticonIcon className="icon" />
-                                    <span>List AssignReportTask</span>
-                                </li>
-                            </a>
 
-                            <a href="/listTodoTask">
-                                <li>
-                                    <InsertEmoticonIcon className="icon" />
-                                    <span>List ToDoReportTask</span>
-                                </li>
-                            </a>
 
                             {/* Writer */}
-                            <a href="/listTodoWriting">
-                                <li>
-                                    <InsertEmoticonIcon className="icon" />
-                                    <span>List ToDoWritingTask</span>
-                                </li>
-                            </a>
+                            {
+                                this.state.role == '4' && <>
+                                    <a href="/manager/listTodoWriting">
+                                        <li>
+                                            <InsertEmoticonIcon className="icon" />
+                                            <span>List ToDoWritingTask</span>
+                                        </li>
+                                    </a>
 
-                            <a href="/listWritingTask">
-                                <li>
-                                    <InsertEmoticonIcon className="icon" />
-                                    <span>List WritingTask</span>
-                                </li>
-                            </a>
+                                    <a href="/manager/listWritingTask">
+                                        <li>
+                                            <InsertEmoticonIcon className="icon" />
+                                            <span>List WritingTask</span>
+                                        </li>
+                                    </a>
+
+                                </>
+                            }
 
                             {/* Admin */}
-                            <a href="/table">
-                                <li>
-                                    <ProductionQuantityLimitsIcon className="icon" />
-                                    <span>Product</span>
-                                </li>
 
-                            </a>
+                            {
+                                this.state.role == '1' && <>  <a href="/manager/table">
+                                    <li>
+                                        <ProductionQuantityLimitsIcon className="icon" />
+                                        <span>List User</span>
+                                    </li>
+                                </a>
 
-                            <a href="/comment">
+                                    <a href="/manager/comment">
 
-                                <li>
-                                    <NewspaperIcon className="icon" />
-                                    <span>News</span>
-                                </li>
-                            </a>
-                            {/* <a href="/newTest">
-
-                                 <li>
-                                     <NewspaperIcon className="icon" />
-                                     <span>News</span>
-                                 </li>
-                             </a> */}
+                                        <li>
+                                            <NewspaperIcon className="icon" />
+                                            <span>List Comment</span>
+                                        </li>
+                                    </a>
+                                </>
+                            }
                             <p className="Title">Name</p>
 
                             <li>
                                 <LogoutIcon className="icon" />
-                                <span>Log out</span>
+                                <a href="#" onClick={this.handleClick}>Log out</a>
                             </li>
                         </ul>
                     </div>
@@ -246,42 +278,46 @@ export class SideBar extends Component {
                     </div>
 
                     <div className="Content">
-                         {/* Admin */}
-                        <Route path="/table" component={Table} />
-                        <Route path="/comment" component={CommentBrowseTable} />
-                        {/* <Route path="/Advertisement" component={Advertisement} /> 
-                        {/* <Route path="/Ok" component={Ok}/>   
-                        
+
+                        {/* Admin */}
+                        <Route path="/manager/table" component={Table} />
+                        <Route path="/manager/comment" component={CommentBrowseTable} />
+                        {/* <Route path="/AdminDashBoard" component={Admin_Home} /> */}
+                        {/* <Route path="/Advertisement" component={Advertisement} /> */}
+                        {/* <Route path="/Ok" component={Ok}/>   */}
+
 
                         {/* Leader */}
-                        <Route path="/addAssignTask" component={Leader}/>
-                        <Route path="/listGenre" component={ListGenre} />
-                        <Route path="/listReject" component={ListReject} />
-                        <Route path="/listAssign" component={ListAssignTask}/>
-                        <Route path="/updateAssignTask/:id" component={UpdateAssigTask}/>
-                        <Route path="/viewReportProcess" component={ViewReportProcess} />
-                        <Route path="/viewWritingProcess" component={ViewWritingProcess} />
-                        <Route path="/viewDetailReportProcess/:id" component={ViewDetailReportProcess} />
-                        <Route path="/viewDetailWritingProcess/:id" component={ViewDetailWritingProcess} />
+                        <Route path="/manager/addAssignTask" component={Leader} />
+                        <Route path="/manager/listGenre" component={ListGenre} />
+                        <Route path="/manager/listReject" component={ListReject} />
+                        <Route path="/manager/listAssign" component={ListAssignTask} />
+                        <Route path="/manager/updateAssignTask/:id" component={UpdateAssigTask} />
+                        <Route path="/manager/viewReportProcess" component={ViewReportProcess} />
+                        <Route path="/manager/viewWritingProcess" component={ViewWritingProcess} />
+                        <Route path="/manager/viewDetailReportProcess/:id" component={ViewDetailReportProcess} />
+                        <Route path="/manager/viewDetailWritingProcess/:id" component={ViewDetailWritingProcess} />
 
                         {/* Reporter */}
 
-                        <Route path="/listReportTask" component={ListReportTask} />
-                        <Route path="/listTodoTask" component={ToDoReportTask} />
-                        
+                        <Route path="/manager/listReportTask" component={ListReportTask} />
+                        <Route path="/manager/listTodoTask" component={ToDoReportTask} />
+
 
                         {/* Writer */}
-                        <Route path="/listWritingTask" component={ListWritingTask} />
-                        <Route path="/listTodoWriting" component={ToDoWritingTask} />
-                        <Route path="/listReport" component={ListReportTask} />
-                        <Route path="/writer/:id" component={Writer} />
+                        <Route path="/manager/listWritingTask" component={ListWritingTask} />
+                        <Route path="/manager/listTodoWriting" component={ToDoWritingTask} />
+                        <Route path="/manager/listReport" component={ListReportTask} />
+                        <Route path="/manager/writer/:id" component={Writer} />
 
                         {/* AccountProfile */}
-                        <Route path='/account/:id' component={AccountProfile}/>
-                        <Route path='/listUserSearch/:search' component={ListUserSearch}/>
+                        <Route path='/manager/account/:id' component={AccountProfile} />
+                        <Route path='/manager/listUserSearch/:search' component={ListUserSearch} />
                     </div>
                 </div>
             </div>
         )
+
+       
     }
 }

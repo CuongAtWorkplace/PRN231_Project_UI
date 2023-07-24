@@ -202,13 +202,6 @@ class Home extends Component {
 
 
 
-  // refreshListByDate() {
-  //     fetch("https://localhost:7248/api/News/getNewsByDate")
-  //         .then(response => response.json())
-  //         .then(data => {
-  //             this.setState({ NewsHomeByDate: data });
-  //         });
-  // }
   componentDidMount() {
     this.timerID = setInterval(() => this.tick(), 1000);
     this.refreshDataWeather();
@@ -246,14 +239,11 @@ class Home extends Component {
 
 
     return (
-      <div className="App">
+      <div >
 
         <Header />
-        <div id="content-wrapper">
+        <div id="content-wrapper" style={{marginTop:"20px"}}>
           <div id="content">
-
-            
-
             <div class="feature clearfloat" id="lead">
               <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-zQfyRzI4bm_31zRRBKBPPjapxMgtc_YSYnnBHBI6iT7LLf4Prooy7t1w0Z2CFkef5z8&usqp=CAU" alt="" id="leadpic" /></a>
               <h3>
@@ -272,7 +262,7 @@ class Home extends Component {
                 next={this.fetchData}
                 hasMore={hasMore}
                 loader={<h4>Loading...</h4>}
-                endMessage={<p>No more data to load.</p>}
+                endMessage={<p></p>}
               >
                 {data.map(item =>
                   <div key={item.id}>
@@ -299,7 +289,7 @@ class Home extends Component {
                   next={this.fetchData1}
                   hasMore={hasMore1}
                   loader={<h4>Loading...</h4>}
-                  endMessage={<p>No more data to load.</p>}>
+                  endMessage={<p></p>}>
                   {data1.map(item1 => (
                     <div key={item1.id} class="clearfloatitem">
                       <a href="#"><img src="images/iphone.jpg" alt="" /></a> <a href="#" class="title">{item1.title}</a>
@@ -319,7 +309,7 @@ class Home extends Component {
                   next={this.fetchData2}
                   hasMore={hasMore1}
                   loader={<h4>Loading...</h4>}
-                  endMessage={<p>No more data to load.</p>}>
+                  endMessage={<p></p>}>
                   {data2.map(item2 => (
                     <div key={item2.id} class="clearfloatitem">
                       <a href="#"><img src="images/iphone.jpg" alt="" /></a> <a href="#" class="title">{item2.title}</a>
@@ -338,7 +328,7 @@ class Home extends Component {
                   next={this.fetchData3}
                   hasMore={hasMore2}
                   loader={<h4>Loading...</h4>}
-                  endMessage={<p>No more data to load.</p>}>
+                  endMessage={<p></p>}>
                   {data3.map(item3 => (
                     <div key={item3.id} class="clearfloatitem">
                       <a href="#"><img src="images/iphone.jpg" alt="" /></a> <a href="#" class="title">{item3.title}</a>
@@ -357,7 +347,7 @@ class Home extends Component {
               next={this.fetchDataAll}
               hasMore={hasMore}
               loader={<h4>Loading...</h4>}
-              endMessage={<p>No more data to load.</p>}
+              endMessage={<p></p>}
             >
 
               {dataall.map(d => (
@@ -372,11 +362,9 @@ class Home extends Component {
                   <h2 class="heading-blue"></h2>
                   <img src="img/wayne.jpg" alt="" />
                   <h3><a href="#">{d.title}</a></h3>
-                  <p><a href="#">More headlines &raquo;</a></p>
+                  <p><a href="#">Read More &raquo;</a></p>
                   <h2 class="heading">Celebrity Sightings</h2>
                   <img src="img/casey.jpg" alt="" class="ad" /> <img src="img/hobo.jpg" alt="" class="ad-right" />
-                  <h2 class="heading">In the Community</h2>
-
                 </div>
               ))}
 

@@ -21,54 +21,42 @@ import { Ok } from './Pages/Ok';
 import Advertisement from './compoments/advertise/advertisement';
 import { AdvertisementTable } from './compoments/table/AdvertisementTable';
 import SaveNews from './compoments/User/SaveNews';
+import SearchNews from './compoments/Home/SearchNews';
+import ListAdvertisement from './compoments/User/ListAdvertisement';
 //import { AccountProfile } from './compoments/AccountProfile/AccountProfile';
 
 import { TestSocket } from './compoments/TestFile/TestSocket';
-import { Admin_UserManagement } from './Pages/Admin_UserManagement';
 
 function App() {
   return (
     <BrowserRouter>
-    <Switch>
-      {/* <Switch>
-      <Route exact path="/" component={Advertisement} />
-      <Route exact path="/ad" component={AdvertisementTable} />
-    <Switch>
 
-    <Route  path="/login"><Login/></Route>
-      <Route exact path="/"><Home/></Route>
-      <Route exact path="/Advertisement"><Advertisement/></Route>
-      <Route path="/newsdetail/:id"> <NewsDetail/></Route>
-      <Route path="/newsbygenre/:Gid"><NewsByGenre/></Route>
-      <Route path="/user"><UserDetail/></Route>
-      <Route path="/savenews/:Nid"><SaveNews/></Route>
-      <Route path ="/header"><Header/></Route>
-  
-    
-      {/* <Route exact path="/" component={Advertisement} /> */}
-
-      <Route exact path="/" component={Advertisement} />
-      <Route exact path="/ad" component={AdvertisementTable} />
-
-      <Route exact path="/Ok" component={Ok} />
-      <Route exact path="/Ok/:amount" component={Ok} /> 
-
-
-    {/* <TestSocket/> */}
-    </Switch>
-    <ToastContainer
-      position="top-right"
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="colored"
-    />
-  </BrowserRouter>);
+      <Switch>
+       
+        <Route exact path="/"><Home/></Route>
+        <Route exact path="/advertisement"><Advertisement/></Route>
+        <Route exact path="/listadvertisement"><ListAdvertisement/></Route>
+        <Route path="/newsdetail/:id"> <NewsDetail/></Route>
+        <Route path="/newsbygenre/:Gid"><NewsByGenre/></Route>
+        <Route path="/user"><UserDetail/></Route>
+        <Route path="/savenews/:Nid"><SaveNews/></Route>
+        <Route path ="/header"><Header/></Route>
+        <Route path ="/Ok/:amount"><Ok/></Route>
+        <Route path="/search/:newsname"> <SearchNews/></Route>
+      </Switch>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+    </BrowserRouter>);
 }
 
 export default App;

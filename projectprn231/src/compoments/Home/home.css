@@ -1,5 +1,5 @@
 body {
-    font-family: georgia,"times new roman",times,serif;
+    font: arial;
     font-size: 90%;
     color: #333;
     margin: 0;
@@ -25,7 +25,9 @@ body {
     width: 400px;
     height: 110px;
   }
-  
+  .author{
+    float: left;
+  }
   #ad {
     width: 580px;
   }
