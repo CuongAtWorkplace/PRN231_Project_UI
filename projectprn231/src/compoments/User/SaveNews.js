@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Header from "../Home/Header";
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 import jwtDecode from "jwt-decode";
-
+import Footer from "../Home/Footer";
 export class SaveNews extends Component {
     constructor(props) {
         super(props);
@@ -49,25 +49,25 @@ export class SaveNews extends Component {
         return (
             <div>
               <Header/>
-                <div>
-                    <div class="container rounded bg-white mt-5 mb-5" style={{marginTop:"20px"}}>
+
+                <div id="content-wrapper">
+                    <div class="container rounded bg-white mt-5 mb-5">
                         <div class="row">
-                        <div class="col-md-4 border-right">
+                            <div class="col-md-4 border-right">
                               
-                        <div class="d-flex flex-column align-items-center ">
-                                    <ul class="list-group">
-                                        <li class="list-group-item"><a href="/user">Thông tin tài khoản</a></li>
-                                        <li class="list-group-item"><a href="/savenews/1">Tin Đã Xem</a></li>
-                                        <li class="list-group-item"><a href="/savenews/2">Tin Đã Lưu</a></li>
-                                        <li class="list-group-item" ><a href="/listadvertisement">danh sach</a></li>
-                                    </ul>
-                                </div>
-
-
-                          </div>
-                              
-                            <div class="col-md-6 border-right">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><a href="/user">Thông tin tài khoản</a></li>
+                                    <li class="list-group-item"><a href="/savenews/1">Tin Đã Xem</a></li>
+                                    <li class="list-group-item"><a href="/savenews/2">Tin Đã Lưu</a></li>
+                                    <li class="list-group-item"><a href="/listadvertisement" >Danh Sách Mua Hàng</a></li>
+                                </ul>
                                
+
+                            </div>
+                          
+                            <div class="col-md-6 border-right">
+                                <h3>Tin đã lưu</h3>
+
                                 {NewsSeen.map(item => 
                                     <div>
                                          <div class="row p-2 bg-white border rounded">
@@ -88,6 +88,7 @@ export class SaveNews extends Component {
                         </div>
                     </div>
                 </div>
+                <Footer/>
             </div>
 
         );

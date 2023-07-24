@@ -8,6 +8,7 @@ import SaveNews from "../User/SaveNews";
 import jwtDecode from "jwt-decode";
 import { BsSuitHeartFill, BsBookmarkPlusFill } from "react-icons/bs";
 import parse from 'html-react-parser';
+import Footer from "./Footer";
 class NewsDetail extends React.Component {
     constructor(props) {
         super(props);
@@ -243,14 +244,7 @@ class NewsDetail extends React.Component {
                 console.error(error);
             });
 
-        fetch(`https://localhost:7248/api/News/CountLike?id=${id}`)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ countLike: data });
-            })
-            .catch(error => {
-                console.error('Error fetching object:', error);
-            });
+
     }
     handleUnLikeClick = (id) => {
         fetch(`https://localhost:7248/api/News/UnLikeComment?id=${id}`, {
@@ -267,11 +261,11 @@ class NewsDetail extends React.Component {
             .catch(error => {
                 console.error(error);
             });
-        }
-       
-    refeshCountLike(){
+    }
 
-         fetch(`https://localhost:7248/api/News/CountLike?id`)
+    refeshCountLike() {
+
+        fetch(`https://localhost:7248/api/News/CountLike?id`)
             .then(response => response.json())
             .then(data => {
                 this.setState({ countLike: data });
@@ -279,10 +273,10 @@ class NewsDetail extends React.Component {
             .catch(error => {
                 console.error('Error fetching object:', error);
             });
-   
+
     }
     render() {
-        const { object, ListGenre, liked, cateId,countLike, contentComment, comments, ListComment, contentDetail } = this.state;
+        const { object, ListGenre, liked, cateId, countLike, contentComment, comments, ListComment, contentDetail } = this.state;
         console.log(cateId);
         return (
             <div>
@@ -303,12 +297,9 @@ class NewsDetail extends React.Component {
                                     <a> <i class="bi bi-save-fill"></i></a>
                                     <p style={{ float: 'right' }}>
                                         <b>{object.createBy}</b>
-
-
-
                                         <BsBookmarkPlusFill size={20} color="red" onClick={this.handleClick} />
                                     </p>
-                                    {/* <button onClick={this.handleClick}>Save</button> */}
+
 
                                 </div>
                             </div>
@@ -345,14 +336,14 @@ class NewsDetail extends React.Component {
 
                                                                         {liked == true &&
                                                                             <i>
-                                                                                <BsSuitHeartFill size={20} color="red" onClick={() => this.handleUnLikeClick(comment.id)} />
+                                                                                <BsSuitHeartFill size={20} color="red" style={{ marginLeft: "10px" }} onClick={() => this.handleUnLikeClick(comment.id)} />
                                                                                 {this.state.countLike}
                                                                             </i>
                                                                         }
 
                                                                         {liked == false &&
                                                                             <i>
-                                                                                <BsSuitHeartFill size={20} color="gray" onClick={() => this.handleLikeClick(comment.id)} />
+                                                                                <BsSuitHeartFill size={20} color="gray" style={{ marginLeft: "10px" }} onClick={() => this.handleLikeClick(comment.id)} />
                                                                                 {this.state.countLike}
                                                                             </i>
                                                                         }
@@ -379,46 +370,8 @@ class NewsDetail extends React.Component {
 
 
                 </div>
-                <div id="extras">
-                    <div id="recommended">
-                        <h2 class="heading">Recommended Stories</h2>
-                        <ul>
 
-                            <li><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit &raquo;</a></li>
-                            <li><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit &raquo;</a></li>
-                            <li><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit &raquo;</a></li>
-                            <li class="last"><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit &raquo;</a></li>
-                        </ul>
-                    </div>
-                    <div id="programs">
-                        <h2 class="heading">What's On Tonight</h2>
-                        <img src="img/rick.jpg" alt="" /> <img src="img/cbc.png" alt="" />
-                    </div>
-                    <div id="cartoon">
-                        <h2 class="heading">Humour</h2>
-                        <img src="img/cartoon.jpg" alt="" />
-                    </div>
-                </div>
-                <div id="footer">
-                    <ul>
-                        <li>&copy;2010 <a href="#">Name Here</a></li>
-                        <li>|</li>
-                        <li><a href="#">FAQ</a></li>
-                        <li>|</li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li>|</li>
-                        <li><a href="#">Careers</a></li>
-                        <li>|</li>
-                        <li><a href="#">Advertise</a></li>
-                        <li>|</li>
-                        <li><a href="#">Sitemap</a></li>
-                        <li>|</li>
-                        <li>Designed by <a href="http://www.skyrocketlabs.com/">Skyrocket Labs</a></li>
-                    </ul>
-                </div>
-                <div className="Content">
-                    <Route path="/savenews" component={SaveNews} />
-                </div>
+                <Footer />
             </div>
 
 

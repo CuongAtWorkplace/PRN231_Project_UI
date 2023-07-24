@@ -31,6 +31,7 @@ class Header extends Component {
             tokenFromSocial: '',
             IsLogin: false,
             PhotoFileName: '',
+            search: '',
         }
     }
     imageUpload = (e) => {
@@ -83,22 +84,22 @@ class Header extends Component {
         this.refreshDataWeather();
         this.refreshListGenre();
         const token = localStorage.getItem("token");
-        
-        if(token != null){
+
+        if (token != null) {
             const decodedToken = jwtDecode(token);
             this.setState({ nameUser: decodedToken.fullname });
             this.setState({ showModal: false, IsLogin: true });
         }
-        
-       
-        
+
+
+
     }
 
     handleClick = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('roleid');
         localStorage.removeItem('id');
-        this.setState({ IsLogin : false })
+        this.setState({ IsLogin: false })
     };
     handleEmailChange = (e) => {
         this.setState({ email: e.target.value });
@@ -134,13 +135,13 @@ class Header extends Component {
                 this.setState({ showModal: false, IsLogin: true })
 
                 console.log('Đăng nhập thành công');
-              
-              
-                if (decodedToken.id == 2 ) {
-                    window.location.href="/";
-                } 
-                if (decodedToken.id == 1 || decodedToken.id == 3 || decodedToken.id == 4||decodedToken.id == 5) {
-                    window.location.href="/manager";
+
+
+                if (decodedToken.id == 2) {
+                    window.location.href = "/";
+                }
+                if (decodedToken.id == 1 || decodedToken.id == 3 || decodedToken.id == 4 || decodedToken.id == 5) {
+                    window.location.href = "/manager";
                 }
 
 
@@ -160,32 +161,52 @@ class Header extends Component {
     handleClose = () => {
         this.setState({ showModal: false })
     }
+    ChangeSearchValue(e) {
+        this.setState({
+            search: e.target.value
+        })
+    }
+    SearchAccount(event) {
+        if (this.state.search == "") {
+            return;
+        }
+
+        if (event.key === 'Enter') {
+            //<Route to={`/listUserSearch/${this.state.search}`} />;
+
+            window.location.href = `/search/${this.state.search}`;
+        }
+    }
     render() {
 
         const { PhotoFileName, IsLogin, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal } = this.state;
 
         return (
             <div>
-                <div id="top">
-                    <ul id="right">
+                <div id="top" >
+                    <ul id="right" style={{ display: 'flex' }}>
+                        <div>
 
-                        {IsLogin == true &&
 
-                            <li><a href="/user">Hello  { nameUser}| </a></li>
-                        }
-                        {IsLogin == false &&
-                            <a type="button" variant="secondary" onClick={this.handleShow}>
-                                Login
-                            </a>
-                        }
+                            <input type="text" value={this.state.search} onChange={(e) => this.ChangeSearchValue(e)} placeholder="Search  ... " onKeyDown={(event) => this.SearchAccount(event)} />
 
-                        {IsLogin == true &&
+                            {IsLogin == true &&
 
-                            <a variant="secondary" onClick={this.handleClick}>
-                                Logout
-                            </a>
-                        }
-                        
+                                <li><a href="/user">Hello  {nameUser}| </a></li>
+                            }
+                            {IsLogin == false &&
+                                <a type="button" variant="secondary" onClick={this.handleShow}>
+                                    Login
+                                </a>
+                            }
+
+                            {IsLogin == true &&
+
+                                <a variant="secondary" onClick={this.handleClick}>
+                                    Logout
+                                </a>
+                            }
+                        </div>
 
                     </ul>
                     <ul id="left">

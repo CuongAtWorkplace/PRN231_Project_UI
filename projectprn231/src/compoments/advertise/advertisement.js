@@ -18,10 +18,13 @@ class Advertisement extends Component {
           <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
           <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" />
         </head>
+        
         <body>
           <Header/>
+
           <section className="container" style={{marginTop:"20px"}}>
             <div className="row white"> 
+
               <div className="block">
 
                 <div className="col-xs-12 col-sm-6 col-md-3">
