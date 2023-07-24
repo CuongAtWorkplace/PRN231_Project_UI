@@ -11,11 +11,11 @@ export class UserDetail extends Component {
         this.state = {
             userdetail: {},
             userid: null,
-                id: null,
-                addDate: null,
-                newsId: null,
-                cateId: null,
-           
+            id: null,
+            addDate: null,
+            newsId: null,
+            cateId: null,
+
         }
     }
 
@@ -28,7 +28,7 @@ export class UserDetail extends Component {
             });
     }
 
-   
+
 
     componentDidMount() {
         const token = localStorage.getItem("token");
@@ -39,8 +39,8 @@ export class UserDetail extends Component {
             const decodedToken = jwtDecode(token);
 
             const userid = decodedToken.id;
-           
-            this.setState({userid }, () => {
+
+            this.setState({ userid }, () => {
                 this.refreshUser();
             });
 
@@ -59,13 +59,12 @@ export class UserDetail extends Component {
                     <div class="container rounded bg-white mt-5 mb-5">
                         <div class="row">
                             <div class="col-md-4 border-right">
-                                <div class="d-flex flex-column align-items-center text-center">
-                                    <ul class="p-3 py-5">
-                                        <li><a href="/user">Thông tin tài khoản</a></li>
-                                        <li><a href="/savenews/1">Tin Đã Xem</a></li>
-                                        <li><a href="/savenews/2">Tin Đã Lưu</a></li>
-                                        <li><a>Chat</a></li>
-
+                                <div class="d-flex flex-column align-items-center ">
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><a href="/user">Thông tin tài khoản</a></li>
+                                        <li class="list-group-item"><a href="/savenews/1">Tin Đã Xem</a></li>
+                                        <li class="list-group-item"><a href="/savenews/2">Tin Đã Lưu</a></li>
+                                        <li class="list-group-item" ><a href="/listadvertisement">danh sach</a></li>
                                     </ul>
                                 </div>
 
