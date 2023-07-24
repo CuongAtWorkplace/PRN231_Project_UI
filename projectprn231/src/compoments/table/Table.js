@@ -31,13 +31,14 @@ export class Table extends Component {
       roleId: "1",
       image: null,
       imageName: "",
+      imageUrl: "",
       activeButtonClicked: false,
       deactiveButtonClicked: false,
     };
   }
 
   handleSubmit = () => {
-    const { fullName, email, password, phone, address, roleId, imageName } = this.state;
+    const { fullName, email, password, phone, address, roleId, imageName  } = this.state;
 
     const currentDate = new Date().toISOString();
 
@@ -175,7 +176,8 @@ export class Table extends Component {
   }
 
   handleOpen = () => {
-    this.setState({ open: true });
+    this.setState({ open: true, imageUrl: "" });
+
   };
 
   handleClose = () => {
@@ -184,12 +186,16 @@ export class Table extends Component {
 
   handleAvatarChange = (event) => {
     const file = event.target.files[0];
-    this.setState({ image: file, imageName: file.name });
+    this.setState({ image: file,
+       imageName: file.name ,
+       imageUrl: URL.createObjectURL(file) // Tạo URL cho ảnh
+    });
+
   };
 
 
   render() {
-    const { open, fullName, email, password, phone, address, roleId,activeButtonClicked, deactiveButtonClicked  } = this.state;
+    const { open, fullName, email, password, phone, address, roleId,activeButtonClicked, deactiveButtonClicked , imageUrl  } = this.state;
 
     return (
       <div>
@@ -313,13 +319,20 @@ export class Table extends Component {
               </div>
 
               <div className="right-column">
-                <label htmlFor="avatar">Avatar:</label>
-                <input
+              <label htmlFor="avatar" style={{ marginRight: "10px" }}>
+      Avatar:
+    </label>
+                    <input
                   id="avatar"
                   type="file"
                   onChange={this.handleAvatarChange}
                 />
-              </div>
+
+                 {/* Hiển thị ảnh người dùng */}
+                 {imageUrl && (
+        <img src={imageUrl} alt="Avatar" className="avatar-preview" />
+      )}
+      </div>
               <button className="submit_btn" onClick={this.handleSubmit}>Submit</button>
             </Typography>
           </Box>
