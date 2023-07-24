@@ -249,11 +249,10 @@ class Home extends Component {
       <div >
 
         <Header />
-        <div id="content-wrapper">
+        <div id="content-wrapper" style={{marginTop:"20px"}}>
           <div id="content">
 
-            
-
+        
             <div class="feature clearfloat" id="lead">
               <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-zQfyRzI4bm_31zRRBKBPPjapxMgtc_YSYnnBHBI6iT7LLf4Prooy7t1w0Z2CFkef5z8&usqp=CAU" alt="" id="leadpic" /></a>
               <h3>

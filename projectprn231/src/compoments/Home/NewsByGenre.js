@@ -106,7 +106,7 @@ class NewsByGenre extends Component {
         return (
             <div className="App">
                  <Header/>
-                <div id="content-wrapper">
+                <div id="content-wrapper"style={{marginTop:"20px"}}>
                     <div id="content">
                     <InfiniteScroll
                      dataLength={dataList.length} //This is important field to render the next data
