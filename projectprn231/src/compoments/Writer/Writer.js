@@ -102,7 +102,7 @@ class Writer extends Component {
     onChangeTopicName = (e) => {
         if (e.target.value == '') {
             this.setState({ ErrorTopicName: 'Topic Name is not empty' });
-        } else if (e.target.value.length < 5 || e.target.value.length > 50) {
+        } else if (e.target.value.length < 5 || e.target.value.length > 5000) {
             this.setState({ ErrorTopicName: 'Topic Name is between 5 to 50' });
         } else {
             this.setState({ ErrorTopicName: null });
@@ -117,7 +117,7 @@ class Writer extends Component {
     onChangeDescription = (e) => {
         if (e.target.value == '') {
             this.setState({ ErrorDescription: 'Description is not empty' });
-        } else if (e.target.value.length < 5 || e.target.value.length > 50) {
+        } else if (e.target.value.length < 5 || e.target.value.length > 5000) {
             this.setState({ ErrorDescription: 'Description is between 5 to 2000' });
         } else {
             this.setState({ ErrorDescription: null });
@@ -149,6 +149,7 @@ class Writer extends Component {
             .then((result) => {
                 this.refreshList();
                 toast.success("Insert Successfull. Congratulation!!!")
+
             }, (error) => {
                 toast.error("Insert failed. Try Again!!!");
             })
@@ -183,18 +184,14 @@ class Writer extends Component {
         const jwt = localStorage.getItem('token');
 
         this.setState({
-            ImageCover: e.target.files[0].name
+            ImageCover: e.target.files[0].name,
+            PhotoFileName: e.target.files[0].name,
         })
         const formData = new FormData();
         formData.append("file", e.target.files[0], e.target.files[0].name);
 
         fetch('https://localhost:7248/api/WritingTask/SaveFile', {
             method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json', 
-                'Authorization': `Bearer ${jwt}`
-            },
             body: formData
         })
             .then(res => res.json())
@@ -263,9 +260,15 @@ class Writer extends Component {
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <label class="control-label">Image Cover: </label>
-                                    <input type="file" value={PhotoFileName} className="form-control" onChange={(e) => this.imageUpload(e)} /><br />
-                                    {PhotoFileName != '' ? <div style={{ border: '1px solid black', width: 120, height: 130, backgroundImage: 'url(https://localhost:7248/Photos/' + PhotoFileName + ')' }} ><img src="" /></div> : null}
+                                    <label class="control-label">Image Cover: </label> <br/>
+                                    {/* <input type="file" value={PhotoFileName} className="form-control" onChange={(e) => this.imageUpload(e)} /><br />
+                                    {PhotoFileName != '' ? <div style={{ border: '1px solid black', width: 120, height: 130, backgroundImage: 'url(https://localhost:7248/Photos/' + PhotoFileName + ')' }} ><img src="" /></div> : null} */}
+
+                                    {PhotoFileName != '' && 
+                                        <img width="250px" height="250px"
+                                        src={PhotoPath + PhotoFileName} />
+                                    } 
+                                    <input className="m-2" type="file" onChange={this.imageUpload} />
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">CreateDate:</label>
@@ -278,9 +281,10 @@ class Writer extends Component {
                                 <div className="form-group">
                                     <label className="control-label">Comment:</label>
                                     <div className="App">
+                                        
                                         <CKEditor
                                             editor={ClassicEditor}
-                                            data={Comment}
+                                            data={Comment != null ? Comment : ""}
                                             onReady={editor => {
                                                 console.log('Editor is ready to use!', editor);
                                             }}
@@ -311,8 +315,8 @@ class Writer extends Component {
                             {ReportTaskById.isChecked &&
                                 <>
                                     <p><b>Title: </b>{ReportTaskById.title}</p>
-                                    <p><b>Description: </b>{parse(DescriptionReporter)}</p>
-                                    <p><b>Content: </b>{parse(ContentReporter)}</p>
+                                    <p><b>Description: </b>{DescriptionReporter != null ? parse(DescriptionReporter) : ""}</p>
+                                    <p><b>Content: </b>{ContentReporter != null ? parse(ContentReporter) : ""}</p>
                                     <p><b>Source: </b>{DocumentList != [] && DocumentList.map(it => <a href="#" onClick={() => this.DownLoadFile(it)}>{it.fileName}</a>)}</p>
                                 </>
                             }

@@ -53,7 +53,7 @@ class Header extends Component {
             })
     }
     refreshListGenre() {
-        fetch("https://localhost:7248/api/News/getAllGenres")
+        fetch('https://localhost:7248/api/News/getAllGenres')
             .then(response => response.json())
             .then(data => {
                 this.setState({ ListGenre: data });
@@ -61,7 +61,7 @@ class Header extends Component {
     }
 
     refreshDataWeather() {
-        fetch(`https://api.openweathermap.org/data/2.5/weather?q=hanoi&appid=eb16d064d3816182670320b527544012&units=metric`)
+        fetch('https://api.openweathermap.org/data/2.5/weather?q=hanoi&appid=eb16d064d3816182670320b527544012&units=metric')
             .then(response => response.json())
             .then(data => {
                 if (data != null) {
@@ -83,16 +83,13 @@ class Header extends Component {
         this.timerID = setInterval(() => this.tick(), 1000);
         this.refreshDataWeather();
         this.refreshListGenre();
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem('token');
 
         if (token != null) {
             const decodedToken = jwtDecode(token);
             this.setState({ nameUser: decodedToken.fullname });
             this.setState({ showModal: false, IsLogin: true });
         }
-
-
-
     }
 
     handleClick = () => {
@@ -101,6 +98,7 @@ class Header extends Component {
         localStorage.removeItem('id');
         this.setState({ IsLogin: false })
     };
+
     handleEmailChange = (e) => {
         this.setState({ email: e.target.value });
     };
@@ -111,8 +109,9 @@ class Header extends Component {
 
     handleLogin = async () => {
         const { email, password } = this.state;
+        alert("Đang log in")
         try {
-            const response = await fetch(`https://localhost:7248/api/Login`, {
+            const response = await fetch('https://localhost:7248/api/Login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -125,36 +124,31 @@ class Header extends Component {
                 const data = await response.json();
                 const token = data.token;
                 localStorage.setItem('token', token);
-
+                
                 const decodedToken = jwtDecode(token);
                 localStorage.setItem('id', decodedToken.id);
                 localStorage.setItem('roleid', decodedToken.roleid);
 
-
                 this.setState({ nameUser: decodedToken.fullname });
                 this.setState({ showModal: false, IsLogin: true })
 
-                console.log('Đăng nhập thành công');
 
-
-                if (decodedToken.id == 2) {
+                if (decodedToken.roleid == 2) {
                     window.location.href = "/";
                 }
-                if (decodedToken.id == 1 || decodedToken.id == 3 || decodedToken.id == 4 || decodedToken.id == 5) {
+                if (decodedToken.roleid == 1 || decodedToken.roleid == 3 || decodedToken.roleid == 4 || decodedToken.roleid == 5) {
                     window.location.href = "/manager";
                 }
-
-
             } else {
                 console.log('Đăng nhập thất bại');
 
             }
         } catch (error) {
-            // Xử lý lỗi gọi API
             console.log('Lỗi gọi API', error);
         }
 
     };
+
     handleShow = () => {
         this.setState({ showModal: true })
     }
@@ -172,8 +166,6 @@ class Header extends Component {
         }
 
         if (event.key === 'Enter') {
-            //<Route to={`/listUserSearch/${this.state.search}`} />;
-
             window.location.href = `/search/${this.state.search}`;
         }
     }
@@ -212,7 +204,7 @@ class Header extends Component {
                     <ul id="left">
                         <li><a href="/">LOGO  </a></li>
                         <li><a href="#">Chủ Nhật |{currentTime.toLocaleDateString()} |{currentTime.toLocaleTimeString()}</a></li>
-                        <li><a href="#"> Ha Noi :  {DataWeather.temp} °C <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud" viewBox="0 0 16 16">
+                        <li><a href="#"> Ha Noi :  {DataWeather.temp} °C <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-cloud" viewBox="0 0 16 16">
                             <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z" />
                         </svg></a></li>
 
@@ -245,13 +237,12 @@ class Header extends Component {
                     </Modal.Header>
                     <Modal.Body>
 
-                        <div class="modal-body">
+                        <div className="modal-body">
 
 
-                            <div class="login_wrapper">
-                                <div class="row">
+                            <div className="login_wrapper">
+                                <div className="row">
                                     <div>
-                                        {/* <a href="#" class="btn btn-primary facebook"> <span>Login with Facebook</span> <i class="fa fa-facebook"></i> </a> */}
                                         <GoogleOAuthProvider clientId="186729364333-sfd6o0oe4ud91dllo9t4s2p834kjj53e.apps.googleusercontent.com">
                                             <GoogleLogin
                                                 onSuccess={credentialResponse => {
@@ -268,8 +259,7 @@ class Header extends Component {
                                             />
                                         </GoogleOAuthProvider>
                                     </div>
-                                    <div>
-                                        {/* <a href="#" class="btn btn-primary google-plus"> Login  with Google <i class="fa fa-google-plus"></i> </a> */}
+                                    <div  className="form-group">
                                         <LoginSocialFacebook
                                             appId="1230730321091573"
                                             onResolve={(response) => {
@@ -288,35 +278,33 @@ class Header extends Component {
                                 </div>
                                 <h2>or</h2>
                                 <form >
-
-
-                                    <div class="formsix-pos">
-                                        <div class="form-group i-email">
-                                            <input type="text" class="form-control" required="" id="email2" value={email}
+                                    <div className="formsix-pos">
+                                        <div className="form-group i-email">
+                                            <input type="text" className="form-control" required="" id="email2" value={email}
                                                 onChange={this.handleEmailChange} placeholder="Email Address *" />
                                         </div>
                                     </div>
-                                    <div class="formsix-e">
-                                        <div class="form-group i-password">
-                                            <input type="password" class="form-control" required="" id="password2" value={password}
+                                    <div className="formsix-e">
+                                        <div className="form-group i-password">
+                                            <input type="password" className="form-control" required="" id="password2" value={password}
                                                 onChange={this.handlePasswordChange} placeholder="Password *" />
                                         </div>
                                     </div>
-                                    <div class="login_remember_box">
-                                        <label class="control control--checkbox">Remember me
+                                    <div className="login_remember_box">
+                                        <label className="control control--checkbox">Remember me
                                             <input type="checkbox" />
-                                            <span class="control__indicator"></span>
+                                            <span className="control__indicator"></span>
                                         </label>
-                                        <a href="#" class="forget_password">
+                                        <a href="#" className="forget_password">
                                             Forgot Password
                                         </a>
                                     </div>
-                                    <div class="login_btn_wrapper">
-
-                                        <button type="button" onClick={this.handleLogin} class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
+                                    <div className="login_btn_wrapper">
+                                    {/* <div className="form-control"> */}
+                                        <button type="button" onClick={this.handleLogin} className=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
                                     </div>
                                 </form>
-                                <div class="login_message">
+                                <div className="login_message">
                                     <p>Don&rsquo;t have an account ? <a href="#"> Sign up </a> </p>
                                 </div>
 
@@ -335,3 +323,5 @@ class Header extends Component {
 
 
 export default withRouter(Header);
+
+
