@@ -33,6 +33,12 @@ class Header extends Component {
             PhotoFileName: '',
             search: '',
 
+            count: 0, 
+            Advertis: {}, 
+            PhotoPath: 'https://localhost:7248/Photos/',
+
+
+
             showModalSignUp: false,
             phone: '',
             address: '',
@@ -67,6 +73,14 @@ class Header extends Component {
             .then(response => response.json())
             .then(data => {
                 this.setState({ ListGenre: data });
+            });
+        fetch('https://localhost:7248/api/AdertisementOrder/AdvertisRandom')
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ Advertis: data });
+            })
+            .catch(error => {
+                console.error('Error fetching object:', error);
             });
     }
 
@@ -175,7 +189,7 @@ class Header extends Component {
     };
 
     handleLogin = async () => {
-        const { email, password } = this.state;
+        const { email, password,} = this.state;
         try {
             const response = await fetch('https://localhost:7248/api/Login', {
                 method: 'POST',
@@ -269,7 +283,7 @@ class Header extends Component {
     
     handleSignUp2 = async () => {
         this.checkEmailExist();
-    
+   
         if (this.state.checkEmail == false) {
             const { email, password, fullname, address, phone } = this.state;
             try {
@@ -324,11 +338,9 @@ class Header extends Component {
     }
     render() {
 
-
-        const {checkLogin, fullname, address, checkEmail, phone, PhotoFileName, noti, showModalSignUp, IsLogin, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal } = this.state;
+        const {checkLogin, fullname, address, checkEmail, phone, PhotoFileName, noti, showModalSignUp, IsLogin, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal, Advertis, PhotoPath } = this.state;
 
           var tok = '';
-
 
         return (
             <div>
@@ -369,6 +381,12 @@ class Header extends Component {
                     <div id="logo"> <a href="#"><img src="img/wireframe/logo.png" alt="" /></a> </div>
                     <div id="ad"> <img src="img/ad-blank.png" alt="" /> </div>
                 </div>
+                
+                <a href="https://daihoc.fpt.edu.vn/">
+                    <div className="container" style={{ marginLeft: '300px' }}>
+                        <img width={900} height={100} src={PhotoPath + Advertis.image}></img>
+                    </div>
+                </a>    
                 <div id="nav">
                     {ListGenre.slice(0, 5).map(gen =>
                         <ul key={gen.id}>
@@ -526,7 +544,6 @@ class Header extends Component {
                                             <FacebookLoginButton />
                                         </LoginSocialFacebook> */}
                                     </div>
-
                                 </div>
                                 <h2>or</h2>
                                 <form >
@@ -576,6 +593,106 @@ class Header extends Component {
 
                 </Modal>
 
+                <Modal
+                    show={showModalSignUp}
+                    onHide={this.handleClose}
+                    backdrop="static"
+                    keyboard={false}
+                >
+                    <Modal.Header closeButton>
+
+                    </Modal.Header>
+                    <Modal.Body>
+
+                        <div class="modal-body">
+
+
+                            <div class="login_wrapper">
+                                <div class="row">
+                                    <div>
+                                        {/* <a href="#" class="btn btn-primary facebook"> <span>Login with Facebook</span> <i class="fa fa-facebook"></i> </a> */}
+                                        <GoogleOAuthProvider clientId="186729364333-sfd6o0oe4ud91dllo9t4s2p834kjj53e.apps.googleusercontent.com">
+                                            <GoogleLogin
+                                                onSuccess={credentialResponse => {
+                                                    console.log(credentialResponse);
+                                                    this.setState({
+                                                        Profile: credentialResponse,
+                                                        tokenFromSocial: credentialResponse.credential
+                                                    })
+                                                    localStorage.setItem('token', this.state.tokenFromSocial);
+                                                }}
+                                                onError={() => {
+                                                    console.log('Login Failed');
+                                                }}
+                                            />
+                                        </GoogleOAuthProvider>
+                                    </div>
+                                    <div>
+                                        {/* <a href="#" class="btn btn-primary google-plus"> Login  with Google <i class="fa fa-google-plus"></i> </a> */}
+                                        {/* <LoginSocialFacebook
+                                            appId="1230730321091573"
+                                            onResolve={(response) => {
+                                                console.log(response)
+                                                this.setState({ Profile: response.data, tokenFromSocial: response.data.accessToken });
+                                                localStorage.setItem('token', this.state.tokenFromSocial);
+                                            }}
+
+                                            onReject={(error) => {
+                                                console.log(error)
+                                            }}
+                                        >
+                                            <FacebookLoginButton />
+                                        </LoginSocialFacebook> */}
+                                    </div>
+
+                                </div>
+                                <h2>or</h2>
+                                <form >
+                                    {checkEmail == true &&
+                                        <b>Email đã tồn tại</b>
+                                    }
+                                    <div class="formsix-pos">
+                                        <div class="form-group i-email">
+                                            <input type="text" class="form-control" required="" id="email2" value={fullname}
+                                                onChange={this.handleFullNameChange} placeholder="Họ Và Tên *" />
+                                        </div>
+                                    </div>
+                                    <div class="formsix-pos">
+                                        <div class="form-group i-email">
+                                            <input type="text" class="form-control" required="" id="email2" value={email}
+                                                onChange={this.handleEmailChange} placeholder="Email *" />
+                                        </div>
+                                    </div>
+                                    <div class="formsix-e">
+                                        <div class="form-group i-password">
+                                            <input type="password" class="form-control" required="" id="password2" value={password}
+                                                onChange={this.handlePasswordChange} placeholder="Mật Khẩu *" />
+                                        </div>
+                                    </div>
+                                    <div class="formsix-pos">
+                                        <div class="form-group i-email">
+                                            <input type="text" class="form-control" required="" id="email2" value={phone}
+                                                onChange={this.handlePhoneChange} placeholder="Phone" />
+                                        </div>
+                                    </div>
+                                    <div class="formsix-e">
+                                        <div class="form-group i-password">
+                                            <input type="text" class="form-control" required="" id="password2" value={address}
+                                                onChange={this.handleAddressChange} placeholder="Địa Chỉ" />
+                                        </div>
+                                    </div>
+                                    <div class="login_btn_wrapper">
+                                        <button style={{ width: "100%" }} type="button" onClick={this.handleSignUp} class=" btn btn-block mybtn btn-primary tx-tfm">Đăng Ký</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+
+
+                    </Modal.Body>
+
+                </Modal>
             </div>
         )
     }

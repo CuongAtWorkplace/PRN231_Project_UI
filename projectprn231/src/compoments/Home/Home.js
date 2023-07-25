@@ -38,6 +38,7 @@ class Home extends Component {
       hasMore3: true,
       hasMore4: true,
       NewsFirst: {},
+      Advertis: {},
       PhotoFileName: '',
       PhotoPath: 'https://localhost:7248/Photos/',
     }
@@ -168,6 +169,16 @@ class Home extends Component {
       .catch(error => {
         console.error('Error fetching object:', error);
       });
+
+    fetch('https://localhost:7248/api/AdertisementOrder/AdvertisRandom')
+      .then(response => response.json())
+      .then(data => {
+        this.setState({ Advertis: data });
+      })
+      .catch(error => {
+        console.error('Error fetching object:', error);
+      });
+
   }
 
 
@@ -235,24 +246,24 @@ class Home extends Component {
   }
   render() {
 
-    const { NewsFirst, hasMore, hasMore1, hasMore2, hasMore3, hasMore4, data, data1, data2, data3, dataall, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, PhotoPath } = this.state;
+    const { NewsFirst, hasMore, hasMore1, hasMore2, hasMore3, hasMore4, data, data1, data2, data3, dataall, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, PhotoPath, Advertis } = this.state;
 
 
     return (
       <div >
-
         <Header />
+        
         <div id="content-wrapper" style={{ marginTop: "20px" }}>
           <div id="content">
             <a href={`/newsdetail/${NewsFirst.id}`}>
               <div className="feature clearfloat" id="lead">
                 <img src={PhotoPath + NewsFirst.image} alt="" id="leadpic" />
                 <h3>
-                  <a href="#"><b>Mới Nhất</b></a><br />
+                  <b>Mới Nhất</b><br />
                 </h3>
                 {NewsFirst.title}
                 {NewsFirst.description}<br />
-                {<a href="#">More&raquo;</a>}
+                More&raquo;
               </div>
             </a>
             <div id="leftcol">
@@ -285,7 +296,7 @@ class Home extends Component {
             </div>
             <div id="rightcol">
               <div className="clearfloat">
-                <h2><a href="#">Thể Thao</a></h2>
+                {/* <h2><a href="#">Thể Thao</a></h2> */}
                 <InfiniteScroll
                   dataLength={data1.length} //This is important field to render the next data
                   next={this.fetchData1}
@@ -296,7 +307,7 @@ class Home extends Component {
 
                     <a href={`/newsdetail/${item1.id}`}>
                       <div key={item1.id} className="clearfloatitem">
-                        <img src="images/iphone.jpg" alt="" />{item1.title}
+                        <img src={PhotoPath + item1.image} alt="" />{item1.title}
                         <p>{item1.description}</p>
                       </div>
                     </a>
@@ -309,7 +320,7 @@ class Home extends Component {
 
               </div>
               <div className="clearfloat">
-                <h3><a href="#">Kinh Doanh</a></h3>
+                {/* <h3><a href="#">Kinh Doanh</a></h3> */}
                 <InfiniteScroll
                   dataLength={data1.length} //This is important field to render the next data
                   next={this.fetchData2}
@@ -320,7 +331,7 @@ class Home extends Component {
 
                     <a href={`/newsdetail/${item2.id}`}>
                       <div key={item2.id} className="clearfloatitem">
-                        <img src="images/iphone.jpg" alt="" /> {item2.title}
+                        <img src={PhotoPath + item2.image} alt="" /> {item2.title}
                         <p>{item2.description}</p>
                       </div>
                     </a>
@@ -333,7 +344,7 @@ class Home extends Component {
                 </InfiniteScroll>
               </div>
               <div className="clearfloat">
-                <h3><a href="#">Du Lịch</a></h3>
+                {/* <h3><a href="#">Du Lịch</a></h3> */}
                 <InfiniteScroll
                   dataLength={data1.length} //This is important field to render the next data
                   next={this.fetchData3}
@@ -344,7 +355,7 @@ class Home extends Component {
 
                     <a href={`/newsdetail/${item3.id}`}>
                       <div key={item3.id} className="clearfloatitem">
-                        <img src="images/iphone.jpg" alt="" />{item3.title}
+                        <img src={PhotoPath + item3.image} alt="" />{item3.title}
                         <p>{item3.description}</p>
                       </div>
                     </a>
@@ -364,7 +375,6 @@ class Home extends Component {
               loader={<h4>Loading...</h4>}
               endMessage={<p></p>}
             >
-
               {dataall.map(d => (
 
                 <a href={`/newsdetail/${d.id}`}>
@@ -375,15 +385,13 @@ class Home extends Component {
                     <a href="#"><img src="img/side-ad.png" alt="" className="ad-right" /></a>
 
                     <h2 className="heading-blue"></h2>
-                    <img src="img/wayne.jpg" alt="" />
+                    <img width={255} height={150} src={PhotoPath + d.image} alt="" />
                     <h3>{d.title}</h3>
                     <p>Read More &raquo;</p>
-                    <h2 className="heading">Celebrity Sightings</h2>
                     <img src="img/casey.jpg" alt="" className="ad" /> <img src="img/hobo.jpg" alt="" className="ad-right" />
                   </div>
                 </a>
               ))}
-
             </InfiniteScroll>
           </div>
 

@@ -147,7 +147,7 @@ class ViewDetailWritingProcess extends Component {
                     'Authorization': `Bearer ${jwt}`
                 },
                 body: JSON.stringify({
-                    title: this.state.GenreName,
+                    title: this.state.TopicName,
                     description: this.state.Description, 
                     content: this.state.NewsDetail,
                     image: this.state.ImageCover, 

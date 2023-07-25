@@ -25,6 +25,8 @@ class UpdateAssignTask extends Component {
             WriterId: 0,
             ReporterId: 0,
             StartDate: '',
+            IsReportCheck: null, 
+            IsWriterCheck: null,
             EndDate: '',
             Genre: [],
             User: [],
@@ -41,7 +43,7 @@ class UpdateAssignTask extends Component {
             })
             .then(response => response.json())
             .then(data => {
-                this.setState({AssignTask: data, AssignTaskId: data.id, TopicName:data.title, Description: data.description, StartDate: data.startDate, EndDate:data.endDate, WriterId: data.writerId, ReporterId: data.reporterId, GenreId: data.genreId, GenreName: data.genre.genreName });
+                this.setState({AssignTask: data, AssignTaskId: data.id, TopicName:data.title, Description: data.description, StartDate: data.startDate, EndDate:data.endDate, WriterId: data.writerId, ReporterId: data.reporterId, GenreId: data.genreId, GenreName: data.genre.genreName, IsReportCheck: data.isReportAccept, IsWriterCheck: data.isWriterAccept });
             });
         fetch("https://localhost:7248/api/Genre/GetAllGenre", {
             headers: {
@@ -99,7 +101,7 @@ class UpdateAssignTask extends Component {
                 genreId: this.state.GenreId,
                 startDate: this.state.StartDate,
                 endDate: this.state.EndDate, 
-                isDeleted: false
+                isDeleted: false,
             })
         })
         .then(res => res.json())

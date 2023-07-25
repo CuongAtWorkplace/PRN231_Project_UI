@@ -14,12 +14,12 @@ export class ListReject extends Component {
             Reason: '',
             RejectId: 0,
             Title: '',
+            TaskId: 0,
             IsReject: true,
             RejectTaskAccept: [],
             activePage: 1,
             itemsCountPerPage: 5,
             totalItemsCount: 0, 
-
 
             activePage1: 1,
             itemsCountPerPage1: 5,
@@ -69,6 +69,7 @@ export class ListReject extends Component {
         this.setState({
             RejectId: e.id,
             Title: e.task.title,
+            TaskId: e.taskId,
             UserId: e.userId,
             Reason: e.reason,
             modalTitle: 'RejectTask'
@@ -97,7 +98,10 @@ export class ListReject extends Component {
                 }, (error) => {
                     toast.error("Accepted failed. Try Again!!!")
                 })
+            window.location.href=`/manager/updateAssignTask/${this.state.TaskId}`;
         }
+
+
     }
 
     rejectTask = () => {
@@ -171,7 +175,7 @@ export class ListReject extends Component {
                                     <td>{gen.id}</td>
                                     <td>{gen.task.title}</td>
                                     <td>{gen.reason}</td>
-                                    <td>{gen.userId}</td>
+                                    <td></td>
                                     <td><b style={{color: 'red'}}>Pending</b></td>
                                     <td>
                                         <button type="button"
@@ -290,7 +294,7 @@ export class ListReject extends Component {
                                     <td>{gen.id}</td>
                                     <td>{gen.task.title}</td>
                                     <td>{gen.reason}</td>
-                                    <td>{gen.userId}</td>
+                                    <td></td>
                                     <td style={{ color: 'green' }}><b>Accepted</b></td>
                                 </tr>
                             )}

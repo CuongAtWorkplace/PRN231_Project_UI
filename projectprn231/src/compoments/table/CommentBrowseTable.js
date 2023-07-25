@@ -35,14 +35,15 @@ export class CommentBrowseTable extends Component {
     this.selectedRows.forEach((id) => {
       this.updateCommentTrue(id);
     });
-    alert("ok");
+    alert("Confirm comment successfull!!!");
     window.location.reload();
   }
+
   deleteSelectedRows = () => {
     this.selectedRows.forEach((id) => {
       this.updateCommentFalse(id);
     });
-    alert("ok");
+    alert("Delete comment successfull!!!");
     window.location.reload();
   }
 
@@ -52,8 +53,6 @@ export class CommentBrowseTable extends Component {
     })
       .then(response => response.json())
       .then(data => {
-        // Cập nhật trạng thái của comment đã được xác nhận thành true
-        // Ví dụ:
         const updatedRows = this.state.rows.map(row => {
           if (row.id === id) {
             return {

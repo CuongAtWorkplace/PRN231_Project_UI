@@ -73,6 +73,25 @@ class ViewDetailReportProcess extends Component {
         this.refreshList();
     }
 
+    DownLoadFile(e) {
+        //const jwt = localStorage.getItem('token');
+        fetch("https://localhost:7248/api/ReportTask/DownLoadFile?id="+e.id, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        }).then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(new Blob([blob]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', e.fileName);
+                document.body.appendChild(link);
+                link.click();
+            });
+    }
+
     FeedBackTask() {
         
     }
@@ -167,7 +186,7 @@ class ViewDetailReportProcess extends Component {
                                 <div className="form-group">
                                     <label className="control-label">Source:</label>
                                     {
-                                        DocumentList.map(it => <a href="" onClick={() => this.DownLoadFile(it)}>{it.fileName}</a>)
+                                        DocumentList.map(it => <a href="#" onClick={() => this.DownLoadFile(it)}>{it.fileName}</a>)
                                     }
                                 </div>
                                 <div className="form-group">

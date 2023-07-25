@@ -36,6 +36,7 @@ import { ViewReportProcess } from '../Leader/ViewReportProcess';
 import { ViewWritingProcess } from '../Leader/ViewWritingProcess';
 import { AdvertisementTable } from "../table/AdvertisementTable";
 import { Dashboard } from "../table/DashBoard";
+import { ListOrderAdvertisment } from "../table/ListOrderAdvertisment";
 
 export class SideBar extends Component {
 
@@ -228,6 +229,14 @@ export class SideBar extends Component {
                                             <span>Advertisement Management</span>
                                         </li>
                                     </a>
+
+                                    <a href="/manager/ListOrder">
+
+                                        <li>
+                                            <NewspaperIcon className="icon" />
+                                            <span>List Order Success</span>
+                                        </li>
+                                    </a>
                                 </>
                             }
                             <p className="Title">Name</p>
@@ -294,6 +303,7 @@ export class SideBar extends Component {
                         <Route path="/manager/comment" component={CommentBrowseTable} />
                         <Route path="/manager/AdvertisementTable" component={AdvertisementTable} /> 
                         <Route path="/manager/AdminHome" component={Dashboard} />
+                        <Route path="/manager/ListOrder" component={ListOrderAdvertisment}/>
                         {/* <Route path="/AdminDashBoard" component={Admin_Home} /> */}
                         {/* <Route path="/Advertisement" component={Advertisement} /> */}
                         {/* <Route path="/Ok" component={Ok}/>   */}
