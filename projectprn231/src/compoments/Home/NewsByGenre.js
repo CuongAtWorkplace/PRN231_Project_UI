@@ -161,7 +161,6 @@ class NewsByGenre extends Component {
                       </div>
 
                 </div>
-                
                 <Footer/>
             </div>
         )

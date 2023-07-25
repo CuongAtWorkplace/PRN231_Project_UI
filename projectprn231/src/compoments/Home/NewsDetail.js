@@ -291,7 +291,6 @@ class NewsDetail extends React.Component {
             .catch(error => {
                 console.error('Error fetching object:', error);
             });
-
     }
 
     CreateComment(e) {
