@@ -32,7 +32,9 @@ class Header extends Component {
             IsLogin: false,
             PhotoFileName: '',
             search: '',
-            count: 0
+            count: 0, 
+            Advertis: {}, 
+            PhotoPath: 'https://localhost:7248/Photos/',
         }
     }
     imageUpload = (e) => {
@@ -58,6 +60,14 @@ class Header extends Component {
             .then(response => response.json())
             .then(data => {
                 this.setState({ ListGenre: data });
+            });
+        fetch('https://localhost:7248/api/AdertisementOrder/AdvertisRandom')
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ Advertis: data });
+            })
+            .catch(error => {
+                console.error('Error fetching object:', error);
             });
     }
 
@@ -153,7 +163,7 @@ class Header extends Component {
     };
 
     handleLogin = async () => {
-        const { email, password } = this.state;
+        const { email, password,} = this.state;
         try {
             const response = await fetch('https://localhost:7248/api/Login', {
                 method: 'POST',
@@ -216,7 +226,7 @@ class Header extends Component {
     }
     render() {
 
-        const { PhotoFileName, IsLogin, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal } = this.state;
+        const { PhotoFileName, IsLogin, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal, Advertis, PhotoPath  } = this.state;
         var tok = '';
 
         return (
@@ -260,6 +270,12 @@ class Header extends Component {
                     <div id="logo"> <a href="#"><img src="img/wireframe/logo.png" alt="" /></a> </div>
                     <div id="ad"> <img src="img/ad-blank.png" alt="" /> </div>
                 </div>
+                
+                <a href="https://daihoc.fpt.edu.vn/">
+                    <div className="container" style={{ marginLeft: '300px' }}>
+                        <img width={900} height={100} src={PhotoPath + Advertis.image}></img>
+                    </div>
+                </a>    
                 <div id="nav">
                     {ListGenre.slice(0, 5).map(gen =>
                         <ul key={gen.id}>
@@ -365,7 +381,7 @@ class Header extends Component {
                     </Modal.Body>
 
                 </Modal>
-
+                            
             </div>
         )
     }

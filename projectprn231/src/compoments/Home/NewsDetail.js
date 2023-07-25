@@ -9,6 +9,10 @@ import jwtDecode from "jwt-decode";
 import { BsSuitHeartFill, BsBookmarkPlusFill } from "react-icons/bs";
 import parse from 'html-react-parser';
 import Footer from "./Footer";
+import moment from "moment/moment";
+import { toast } from 'react-toastify';
+
+
 class NewsDetail extends React.Component {
     constructor(props) {
         super(props);
@@ -20,7 +24,6 @@ class NewsDetail extends React.Component {
             object: {},
             NewsSeenid: 1,
             addDate: null,
-            newsId: null,
             cateId: null,
             contentComment: '',
             isActive: false,
@@ -28,30 +31,36 @@ class NewsDetail extends React.Component {
             comments: [],
             id: 1,
             contentDetail: '',
-            liked: false,
+            liked: 0,
             countLike: 0,
+            NewsId: 0,
         };
     }
 
-    addNewsSeen() {
-        const { NewsSeenid, addDate, cateId, NewsId, userid } = this.state;
-
-        const url = 'https://localhost:7248/api/News/AddNewsSeen';
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ NewsSeenid, addDate, userid, NewsId, cateId })
-        })
-            .then(response => response.json())
-            .then(responseData => {
-                console.log(responseData); // Xử lý dữ liệu phản hồi từ API (nếu cần thiết)
+    addNewsSeen(e) {
+        var userid = localStorage.getItem('id');
+        if (userid != null && userid != '') {
+            const url = 'https://localhost:7248/api/NewsSeen/AddNewsSeen';
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    addDate: new Date().toISOString().slice(0, 16),
+                    userId: userid,
+                    newsId: e,
+                    cateId: 1
+                })
             })
-            .catch(error => {
-                console.error(error);
-            });
-
+                .then(response => response.json())
+                .then(responseData => {
+                    console.log(responseData); // Xử lý dữ liệu phản hồi từ API (nếu cần thiết)
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
     }
 
     addCommentNews() {
@@ -112,19 +121,29 @@ class NewsDetail extends React.Component {
         }
     }
 
-    addNewsSave() {
-        const { NewsSeenid, addDate, cateId, NewsId, userid } = this.state;
-        const url = 'https://localhost:7248/api/News/AddNewsSave';
+    addNewsSave(e) {
+        var userId = localStorage.getItem('id');
+        if (userId == null || userId == '') {
+            alert("you need login first!!!")
+            return;
+        }
+        const url = 'https://localhost:7248/api/NewsSeen/AddNewsSave';
         fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ NewsSeenid, addDate, userid, NewsId, cateId })
+            body: JSON.stringify({ 
+                addDate: new Date().toISOString().slice(0, 16),
+                userId: userId,
+                newsId: e,
+                cateId: 2
+            })
         })
             .then(response => response.json())
             .then(responseData => {
                 console.log(responseData); // Xử lý dữ liệu phản hồi từ API (nếu cần thiết)
+                toast.success("Add Successfull!!!")
             })
             .catch(error => {
                 console.error(error);
@@ -142,18 +161,21 @@ class NewsDetail extends React.Component {
 
     refeshListDataById() {
         const { id } = this.props.match.params;
+        //this.setState({NewsId: id});
         fetch(`https://localhost:7248/api/News/getNewsById?id=${id}`)
             .then(response => response.json())
             .then(data => {
-                this.setState({ object: data, contentDetail: data.content });
+                this.setState({ object: data, contentDetail: data.content, NewsId:data.id });
             })
             .catch(error => {
                 console.error('Error fetching object:', error);
             });
+        this.addNewsSeen(id);
     }
+
     refeshCommentById() {
         const { id } = this.props.match.params;
-        fetch(`https://localhost:7248/api/News/GetListComment?id=${id}`)
+        fetch('https://localhost:7248/api/News/GetListComment?id='+id)
             .then(response => response.json())
             .then(data => {
                 this.setState({ ListComment: data });
@@ -177,10 +199,6 @@ class NewsDetail extends React.Component {
             const NewsSeenid = this.state;
             const addDate = new Date().toISOString().slice(0, 16);
             const cateId = 2;
-            this.setState({ userid, NewsSeenid, addDate, NewsId, cateId }, () => {
-                this.addNewsSave();
-            });
-            // this.setState({nameUser : decodedToken.FullName});
         }
     };
     handleInputChange = (event) => {
@@ -210,27 +228,24 @@ class NewsDetail extends React.Component {
         this.refeshCommentById();
         this.refreshListGenre();
         this.refeshListDataById();
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token");  
+        const { id } = this.props.match.params;
+        this.setState({
+            NewsId: id
+        })
 
         if (token != null) {
-            const { id } = this.props.match.params;
+            
             const decodedToken = jwtDecode(token);
             const NewsId = id;
             const userid = decodedToken.id;
             const NewsSeenid = this.state;
             const addDate = new Date().toISOString().slice(0, 16);
             const cateId = 1;
-            this.setState({ userid, NewsSeenid, addDate, NewsId, cateId }, () => {
-                this.addNewsSeen();
-            });
-
-
-
-            // this.setState({nameUser : decodedToken.FullName});
         }
     }
     handleLikeClick = (id) => {
-        fetch(`https://localhost:7248/api/News/LikeComment?id=${id}`, {
+        fetch(`https://localhost:7248/api/Comment/LikeComment?Id=${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -238,16 +253,17 @@ class NewsDetail extends React.Component {
         })
             .then(response => response.json())
             .then(data => {
-                this.setState({ countLike: data });
+                this.setState({ liked: 1 });
+                //alert(this.state.liked);
+                this.refeshCommentById();
             })
             .catch(error => {
                 console.error(error);
             });
-
-
     }
+
     handleUnLikeClick = (id) => {
-        fetch(`https://localhost:7248/api/News/UnLikeComment?id=${id}`, {
+        fetch(`https://localhost:7248/api/Comment/UnLikeComment?Id=${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -255,8 +271,9 @@ class NewsDetail extends React.Component {
         })
             .then(response => response.json())
             .then(data => {
-                this.setState({ liked: false });
-                return;
+                this.setState({ liked: 0 });
+                //alert(this.state.liked);
+                this.refeshCommentById();
             })
             .catch(error => {
                 console.error(error);
@@ -264,17 +281,52 @@ class NewsDetail extends React.Component {
     }
 
     refeshCountLike() {
-
-        fetch(`https://localhost:7248/api/News/CountLike?id`)
+        fetch('https://localhost:7248/api/News/CountLike?id')
             .then(response => response.json())
             .then(data => {
-                this.setState({ countLike: data });
+                this.setState({ liked: 1 });
+                alert(this.state.liked);
+                this.refeshCommentById();
             })
             .catch(error => {
                 console.error('Error fetching object:', error);
             });
 
     }
+
+    CreateComment(e) {
+        var userId = localStorage.getItem('id');
+        var Newsid  = this.state.NewsId
+        if (userId == null || userId == '') {
+            window.location.href=`/newsdetail/${Newsid}`;
+            return;
+        }
+
+        fetch("https://localhost:7248/api/Comment/AddComment", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userId: userId, 
+                newsId: e, 
+                content: this.state.contentComment, 
+                createDate: new Date().toISOString().slice(0, 16), 
+                likeAmount: 0, 
+                isActive: false
+            })
+        })
+            .then(res => res.json())
+            .then((result) => {
+                toast.success("Comment Successfull. Congratulation!!!")
+            }, (error) => {
+                toast.error("Comment failed. Try Again!!!");
+            })
+
+        window.location.href=`/newsdetail/${Newsid}`;   
+    }
+    
     render() {
         const { object, ListGenre, liked, cateId, countLike, contentComment, comments, ListComment, contentDetail } = this.state;
         console.log(cateId);
@@ -295,9 +347,8 @@ class NewsDetail extends React.Component {
                                     <a> <i class="bi bi-save-fill"></i></a>
                                     <p style={{ float: 'right' }}>
                                         <b>{object.createBy}</b>
-                                        
                                     </p>
-                                    <BsBookmarkPlusFill size={20} color="red" onClick={this.handleClick} />
+                                    <BsBookmarkPlusFill size={20} color="red" onClick={() => this.addNewsSave(object.id)} />
 
                                 </div>
                             </div>
@@ -306,7 +357,8 @@ class NewsDetail extends React.Component {
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <form onSubmit={this.handleCommentSubmit}>
+                                                {/* <form onSubmit={this.handleCommentSubmit}> */}
+                                                <form>
                                                     <h3 class="pull-left">New Comment</h3>
                                                     <fieldset>
                                                         <div class="row">
@@ -317,12 +369,13 @@ class NewsDetail extends React.Component {
                                                             </div>
                                                         </div>
                                                     </fieldset>
-                                                    <button type="submit" class="btn  pull-right">Gửi</button>
+                                                    {contentComment != '' && <button type="button" class="btn  pull-right" onClick={() => this.CreateComment(object.id)}>Gửi</button> }
                                                 </form>
 
                                                 <h3>Comments</h3>
 
-                                                {ListComment.map(comment => (
+                                                {ListComment.map(comment => 
+                                                    // {comment.isActive == true && 
                                                     <div key={comment.id}>
                                                         <div class="media">
                                                             <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" /></a>
@@ -332,21 +385,18 @@ class NewsDetail extends React.Component {
                                                                 <ul class="list-unstyled list-inline media-detail pull-left">
                                                                     <li ><i class="fa fa-calendar"></i>{comment.createDate}
 
-                                                                        {liked == true &&
+                                                                        {liked == 1 &&
                                                                             <i>
                                                                                 <BsSuitHeartFill size={20} color="red" style={{ marginLeft: "10px" }} onClick={() => this.handleUnLikeClick(comment.id)} />
-                                                                                {this.state.countLike}
+                                                                                {comment.likeAmount}
                                                                             </i>
                                                                         }
-
-                                                                        {liked == false &&
+                                                                        {liked == 0 &&
                                                                             <i>
                                                                                 <BsSuitHeartFill size={20} color="gray" style={{ marginLeft: "10px" }} onClick={() => this.handleLikeClick(comment.id)} />
-                                                                                {this.state.countLike}
+                                                                                {comment.likeAmount}
                                                                             </i>
                                                                         }
-
-
                                                                     </li>
                                                                 </ul>
                                                                 <ul class="list-unstyled list-inline media-detail pull-right">
@@ -354,8 +404,8 @@ class NewsDetail extends React.Component {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                ))}
-
+                                                    //}
+                                                )}
                                             </div>
                                         </div>
                                     </div>
