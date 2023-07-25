@@ -32,6 +32,7 @@ class Header extends Component {
             IsLogin: false,
             PhotoFileName: '',
             search: '',
+            count: 0
         }
     }
     imageUpload = (e) => {
@@ -79,16 +80,59 @@ class Header extends Component {
     componentWillUnmount() {
         clearInterval(this.timerID);
     }
+
     componentDidMount() {
         this.timerID = setInterval(() => this.tick(), 1000);
         this.refreshDataWeather();
         this.refreshListGenre();
-        const token = localStorage.getItem('token');
+        try {
+            const token = localStorage.getItem('token');
+            if (token != null && token != '') {
+                const decodedToken = jwtDecode(token);
+                this.setState({ nameUser: decodedToken.name });
+                this.setState({ showModal: false, IsLogin: true });
+                this.CheckExist(token);
+            }
+        } catch (error) {
 
-        if (token != null) {
-            const decodedToken = jwtDecode(token);
-            this.setState({ nameUser: decodedToken.fullname });
-            this.setState({ showModal: false, IsLogin: true });
+        }  
+    }
+
+    CheckExist() {
+        try {
+            const token = localStorage.getItem('token');
+            if (token != null && token != '') {
+                const decodedToken = jwtDecode(token);
+                fetch("https://localhost:7248/api/User/GetUserByEmail?email="+decodedToken.email+"&fullname="+decodedToken.name, {
+                    method: 'POST',
+                    headers: {
+                        
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        
+                    });
+            }
+        } catch (error) {
+
+        }  
+
+        try {
+            const name = localStorage.getItem('nameFb');
+            const email =localStorage.getItem('emailFb');
+            fetch("https://localhost:7248/api/User/GetUserByEmail?email="+email+"&fullname="+name, {
+                    method: 'POST',
+                    headers: {
+                        
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        
+                    });
+        } catch(error) {
+
         }
     }
 
@@ -109,7 +153,6 @@ class Header extends Component {
 
     handleLogin = async () => {
         const { email, password } = this.state;
-        alert("Đang log in")
         try {
             const response = await fetch('https://localhost:7248/api/Login', {
                 method: 'POST',
@@ -148,6 +191,7 @@ class Header extends Component {
         }
 
     };
+    
 
     handleShow = () => {
         this.setState({ showModal: true })
@@ -172,6 +216,7 @@ class Header extends Component {
     render() {
 
         const { PhotoFileName, IsLogin, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal } = this.state;
+        var tok = '';
 
         return (
             <div>
@@ -224,8 +269,6 @@ class Header extends Component {
 
                 </div>
 
-
-
                 <Modal
                     show={showModal}
                     onHide={this.handleClose}
@@ -243,6 +286,7 @@ class Header extends Component {
                             <div className="login_wrapper">
                                 <div className="row">
                                     <div>
+                                        
                                         <GoogleOAuthProvider clientId="186729364333-sfd6o0oe4ud91dllo9t4s2p834kjj53e.apps.googleusercontent.com">
                                             <GoogleLogin
                                                 onSuccess={credentialResponse => {
@@ -251,7 +295,8 @@ class Header extends Component {
                                                         Profile: credentialResponse,
                                                         tokenFromSocial: credentialResponse.credential
                                                     })
-                                                    localStorage.setItem('token', this.state.tokenFromSocial);
+                                                    localStorage.setItem('token', credentialResponse.credential);
+                                                    window.location.href="/";
                                                 }}
                                                 onError={() => {
                                                     console.log('Login Failed');
@@ -265,7 +310,11 @@ class Header extends Component {
                                             onResolve={(response) => {
                                                 console.log(response)
                                                 this.setState({ Profile: response.data, tokenFromSocial: response.data.accessToken });
-                                                localStorage.setItem('token', this.state.tokenFromSocial);
+                                               
+                                                localStorage.setItem('token', response.data.accessToken);
+                                                localStorage.setItem('nameFb', response.data.name);
+                                                localStorage.setItem('emailFb', response.data.email);
+                                                window.location.href="/";
                                             }}
 
                                             onReject={(error) => {
