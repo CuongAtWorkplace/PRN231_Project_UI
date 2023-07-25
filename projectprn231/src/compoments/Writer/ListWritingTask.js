@@ -39,7 +39,7 @@ export class ListWritingTask extends Component {
     refreshList() {
         const jwt = localStorage.getItem('token');
         const id = localStorage.getItem('id');
-        fetch("https://localhost:7248/api/AssignTask/GetAllAssignTaskByWriterId?writerId=3", {
+        fetch("https://localhost:7248/api/AssignTask/GetAllAssignTaskByWriterId?writerId="+id, {
             headers: {
                 'Authorization': `Bearer ${jwt}`
             },

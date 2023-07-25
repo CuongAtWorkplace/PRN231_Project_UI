@@ -9,7 +9,6 @@ import "./table.css";
 const columns = [
   { field: 'fullName', headerName: 'Full Name', width: 100 },
   { field: 'email', headerName: 'Email', width: 150 },
-  { field: 'password', headerName: 'Password', width: 150 },
   { field: 'phone', headerName: 'Phone', width: 150 },
   { field: 'address', headerName: 'Address', width: 200 },
   { field: 'roleName', headerName: 'Role Name', width: 150 },

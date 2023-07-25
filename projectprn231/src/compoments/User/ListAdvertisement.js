@@ -64,7 +64,9 @@ export class ListAdvertisement extends Component {
                             </div>
                             <div class="col-md-6 border-right">
                                 <h2>Danh Sách Mua Hàng</h2>
-                                {OrderList.map(item =>
+
+                                {OrderList != [] && OrderList.map(item =>
+
                                     <div>
                                         <div class="row p-2 bg-white border rounded">
 

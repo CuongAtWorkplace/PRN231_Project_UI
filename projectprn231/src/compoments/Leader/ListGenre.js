@@ -88,7 +88,8 @@ export class ListGenre extends Component {
             },
             body: JSON.stringify({
                 genreName: this.state.GenreName,
-                description: this.state.Description
+                description: this.state.Description, 
+                isDeleted: 0
             })
         })
             .then(res => res.json())
@@ -121,7 +122,8 @@ export class ListGenre extends Component {
                 body: JSON.stringify({
                     id: this.state.GenreId,
                     genreName: this.state.GenreName,
-                    description: this.state.Description
+                    description: this.state.Description,
+                    isDeleted: 0
                 })
             })
                 .then(res => res.json())

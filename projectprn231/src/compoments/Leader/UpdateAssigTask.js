@@ -41,7 +41,7 @@ class UpdateAssignTask extends Component {
             })
             .then(response => response.json())
             .then(data => {
-                this.setState({AssignTask: data, AssignTaskId: data.id, TopicName:data.title, Description: data.description, StartDate: data.startDate, EndDate:data.endDate, WriterId: data.WriterId, ReporterId: data.ReporterId, GenreId: data.GenreId, GenreName: data.genre.genreName });
+                this.setState({AssignTask: data, AssignTaskId: data.id, TopicName:data.title, Description: data.description, StartDate: data.startDate, EndDate:data.endDate, WriterId: data.writerId, ReporterId: data.reporterId, GenreId: data.genreId, GenreName: data.genre.genreName });
             });
         fetch("https://localhost:7248/api/Genre/GetAllGenre", {
             headers: {
@@ -98,7 +98,8 @@ class UpdateAssignTask extends Component {
                 reporterId: this.state.ReporterId,
                 genreId: this.state.GenreId,
                 startDate: this.state.StartDate,
-                endDate: this.state.EndDate
+                endDate: this.state.EndDate, 
+                isDeleted: false
             })
         })
         .then(res => res.json())
@@ -108,6 +109,8 @@ class UpdateAssignTask extends Component {
         }, (error) => {
             toast.error("Update failed. Try Again!!!")
         })
+
+        this.props.history.goBack();
     }
     render() {
         var {TopicName, Description,  StartDate, EndDate, AssignTask, Genre, User, GenreId, ReporterId, WriterId, GenreName } = this.state;
@@ -126,7 +129,6 @@ class UpdateAssignTask extends Component {
                                 <div className="form-group">
                                     <label className="control-label">Topic Name:</label>
                                     <input name="ProductPrice" className="form-control" value={TopicName} onChange={(e) => this.onChangeTopicName(e)} />
-                                    {/* {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>} */}
                                 </div>
 
                                 <div className="form-group">
@@ -157,7 +159,6 @@ class UpdateAssignTask extends Component {
                                             {gen.genreName}
                                         </option>)}
                                     </select>
-                                    {/* {ErrorTopicName == null ? <input type="hidden" /> : <p style={{ color: 'red' }}>{ErrorTopicName}</p>} */}
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Assign To Writer:</label>

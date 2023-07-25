@@ -28,6 +28,7 @@ class ViewDetailWritingProcess extends Component {
             PhotoFileName: '',
             PhotoPath: 'https://localhost:7248/Photos/',
             IsChecked: false,
+            GenreId: 0,
 
             AssignTaskRequire: {},
             DescriptionTask: '',
@@ -52,7 +53,7 @@ class ViewDetailWritingProcess extends Component {
             })
             .then(response => response.json())
             .then(data => {
-                this.setState({ AssignTaskRequire: data, DescriptionTask: data.description, LeaderName: data.leader.fullName, ReporterName: data.reporter.fullName, GenreName: data.genre.genreName });//ImageCover: data.ImageCover
+                this.setState({ AssignTaskRequire: data, DescriptionTask: data.description, LeaderName: data.leader.fullName, ReporterName: data.reporter.fullName, GenreName: data.genre.genreName, GenreId: data.genreId, Profile: data.image });//ImageCover: data.ImageCover
             });
         fetch("https://localhost:7248/api/ReportTask/GetReportTaskByTaskId?taskId=" + id, {
             headers: {
@@ -128,7 +129,32 @@ class ViewDetailWritingProcess extends Component {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${jwt}`
+                }
+            })
+                .then(res => res.json())
+                .then((result) => {
+                    toast.success("Accept Task successfull. Congratulation!!!")
+                    this.refreshList();
+                }, (error) => {
+                    toast.error("Accept task failed. Try Again!!!")
+                })
+
+            fetch("https://localhost:7248/api/News/InsertNews", {
+                method: 'Post',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwt}`
                 },
+                body: JSON.stringify({
+                    title: this.state.GenreName,
+                    description: this.state.Description, 
+                    content: this.state.NewsDetail,
+                    image: this.state.ImageCover, 
+                    createBy: this.state.CreateBy, 
+                    createDate: this.state.CreateDate, 
+                    genreId: this.state.GenreId
+                })
             })
                 .then(res => res.json())
                 .then((result) => {
@@ -187,13 +213,15 @@ class ViewDetailWritingProcess extends Component {
                                     <div className="App">
                                         <CKEditor
                                             editor={ClassicEditor}
-                                            data={NewsDetail}
+                                            data={NewsDetail != null ? NewsDetail : ""}
                                         />
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <label class="control-label">Image Cover: </label>
-                                    {ImageCover != '' ? <div style={{ border: '1px solid black', width: 120, height: 130, backgroundImage: 'url(https://localhost:7248/Photos/'+ImageCover+')' }} ></div> : null}
+                                    <label class="control-label">Image Cover: </label> <br/>
+                                    {/* <img width="250px" height="250px"
+                                        src={PhotoPath + PhotoFileName} /> */}
+                                    {ImageCover != '' ? <div style={{ border: '1px solid black', width: 250, height: 250, backgroundImage: 'url(https://localhost:7248/Photos/'+ImageCover+')' }} ></div> : null}
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">CreateDate:</label>
@@ -236,8 +264,8 @@ class ViewDetailWritingProcess extends Component {
                             {ReportTaskById.isChecked &&
                                 <>
                                     <p><b>Title: </b>{ReportTaskById.title}</p>
-                                    <p><b>Description: </b>{parse(DescriptionReporter)}</p>
-                                    <p><b>Content: </b>{parse(ContentReporter)}</p>
+                                    <p><b>Description: </b>{DescriptionReporter != null && parse(DescriptionReporter)}</p>
+                                    <p><b>Content: </b>{ContentReporter != null && parse(ContentReporter)}</p>
                                     <p><b>Source: </b>{DocumentList != [] && DocumentList.map(it => <a href="" onClick={() => this.DownLoadFile(it)}>{it.fileName}</a>)}</p>
                                 </>
                             }

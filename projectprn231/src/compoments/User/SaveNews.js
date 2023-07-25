@@ -9,6 +9,7 @@ export class SaveNews extends Component {
         this.state = {
             userdetail: {},
             userid: null,
+            email:'',
             NewsSeen: [],
             check:false,
         }
@@ -35,9 +36,8 @@ export class SaveNews extends Component {
 
             const decodedToken = jwtDecode(token);
 
-            const userid = decodedToken.id;
+            const userid = decodedToken.email;
             this.setState({ userid }, () => {
-
                 this.refreshNewsSeen();
             });
 
@@ -78,13 +78,13 @@ export class SaveNews extends Component {
 
                                 }
                                 
-                                {NewsSeen.map(item =>
+                                {NewsSeen != [] && NewsSeen.map(item =>
                                     <a href={`/newsdetail/${item.id}`}>
                                         <div>
                                             <div class="row p-2 bg-white border rounded">
                                                 <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="https://i.imgur.com/QpjAiHq.jpg" /></div>
                                                 <div class="col-md-9 mt-1">
-                                                    <h5> <a href="#">{item.title}</a> </h5>
+                                                    <h5>{item.title}</h5>
                                                     <p class="">{item.description}<br /><br /></p>
                                                 </div>
                                             </div>
