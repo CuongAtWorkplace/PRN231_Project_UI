@@ -38,7 +38,8 @@ class Home extends Component {
       hasMore3: true,
       hasMore4: true,
       NewsFirst: {},
-
+      PhotoFileName: '',
+      PhotoPath: 'https://localhost:7248/Photos/',
     }
   }
 
@@ -233,7 +234,7 @@ class Home extends Component {
   }
   render() {
 
-    const { NewsFirst, hasMore, hasMore1, hasMore2, hasMore3, hasMore4, data, data1, data2, data3, dataall, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId } = this.state;
+    const { NewsFirst, hasMore, hasMore1, hasMore2, hasMore3, hasMore4, data, data1, data2, data3, dataall, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, PhotoPath } = this.state;
 
 
     return (
@@ -242,15 +243,17 @@ class Home extends Component {
         <Header />
         <div id="content-wrapper" style={{ marginTop: "20px" }}>
           <div id="content">
-            <div className="feature clearfloat" id="lead">
-              <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-zQfyRzI4bm_31zRRBKBPPjapxMgtc_YSYnnBHBI6iT7LLf4Prooy7t1w0Z2CFkef5z8&usqp=CAU" alt="" id="leadpic" /></a>
-              <h3>
-                <a href="#">Mới Nhất :</a><br />
-              </h3>
-              <a href="#" className="title"> {NewsFirst.title} </a>
-              <a> {NewsFirst.description}</a><br />
-              {<a href="#">More&raquo;</a>}
-            </div>
+            <a href={`/newsdetail/${NewsFirst.id}`}>
+              <div className="feature clearfloat" id="lead">
+                <img src={PhotoPath + NewsFirst.image} alt="" id="leadpic" />
+                <h3>
+                  <a href="#"><b>Mới Nhất</b></a><br />
+                </h3>
+                {NewsFirst.title}
+                {NewsFirst.description}<br />
+                {<a href="#">More&raquo;</a>}
+              </div>
+            </a>
             <div id="leftcol">
               <h3>
                 <a href="#">Features</a><br />
@@ -267,7 +270,7 @@ class Home extends Component {
 
                     <div className="feature">
                       <a href={`/newsdetail/${item.id}`} className="title"> {item.title}</a> <a href="#">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwh9idTcHa2phpbCAWTfpAYkqcx1vrnQnXMfN20YEKhLJgZjeF3PWWpc8c7HI1PGxF5cM&usqp=CAU" alt="" /></a>
+                        <img src={PhotoPath + item.image} alt="" /></a>
 
                       <p>{item.description}</p>
                     </div>
@@ -289,10 +292,12 @@ class Home extends Component {
                   loader={<h4>Loading...</h4>}
                   endMessage={<p></p>}>
                   {data1.map(item1 => (
-                    <div key={item1.id} className="clearfloatitem">
-                      <a href="#"><img src="images/iphone.jpg" alt="" /></a> <a href="#" className="title">{item1.title}</a>
-                      <p>{item1.description}</p>
-                    </div>
+                    <a href={`/newsdetail/${item1.id}`}>
+                      <div key={item1.id} className="clearfloatitem">
+                        <img src="images/iphone.jpg" alt="" />{item1.title}
+                        <p>{item1.description}</p>
+                      </div>
+                    </a>
                   ))}
 
 
@@ -309,10 +314,13 @@ class Home extends Component {
                   loader={<h4>Loading...</h4>}
                   endMessage={<p></p>}>
                   {data2.map(item2 => (
-                    <div key={item2.id} className="clearfloatitem">
-                      <a href="#"><img src="images/iphone.jpg" alt="" /></a> <a href="#" className="title">{item2.title}</a>
-                      <p>{item2.description}</p>
-                    </div>
+                    <a href={`/newsdetail/${item2.id}`}>
+                      <div key={item2.id} className="clearfloatitem">
+                        <img src="images/iphone.jpg" alt="" /> {item2.title}
+                        <p>{item2.description}</p>
+                      </div>
+                    </a>
+
                   ))}
 
 
@@ -328,10 +336,12 @@ class Home extends Component {
                   loader={<h4>Loading...</h4>}
                   endMessage={<p></p>}>
                   {data3.map(item3 => (
-                    <div key={item3.id} className="clearfloatitem">
-                      <a href="#"><img src="images/iphone.jpg" alt="" /></a> <a href="#" className="title">{item3.title}</a>
-                      <p>{item3.description}</p>
-                    </div>
+                    <a href={`/newsdetail/${item3.id}`}>
+                      <div key={item3.id} className="clearfloatitem">
+                        <img src="images/iphone.jpg" alt="" />{item3.title}
+                        <p>{item3.description}</p>
+                      </div>
+                    </a>
                   ))}
 
 
@@ -350,47 +360,28 @@ class Home extends Component {
 
               {dataall.map(d => (
 
+                <a href={`/newsdetail/${d.id}`}>
+                  <div key={d.id}>
+                    <a href="#"><img src="img/side-ad.png" alt="" className="ad" /></a>
+                    <a href="#"><img src="img/side-ad.png" alt="" className="ad-right" /></a>
+                    <a href="#"><img src="img/side-ad.png" alt="" className="ad" /></a>
+                    <a href="#"><img src="img/side-ad.png" alt="" className="ad-right" /></a>
 
-                <div key={d.id}>
-                  <a href="#"><img src="img/side-ad.png" alt="" className="ad" /></a>
-                  <a href="#"><img src="img/side-ad.png" alt="" className="ad-right" /></a>
-                  <a href="#"><img src="img/side-ad.png" alt="" className="ad" /></a>
-                  <a href="#"><img src="img/side-ad.png" alt="" className="ad-right" /></a>
+                    <h2 className="heading-blue"></h2>
+                    <img src="img/wayne.jpg" alt="" />
+                    <h3>{d.title}</h3>
+                    <p>Read More &raquo;</p>
+                    <h2 className="heading">Celebrity Sightings</h2>
+                    <img src="img/casey.jpg" alt="" className="ad" /> <img src="img/hobo.jpg" alt="" className="ad-right" />
+                  </div>
+                </a>
 
-                  <h2 className="heading-blue"></h2>
-                  <img src="img/wayne.jpg" alt="" />
-                  <h3><a href="#">{d.title}</a></h3>
-                  <p><a href="#">Read More &raquo;</a></p>
-                  <h2 className="heading">Celebrity Sightings</h2>
-                  <img src="img/casey.jpg" alt="" className="ad" /> <img src="img/hobo.jpg" alt="" className="ad-right" />
-                </div>
               ))}
 
             </InfiniteScroll>
           </div>
 
         </div>
-        {/* <div id="extras">
-          <div id="recommended">
-            <h2 className="heading">Recommended Stories</h2>
-            {NewsHome.slice(0, 5).map(news => (
-              <div>
-                <ul>
-                  <li><a href="#">{news.title}</a></li>
-                </ul>
-              </div>
-            ))}
-
-          </div>
-          <div id="programs">
-            <h2 className="heading">What's On Tonight</h2>
-            <img src="img/rick.jpg" alt="" /> <img src="img/cbc.png" alt="" />
-          </div>
-          <div id="cartoon">
-            <h2 className="heading">Humour</h2>
-            <img src="img/cartoon.jpg" alt="" />
-          </div>
-        </div> */}
         <Footer />
 
       </div>
