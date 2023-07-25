@@ -32,9 +32,11 @@ class Header extends Component {
             IsLogin: false,
             PhotoFileName: '',
             search: '',
+
             count: 0, 
             Advertis: {}, 
             PhotoPath: 'https://localhost:7248/Photos/',
+
 
 
             showModalSignUp: false,
@@ -45,6 +47,7 @@ class Header extends Component {
             checkEmail: false,
             checkLogin:true,
             count: 0
+
         }
     }
     imageUpload = (e) => {
@@ -280,7 +283,7 @@ class Header extends Component {
     
     handleSignUp2 = async () => {
         this.checkEmailExist();
-    
+   
         if (this.state.checkEmail == false) {
             const { email, password, fullname, address, phone } = this.state;
             try {
@@ -334,8 +337,10 @@ class Header extends Component {
         }
     }
     render() {
+
         const {checkLogin, fullname, address, checkEmail, phone, PhotoFileName, noti, showModalSignUp, IsLogin, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal, Advertis, PhotoPath } = this.state;
 
+          var tok = '';
 
         return (
             <div>
@@ -479,6 +484,106 @@ class Header extends Component {
                                 <div class="login_message">
                                     <p> <a href="#" onClick={this.handleShoSignUp}> Đăng Ký</a> </p>
                                 </div>
+
+                            </div>
+                        </div>
+
+
+                    </Modal.Body>
+
+                </Modal>
+
+                <Modal
+                    show={showModalSignUp}
+                    onHide={this.handleClose}
+                    backdrop="static"
+                    keyboard={false}
+                >
+                    <Modal.Header closeButton>
+
+                    </Modal.Header>
+                    <Modal.Body>
+
+                        <div class="modal-body">
+
+
+                            <div class="login_wrapper">
+                                <div class="row">
+                                    <div>
+                                        {/* <a href="#" class="btn btn-primary facebook"> <span>Login with Facebook</span> <i class="fa fa-facebook"></i> </a> */}
+                                        <GoogleOAuthProvider clientId="186729364333-sfd6o0oe4ud91dllo9t4s2p834kjj53e.apps.googleusercontent.com">
+                                            <GoogleLogin
+                                                onSuccess={credentialResponse => {
+                                                    console.log(credentialResponse);
+                                                    this.setState({
+                                                        Profile: credentialResponse,
+                                                        tokenFromSocial: credentialResponse.credential
+                                                    })
+                                                    localStorage.setItem('token', this.state.tokenFromSocial);
+                                                }}
+                                                onError={() => {
+                                                    console.log('Login Failed');
+                                                }}
+                                            />
+                                        </GoogleOAuthProvider>
+                                    </div>
+                                    <div>
+                                        {/* <a href="#" class="btn btn-primary google-plus"> Login  with Google <i class="fa fa-google-plus"></i> </a> */}
+                                        {/* <LoginSocialFacebook
+                                            appId="1230730321091573"
+                                            onResolve={(response) => {
+                                                console.log(response)
+                                                this.setState({ Profile: response.data, tokenFromSocial: response.data.accessToken });
+                                                localStorage.setItem('token', this.state.tokenFromSocial);
+                                            }}
+
+                                            onReject={(error) => {
+                                                console.log(error)
+                                            }}
+                                        >
+                                            <FacebookLoginButton />
+                                        </LoginSocialFacebook> */}
+                                    </div>
+                                </div>
+                                <h2>or</h2>
+                                <form >
+                                    {checkEmail == true &&
+                                        <b>Email đã tồn tại</b>
+                                    }
+                                    <div class="formsix-pos">
+                                        <div class="form-group i-email">
+                                            <input type="text" class="form-control" required="" id="email2" value={fullname}
+                                                onChange={this.handleFullNameChange} placeholder="Họ Và Tên *" />
+                                        </div>
+                                    </div>
+                                    <div class="formsix-pos">
+                                        <div class="form-group i-email">
+                                            <input type="text" class="form-control" required="" id="email2" value={email}
+                                                onChange={this.handleEmailChange} placeholder="Email *" />
+                                        </div>
+                                    </div>
+                                    <div class="formsix-e">
+                                        <div class="form-group i-password">
+                                            <input type="password" class="form-control" required="" id="password2" value={password}
+                                                onChange={this.handlePasswordChange} placeholder="Mật Khẩu *" />
+                                        </div>
+                                    </div>
+                                    <div class="formsix-pos">
+                                        <div class="form-group i-email">
+                                            <input type="text" class="form-control" required="" id="email2" value={phone}
+                                                onChange={this.handlePhoneChange} placeholder="Phone" />
+                                        </div>
+                                    </div>
+                                    <div class="formsix-e">
+                                        <div class="form-group i-password">
+                                            <input type="text" class="form-control" required="" id="password2" value={address}
+                                                onChange={this.handleAddressChange} placeholder="Địa Chỉ" />
+                                        </div>
+                                    </div>
+                                    <div class="login_btn_wrapper">
+                                        <button style={{ width: "100%" }} type="button" onClick={this.handleSignUp} class=" btn btn-block mybtn btn-primary tx-tfm">Đăng Ký</button>
+                                    </div>
+                                </form>
 
                             </div>
                         </div>
