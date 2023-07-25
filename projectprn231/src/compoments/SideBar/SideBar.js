@@ -14,7 +14,7 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import React, { Component } from "react";
 import { Table } from "../table/Table";
-import { Route , Redirect  } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import { CommentBrowseTable } from "../table/CommentBrowseTable";
 import { ListReportTask } from "../Reporter/ListReportTask";
 
@@ -23,9 +23,6 @@ import { ListGenre } from '../Leader/ListGenre';
 import { ListReject } from "../Leader/ListReject"
 import { ListWritingTask } from "../Writer/ListWritingTask";
 import { ToDoWritingTask } from "../Writer/ToDoWritingTask";
-//import { ListAssignTask } from "../Leader/ListAssignTask";
-import { NewTest } from "../TestFile/NewTest";
-import Test from "../TestFile/Test";
 import Writer from "../Writer/Writer";
 
 import ViewDetailReportProcess from "../Leader/ViewDetailReportProcess";
@@ -37,9 +34,8 @@ import { Leader } from "../Leader/Leader";
 import { ListAssignTask } from "../Leader/ListAssignTask";
 import { ViewReportProcess } from '../Leader/ViewReportProcess';
 import { ViewWritingProcess } from '../Leader/ViewWritingProcess';
-
-//import { Redirect } from 'react-router-dom';
-//import { Rout } from 'react-router-dom';
+import { AdvertisementTable } from "../table/AdvertisementTable";
+import { Dashboard } from "../table/DashBoard";
 
 export class SideBar extends Component {
 
@@ -49,7 +45,7 @@ export class SideBar extends Component {
         this.state = {
             search: '',
             role: '',
-            roleid : 1,
+            roleid: 1,
         }
     }
 
@@ -93,9 +89,9 @@ export class SideBar extends Component {
 
     };
     render() {
-        const { role ,roleid} = this.state;
-        
-        if (roleid == 2  ) {
+        const { role, roleid } = this.state;
+
+        if (roleid == 2) {
             // Nếu không có quyền truy cập, chuyển hướng đến trang không cho phép truy cập hoặc trang login
             return <Redirect to="/" />;
         } return (
@@ -111,13 +107,17 @@ export class SideBar extends Component {
                     <div className="center">
                         <ul>
                             <p className="Title">Main</p>
-                            <a href="/manager/AdminDashBoard">
-                                <li>
-                                    <DashboardIcon className="icon" />
-                                    <span>Dashboard</span>
-                                </li>
-                            </a>
-                            <p className="Title">Lists</p>
+                            {
+                                this.state.role == '1' &&
+                                <a href="/manager/AdminHome">
+                                    <li>
+                                        <DashboardIcon className="icon" />
+                                        <span>Dashboard</span>
+                                    </li>
+                                </a>
+                            }
+
+                            {/* <p className="Title">Lists</p> */}
 
                             {/* Leader */}
                             {
@@ -205,18 +205,27 @@ export class SideBar extends Component {
                             {/* Admin */}
 
                             {
-                                this.state.role == '1' && <>  <a href="/manager/table">
-                                    <li>
-                                        <ProductionQuantityLimitsIcon className="icon" />
-                                        <span>List User</span>
-                                    </li>
-                                </a>
+                                this.state.role == '1' && <>
+                                    <a href="/manager/table">
+                                        <li>
+                                            <ProductionQuantityLimitsIcon className="icon" />
+                                            <span>List User</span>
+                                        </li>
+                                    </a>
 
                                     <a href="/manager/comment">
 
                                         <li>
                                             <NewspaperIcon className="icon" />
                                             <span>List Comment</span>
+                                        </li>
+                                    </a>
+
+                                    <a href="/manager/AdvertisementTable">
+
+                                        <li>
+                                            <NewspaperIcon className="icon" />
+                                            <span>Advertisement Management</span>
                                         </li>
                                     </a>
                                 </>
@@ -283,6 +292,8 @@ export class SideBar extends Component {
                         {/* Admin */}
                         <Route path="/manager/table" component={Table} />
                         <Route path="/manager/comment" component={CommentBrowseTable} />
+                        <Route path="/manager/AdvertisementTable" component={AdvertisementTable} /> 
+                        <Route path="/manager/AdminHome" component={Dashboard} />
                         {/* <Route path="/AdminDashBoard" component={Admin_Home} /> */}
                         {/* <Route path="/Advertisement" component={Advertisement} /> */}
                         {/* <Route path="/Ok" component={Ok}/>   */}
@@ -318,7 +329,5 @@ export class SideBar extends Component {
                 </div>
             </div>
         )
-
-       
     }
 }

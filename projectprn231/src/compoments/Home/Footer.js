@@ -41,7 +41,7 @@ class Footer extends Component {
                                         <li><a href="#">Home</a></li>
                                         <li><a href="#">About</a></li>
                                         <li><a href="#">Get started</a></li>
-                                        <li><a href="/advertisement">Quang cao</a></li>
+                                        <li><a href="/advertisement">Advertisement</a></li>
                                     </ul>
                                 </div>
                                 <div className="col-lg-2 col-md-6">
@@ -50,7 +50,7 @@ class Footer extends Component {
                                         <li><a href="#">Home</a></li>
                                         <li><a href="#">About</a></li>
                                         <li><a href="#">Get started</a></li>
-                                        <li><a href="#">Quang Cáo</a></li>
+                                        <li><a href="/advertisement">Advertisement</a></li>
                                     </ul>
                                 </div>
                                 <div className="col-lg-4 col-md-6">

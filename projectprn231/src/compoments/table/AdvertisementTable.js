@@ -125,7 +125,17 @@ export class AdvertisementTable extends Component {
         const emailData = {
           to: user.email, // Email người nhận từ đối tượng user
           subject: 'Payment Announcement', // Tiêu đề email
-          text: `You can pay your payment in this link: http://localhost:16262/vnpay_pay.aspx?amount=${amount}&adId=${adId}` // Nội dung email với liên kết có giá trị amount và adId từ bảng
+          text: `
+          You can pay your payment in this link: http://localhost:16262/vnpay_pay.aspx?amount=${amount}&adId=${adId}
+        
+          
+          Join us to catch the opportunity and become successful!
+        
+          Contact Us :
+          Advertising Department
+             Address: Gas Station 39 National Highway 21, Thach Hoa Commune, Thach That District, Hanoi
+             Phone: 0964918288, Hotline: 0944775777
+        ` // Nội dung email dưới dạng text
         };
   
         fetch('https://localhost:7248/api/Email', {

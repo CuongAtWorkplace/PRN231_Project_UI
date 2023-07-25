@@ -111,29 +111,29 @@ class Header extends Component {
                 })
                     .then(response => response.json())
                     .then(data => {
-                        
+                        localStorage.setItem('id', data);
                     });
             }
         } catch (error) {
 
         }  
 
-        try {
-            const name = localStorage.getItem('nameFb');
-            const email =localStorage.getItem('emailFb');
-            fetch("https://localhost:7248/api/User/GetUserByEmail?email="+email+"&fullname="+name, {
-                    method: 'POST',
-                    headers: {
+        // try {
+        //     const name = localStorage.getItem('nameFb');
+        //     const email =localStorage.getItem('emailFb');
+        //     fetch("https://localhost:7248/api/User/GetUserByEmail?email="+email+"&fullname="+name, {
+        //             method: 'POST',
+        //             headers: {
                         
-                    },
-                })
-                    .then(response => response.json())
-                    .then(data => {
+        //             },
+        //         })
+        //             .then(response => response.json())
+        //             .then(data => {
                         
-                    });
-        } catch(error) {
+        //             });
+        // } catch(error) {
 
-        }
+        // }
     }
 
     handleClick = () => {
@@ -141,6 +141,7 @@ class Header extends Component {
         localStorage.removeItem('roleid');
         localStorage.removeItem('id');
         this.setState({ IsLogin: false })
+        window.location.href="/";
     };
 
     handleEmailChange = (e) => {
@@ -305,7 +306,7 @@ class Header extends Component {
                                         </GoogleOAuthProvider>
                                     </div>
                                     <div  className="form-group">
-                                        <LoginSocialFacebook
+                                        {/* <LoginSocialFacebook
                                             appId="1230730321091573"
                                             onResolve={(response) => {
                                                 console.log(response)
@@ -322,7 +323,7 @@ class Header extends Component {
                                             }}
                                         >
                                             <FacebookLoginButton />
-                                        </LoginSocialFacebook>
+                                        </LoginSocialFacebook> */}
                                     </div>
                                 </div>
                                 <h2>or</h2>
