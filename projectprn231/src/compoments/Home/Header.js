@@ -39,7 +39,7 @@ class Header extends Component {
             fullname: '',
             noti: false,
             checkEmail: false,
-
+            checkLogin:true,
             count: 0
 
         }
@@ -197,7 +197,7 @@ class Header extends Component {
 
                 this.setState({ nameUser: decodedToken.fullname });
                 this.setState({ showModal: false, IsLogin: true })
-
+                this.setState({checkLogin : true});
 
                 if (decodedToken.roleid == 2) {
                     window.location.href = "/";
@@ -207,7 +207,7 @@ class Header extends Component {
                 }
             } else {
                 console.log('Đăng nhập thất bại');
-
+                this.setState({checkLogin : false});
             }
         } catch (error) {
             console.log('Lỗi gọi API', error);
@@ -217,7 +217,7 @@ class Header extends Component {
 
     checkEmailExist = () => {
         const { email } = this.state;
-        alert(email);
+    
         fetch(`https://localhost:7248/api/User/GetUserByEmail?email=${email}`)
             .then(response => response.json())
             .then(data => {
@@ -248,10 +248,46 @@ class Header extends Component {
                     this.setState({ showModal: true });
                     this.setState({ noti: true });
 
-                } else {
-                    console.log('Đăng nhập thất bại');
+                } 
+            } catch (error) {
+                // Xử lý lỗi gọi API
+                console.log('Lỗi gọi API', error);
+                // this.handleSignUp2();
+            }
+        } else {
+            this.setState({ showModalSignUp: true });
+            
+        }
+    };
+    handleCall = () => {
+       
+       
+        this.handleSignUp();
+    
+       
+      };
+    
+    handleSignUp2 = async () => {
+        this.checkEmailExist();
+    
+        if (this.state.checkEmail == false) {
+            const { email, password, fullname, address, phone } = this.state;
+            try {
+                const response = await fetch(`https://localhost:7248/api/User/InsertUser`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password, fullname, address, phone }),
+                });
 
-                }
+                if (response.ok) {
+
+                    this.setState({ showModalSignUp: false });
+                    this.setState({ showModal: true });
+                    this.setState({ noti: true });
+
+                } 
             } catch (error) {
                 // Xử lý lỗi gọi API
                 console.log('Lỗi gọi API', error);
@@ -289,7 +325,7 @@ class Header extends Component {
     render() {
 
 
-        const { fullname, address, checkEmail, phone, PhotoFileName, noti, showModalSignUp, IsLogin, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal } = this.state;
+        const {checkLogin, fullname, address, checkEmail, phone, PhotoFileName, noti, showModalSignUp, IsLogin, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal } = this.state;
 
           var tok = '';
 
@@ -405,6 +441,9 @@ class Header extends Component {
                                     {noti == true &&
                                         <b>Đăng Kí Thành Công</b>
                                     }
+                                     {checkLogin == false &&
+                                        <b>Email Hoặc Mật Khẩu Không Chính Xác</b>
+                                    }
                                     <div class="formsix-pos">
                                         <div class="form-group i-email">
                                             <input type="text" class="form-control" required="" id="email2" value={email}
@@ -472,7 +511,7 @@ class Header extends Component {
                                     </div>
                                     <div>
                                         {/* <a href="#" class="btn btn-primary google-plus"> Login  with Google <i class="fa fa-google-plus"></i> </a> */}
-                                        <LoginSocialFacebook
+                                        {/* <LoginSocialFacebook
                                             appId="1230730321091573"
                                             onResolve={(response) => {
                                                 console.log(response)
@@ -485,7 +524,7 @@ class Header extends Component {
                                             }}
                                         >
                                             <FacebookLoginButton />
-                                        </LoginSocialFacebook>
+                                        </LoginSocialFacebook> */}
                                     </div>
 
                                 </div>
