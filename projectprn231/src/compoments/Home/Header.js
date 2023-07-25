@@ -32,7 +32,16 @@ class Header extends Component {
             IsLogin: false,
             PhotoFileName: '',
             search: '',
+
+            showModalSignUp: false,
+            phone: '',
+            address: '',
+            fullname: '',
+            noti: false,
+            checkEmail: false,
+
             count: 0
+
         }
     }
     imageUpload = (e) => {
@@ -85,6 +94,7 @@ class Header extends Component {
         this.timerID = setInterval(() => this.tick(), 1000);
         this.refreshDataWeather();
         this.refreshListGenre();
+
         try {
             const token = localStorage.getItem('token');
             if (token != null && token != '') {
@@ -140,16 +150,28 @@ class Header extends Component {
         localStorage.removeItem('token');
         localStorage.removeItem('roleid');
         localStorage.removeItem('id');
+
+        this.setState({ showModalSignUp: false })
+
         this.setState({ IsLogin: false })
         window.location.href="/";
+
     };
 
     handleEmailChange = (e) => {
         this.setState({ email: e.target.value });
     };
-
     handlePasswordChange = (e) => {
         this.setState({ password: e.target.value });
+    };
+    handleFullNameChange = (e) => {
+        this.setState({ fullname: e.target.value });
+    };
+    handleAddressChange = (e) => {
+        this.setState({ address: e.target.value });
+    };
+    handlePhoneChange = (e) => {
+        this.setState({ phone: e.target.value });
     };
 
     handleLogin = async () => {
@@ -192,13 +214,63 @@ class Header extends Component {
         }
 
     };
+
+    checkEmailExist = () => {
+        const { email } = this.state;
+        alert(email);
+        fetch(`https://localhost:7248/api/User/GetUserByEmail?email=${email}`)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ checkEmail: true });
+            })
+            .catch(error => {
+                console.error('Error fetching object:', error);
+            });
+
+    }
+    handleSignUp = async () => {
+        this.checkEmailExist();
     
+        if (this.state.checkEmail == false) {
+            const { email, password, fullname, address, phone } = this.state;
+            try {
+                const response = await fetch(`https://localhost:7248/api/User/InsertUser`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password, fullname, address, phone }),
+                });
+
+                if (response.ok) {
+
+                    this.setState({ showModalSignUp: false });
+                    this.setState({ showModal: true });
+                    this.setState({ noti: true });
+
+                } else {
+                    console.log('Đăng nhập thất bại');
+
+                }
+            } catch (error) {
+                // Xử lý lỗi gọi API
+                console.log('Lỗi gọi API', error);
+            }
+        } else {
+            this.setState({ showModalSignUp: true ,checkEmail: false});
+            
+        }
+    };
 
     handleShow = () => {
         this.setState({ showModal: true })
     }
+    handleShoSignUp = () => {
+        this.setState({ showModalSignUp: true, showModal: false })
+    }
     handleClose = () => {
-        this.setState({ showModal: false })
+        this.setState({ showModal: false });
+        this.setState({ showModalSignUp: false })
     }
     ChangeSearchValue(e) {
         this.setState({
@@ -216,16 +288,17 @@ class Header extends Component {
     }
     render() {
 
-        const { PhotoFileName, IsLogin, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal } = this.state;
-        var tok = '';
+
+        const { fullname, address, checkEmail, phone, PhotoFileName, noti, showModalSignUp, IsLogin, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal } = this.state;
+
+          var tok = '';
+
 
         return (
             <div>
                 <div id="top" >
                     <ul id="right" style={{ display: 'flex' }}>
                         <div>
-
-
                             <input type="text" value={this.state.search} onChange={(e) => this.ChangeSearchValue(e)} placeholder="Search  ... " onKeyDown={(event) => this.SearchAccount(event)} />
 
                             {IsLogin == true &&
@@ -328,9 +401,14 @@ class Header extends Component {
                                 </div>
                                 <h2>or</h2>
                                 <form >
-                                    <div className="formsix-pos">
-                                        <div className="form-group i-email">
-                                            <input type="text" className="form-control" required="" id="email2" value={email}
+
+                                    {noti == true &&
+                                        <b>Đăng Kí Thành Công</b>
+                                    }
+                                    <div class="formsix-pos">
+                                        <div class="form-group i-email">
+                                            <input type="text" class="form-control" required="" id="email2" value={email}
+
                                                 onChange={this.handleEmailChange} placeholder="Email Address *" />
                                         </div>
                                     </div>
@@ -340,23 +418,116 @@ class Header extends Component {
                                                 onChange={this.handlePasswordChange} placeholder="Password *" />
                                         </div>
                                     </div>
-                                    <div className="login_remember_box">
-                                        <label className="control control--checkbox">Remember me
-                                            <input type="checkbox" />
-                                            <span className="control__indicator"></span>
-                                        </label>
-                                        <a href="#" className="forget_password">
-                                            Forgot Password
-                                        </a>
-                                    </div>
-                                    <div className="login_btn_wrapper">
-                                    {/* <div className="form-control"> */}
-                                        <button type="button" onClick={this.handleLogin} className=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
+
+                                    <div class="login_btn_wrapper">
+
+                                        <button style={{ width: "100%" }} type="button" onClick={this.handleLogin} class=" btn btn-block mybtn btn-primary tx-tfm">Đăng Nhập</button>
                                     </div>
                                 </form>
-                                <div className="login_message">
-                                    <p>Don&rsquo;t have an account ? <a href="#"> Sign up </a> </p>
+                                <div class="login_message">
+                                    <p> <a href="#" onClick={this.handleShoSignUp}> Đăng Ký</a> </p>
                                 </div>
+
+                            </div>
+                        </div>
+
+
+                    </Modal.Body>
+
+                </Modal>
+
+                <Modal
+                    show={showModalSignUp}
+                    onHide={this.handleClose}
+                    backdrop="static"
+                    keyboard={false}
+                >
+                    <Modal.Header closeButton>
+
+                    </Modal.Header>
+                    <Modal.Body>
+
+                        <div class="modal-body">
+
+
+                            <div class="login_wrapper">
+                                <div class="row">
+                                    <div>
+                                        {/* <a href="#" class="btn btn-primary facebook"> <span>Login with Facebook</span> <i class="fa fa-facebook"></i> </a> */}
+                                        <GoogleOAuthProvider clientId="186729364333-sfd6o0oe4ud91dllo9t4s2p834kjj53e.apps.googleusercontent.com">
+                                            <GoogleLogin
+                                                onSuccess={credentialResponse => {
+                                                    console.log(credentialResponse);
+                                                    this.setState({
+                                                        Profile: credentialResponse,
+                                                        tokenFromSocial: credentialResponse.credential
+                                                    })
+                                                    localStorage.setItem('token', this.state.tokenFromSocial);
+                                                }}
+                                                onError={() => {
+                                                    console.log('Login Failed');
+                                                }}
+                                            />
+                                        </GoogleOAuthProvider>
+                                    </div>
+                                    <div>
+                                        {/* <a href="#" class="btn btn-primary google-plus"> Login  with Google <i class="fa fa-google-plus"></i> </a> */}
+                                        <LoginSocialFacebook
+                                            appId="1230730321091573"
+                                            onResolve={(response) => {
+                                                console.log(response)
+                                                this.setState({ Profile: response.data, tokenFromSocial: response.data.accessToken });
+                                                localStorage.setItem('token', this.state.tokenFromSocial);
+                                            }}
+
+                                            onReject={(error) => {
+                                                console.log(error)
+                                            }}
+                                        >
+                                            <FacebookLoginButton />
+                                        </LoginSocialFacebook>
+                                    </div>
+
+                                </div>
+                                <h2>or</h2>
+                                <form >
+                                    {checkEmail == true &&
+                                        <b>Email đã tồn tại</b>
+                                    }
+                                    <div class="formsix-pos">
+                                        <div class="form-group i-email">
+                                            <input type="text" class="form-control" required="" id="email2" value={fullname}
+                                                onChange={this.handleFullNameChange} placeholder="Họ Và Tên *" />
+                                        </div>
+                                    </div>
+                                    <div class="formsix-pos">
+                                        <div class="form-group i-email">
+                                            <input type="text" class="form-control" required="" id="email2" value={email}
+                                                onChange={this.handleEmailChange} placeholder="Email *" />
+                                        </div>
+                                    </div>
+                                    <div class="formsix-e">
+                                        <div class="form-group i-password">
+                                            <input type="password" class="form-control" required="" id="password2" value={password}
+                                                onChange={this.handlePasswordChange} placeholder="Mật Khẩu *" />
+                                        </div>
+                                    </div>
+                                    <div class="formsix-pos">
+                                        <div class="form-group i-email">
+                                            <input type="text" class="form-control" required="" id="email2" value={phone}
+                                                onChange={this.handlePhoneChange} placeholder="Phone" />
+                                        </div>
+                                    </div>
+                                    <div class="formsix-e">
+                                        <div class="form-group i-password">
+                                            <input type="text" class="form-control" required="" id="password2" value={address}
+                                                onChange={this.handleAddressChange} placeholder="Địa Chỉ" />
+                                        </div>
+                                    </div>
+                                    <div class="login_btn_wrapper">
+                                        <button style={{ width: "100%" }} type="button" onClick={this.handleSignUp} class=" btn btn-block mybtn btn-primary tx-tfm">Đăng Ký</button>
+                                    </div>
+                                </form>
 
                             </div>
                         </div>

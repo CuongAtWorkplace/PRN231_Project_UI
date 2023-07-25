@@ -273,7 +273,6 @@ class NewsDetail extends React.Component {
             .catch(error => {
                 console.error('Error fetching object:', error);
             });
-
     }
     render() {
         const { object, ListGenre, liked, cateId, countLike, contentComment, comments, ListComment, contentDetail } = this.state;

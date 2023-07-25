@@ -224,6 +224,7 @@ class Home extends Component {
 
 
   };
+
   componentWillUnmount() {
     clearInterval(this.timerID);
   }
@@ -292,12 +293,14 @@ class Home extends Component {
                   loader={<h4>Loading...</h4>}
                   endMessage={<p></p>}>
                   {data1.map(item1 => (
+
                     <a href={`/newsdetail/${item1.id}`}>
                       <div key={item1.id} className="clearfloatitem">
                         <img src="images/iphone.jpg" alt="" />{item1.title}
                         <p>{item1.description}</p>
                       </div>
                     </a>
+
                   ))}
 
 
@@ -314,12 +317,14 @@ class Home extends Component {
                   loader={<h4>Loading...</h4>}
                   endMessage={<p></p>}>
                   {data2.map(item2 => (
+
                     <a href={`/newsdetail/${item2.id}`}>
                       <div key={item2.id} className="clearfloatitem">
                         <img src="images/iphone.jpg" alt="" /> {item2.title}
                         <p>{item2.description}</p>
                       </div>
                     </a>
+
 
                   ))}
 
@@ -336,12 +341,14 @@ class Home extends Component {
                   loader={<h4>Loading...</h4>}
                   endMessage={<p></p>}>
                   {data3.map(item3 => (
+
                     <a href={`/newsdetail/${item3.id}`}>
                       <div key={item3.id} className="clearfloatitem">
                         <img src="images/iphone.jpg" alt="" />{item3.title}
                         <p>{item3.description}</p>
                       </div>
                     </a>
+
                   ))}
 
 
@@ -375,13 +382,13 @@ class Home extends Component {
                     <img src="img/casey.jpg" alt="" className="ad" /> <img src="img/hobo.jpg" alt="" className="ad-right" />
                   </div>
                 </a>
-
               ))}
 
             </InfiniteScroll>
           </div>
 
         </div>
+
         <Footer />
 
       </div>
