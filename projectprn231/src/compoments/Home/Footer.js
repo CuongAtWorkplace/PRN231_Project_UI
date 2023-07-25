@@ -26,45 +26,7 @@ class Footer extends Component {
         return (
 
             <div>
-                {/* <div id="extras">
-                    <div id="recommended">
-                        <h2 class="heading">Recommended Stories</h2>
-                        {NewsHome.slice(3, 8).map(news => (
-                            <div>
-                                <ul>
-                                    <li><a href="#">{news.title}</a></li>
-                                </ul>
-                            </div>
-                        ))}
-
-                    </div>
-                    <div id="programs">
-                        <h2 class="heading">What's On Tonight</h2>
-                        {NewsHome.slice(3, 8).map(news => (
-                            <div>
-                                <ul>
-                                    <li><a href="#">{news.title}</a></li>
-                                </ul>
-                            </div>
-                        ))}
-<<<<<<< HEAD
-                      
-=======
-                       
->>>>>>> cb477c135ce0f479a85711c7341e1252127ca73d
-                    </div>
-                    <div id="cartoon">
-                        <h2 class="heading">Humour</h2>
-                        {NewsHome.slice(3, 8).map(news => (
-                            <div>
-                                <ul>
-                                    <li><a href="#">{news.title}</a></li>
-                                </ul>
-                            </div>
-                        ))}
-
-                    </div>
-                </div> */}
+               
                 <div class="d-flex flex-column h-100">
                     <footer class="w-100 py-4 flex-shrink-0">
                         <div class="container py-4">

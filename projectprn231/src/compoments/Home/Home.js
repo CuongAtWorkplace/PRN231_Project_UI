@@ -211,20 +211,7 @@ class Home extends Component {
 
   }
 
-  handleClick = () => {
-    const token = localStorage.getItem("token");
-
-    // localStorage.getItem('token', token);
-    //  const storedData = localStorage.getItem('token');
-
-    const decodedToken = jwtDecode(token);
-
-
-    const userId = decodedToken.Role_Name;
-    console.log(token);
-    console.log(userId);
-    localStorage.removeItem('token');
-  };
+  
   componentWillUnmount() {
     clearInterval(this.timerID);
   }
