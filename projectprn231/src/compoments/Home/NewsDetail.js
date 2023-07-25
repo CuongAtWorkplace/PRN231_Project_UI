@@ -286,12 +286,10 @@ class NewsDetail extends React.Component {
 
                         <div id="">
                             <div id="">
-                                {/* <div id="new-detail"> */}
                                 <div>
                                     <h1 class="title-detail">{object.title}</h1>
                                     <span> Public Date : {object.createDate}</span>
                                     <p>{object.description} </p>
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png" alt="" />
                                     <div>{parse(contentDetail)}</div>
                                     <a> <i class="bi bi-save-fill"></i></a>
                                     <p style={{ float: 'right' }}>

@@ -111,7 +111,7 @@ export class ToDoReportTask extends Component {
     onChangeTopicName = (e) => {
         if (e.target.value == '') {
             this.setState({ ErrorTopicName: 'Topic Name is not empty' });
-        } else if (e.target.value.length < 5 || e.target.value.length > 50) {
+        } else if (e.target.value.length < 5 || e.target.value.length > 50000) {
             this.setState({ ErrorTopicName: 'Topic Name is between 5 to 50' });
         } else {
             this.setState({ ErrorTopicName: null });
@@ -145,9 +145,9 @@ export class ToDoReportTask extends Component {
         }).then(res => res.json())
             .then((result) => {
                 this.refreshList();
-                //toast.success("Import Successfull. Congratulation!!!")
+                toast.success("Import Successfull. Congratulation!!!")
             }, (error) => {
-                //toast.error("Import failed. Try Again!!!");
+                toast.error("Import failed. Try Again!!!");
             })
     }
 
@@ -235,8 +235,7 @@ export class ToDoReportTask extends Component {
         }
     }
 
-    onAddAssign() {
-        
+    onAddAssign() { 
         this.SubmitFile();
         const jwt = localStorage.getItem('token');
         fetch("https://localhost:7248/api/ReportTask/UpdateReportTask", {
@@ -390,7 +389,7 @@ export class ToDoReportTask extends Component {
                                                 <p><b>Description:</b> {DescriptionTask == null && parse(DescriptionTask)}</p>
                                                 <p><b>Genre: </b> {GenreName}</p>
                                                 <p><b>Assgin by: </b>{LeaderName}</p>
-                                                <p><b>Reporter: </b>{WriterName}</p>
+                                                <p><b>Writer: </b>{WriterName}</p>
                                                 <p><b>Start Date:</b> {AssignTaskRequire.startDate}</p>
                                                 <p style={{ color: 'red' }}><b>End Date:</b> {AssignTaskRequire.endDate}</p>
                                             </div>

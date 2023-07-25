@@ -38,7 +38,8 @@ class Home extends Component {
       hasMore3: true,
       hasMore4: true,
       NewsFirst: {},
-
+      PhotoFileName: '',
+      PhotoPath: 'https://localhost:7248/Photos/',
     }
   }
 
@@ -159,7 +160,7 @@ class Home extends Component {
 
 
   fetchDataFirst() {
-    fetch("https://localhost:7248/api/News/getNewsFirst")
+    fetch('https://localhost:7248/api/News/getNewsFirst')
       .then(response => response.json())
       .then(data => {
         this.setState({ NewsFirst: data });
@@ -171,7 +172,7 @@ class Home extends Component {
 
 
   refreshList() {
-    fetch("https://localhost:7248/api/News/getAllNews")
+    fetch('https://localhost:7248/api/News/getAllNews')
       .then(response => response.json())
       .then(data => {
         this.setState({ NewsHome: data });
@@ -179,7 +180,7 @@ class Home extends Component {
   }
 
   refreshDataWeather() {
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=hanoi&appid=eb16d064d3816182670320b527544012&units=metric`)
+    fetch('https://api.openweathermap.org/data/2.5/weather?q=hanoi&appid=eb16d064d3816182670320b527544012&units=metric')
       .then(response => response.json())
       .then(data => {
         if (data != null) {
@@ -211,7 +212,19 @@ class Home extends Component {
 
   }
 
-  
+  handleClick = () => {
+    const token = localStorage.getItem("token");
+    if (token != null) {
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.Role_Name;
+      console.log(token);
+      console.log(userId);
+      localStorage.removeItem('token');
+    }
+
+
+  };
+
   componentWillUnmount() {
     clearInterval(this.timerID);
   }
@@ -222,24 +235,26 @@ class Home extends Component {
   }
   render() {
 
-    const { NewsFirst, hasMore,hasMore1,hasMore2,hasMore3,hasMore4, data, data1, data2, data3, dataall, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId } = this.state;
+    const { NewsFirst, hasMore, hasMore1, hasMore2, hasMore3, hasMore4, data, data1, data2, data3, dataall, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, PhotoPath } = this.state;
 
 
     return (
       <div >
 
         <Header />
-        <div id="content-wrapper" style={{marginTop:"20px"}}>
+        <div id="content-wrapper" style={{ marginTop: "20px" }}>
           <div id="content">
-            <div class="feature clearfloat" id="lead">
-              <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-zQfyRzI4bm_31zRRBKBPPjapxMgtc_YSYnnBHBI6iT7LLf4Prooy7t1w0Z2CFkef5z8&usqp=CAU" alt="" id="leadpic" /></a>
-              <h3>
-                <a href="#">Mới Nhất :</a><br />
-              </h3>
-              <a href="#" class="title"> {NewsFirst.title} </a>
-              <a> {NewsFirst.description}</a><br />
-              {<a href="#">More&raquo;</a>}
-            </div>
+            <a href={`/newsdetail/${NewsFirst.id}`}>
+              <div className="feature clearfloat" id="lead">
+                <img src={PhotoPath + NewsFirst.image} alt="" id="leadpic" />
+                <h3>
+                  <a href="#"><b>Mới Nhất</b></a><br />
+                </h3>
+                {NewsFirst.title}
+                {NewsFirst.description}<br />
+                {<a href="#">More&raquo;</a>}
+              </div>
+            </a>
             <div id="leftcol">
               <h3>
                 <a href="#">Features</a><br />
@@ -254,9 +269,9 @@ class Home extends Component {
                 {data.map(item =>
                   <div key={item.id}>
 
-                    <div class="feature">
-                      <a href={`/newsdetail/${item.id}`} class="title"> {item.title}</a> <a href="#">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwh9idTcHa2phpbCAWTfpAYkqcx1vrnQnXMfN20YEKhLJgZjeF3PWWpc8c7HI1PGxF5cM&usqp=CAU" alt="" /></a>
+                    <div className="feature">
+                      <a href={`/newsdetail/${item.id}`} className="title"> {item.title}</a> <a href="#">
+                        <img src={PhotoPath + item.image} alt="" /></a>
 
                       <p>{item.description}</p>
                     </div>
@@ -269,7 +284,7 @@ class Home extends Component {
 
             </div>
             <div id="rightcol">
-              <div class="clearfloat">
+              <div className="clearfloat">
                 <h2><a href="#">Thể Thao</a></h2>
                 <InfiniteScroll
                   dataLength={data1.length} //This is important field to render the next data
@@ -278,10 +293,14 @@ class Home extends Component {
                   loader={<h4>Loading...</h4>}
                   endMessage={<p></p>}>
                   {data1.map(item1 => (
-                    <div key={item1.id} class="clearfloatitem">
-                      <a href={`/newsdetail/${item1.id}`}><img src="images/iphone.jpg" alt="" /></a> <a href="#" class="title">{item1.title}</a>
-                      <p>{item1.description}</p>
-                    </div>
+
+                    <a href={`/newsdetail/${item1.id}`}>
+                      <div key={item1.id} className="clearfloatitem">
+                        <img src="images/iphone.jpg" alt="" />{item1.title}
+                        <p>{item1.description}</p>
+                      </div>
+                    </a>
+
                   ))}
 
 
@@ -289,7 +308,7 @@ class Home extends Component {
                 </InfiniteScroll>
 
               </div>
-              <div class="clearfloat">
+              <div className="clearfloat">
                 <h3><a href="#">Kinh Doanh</a></h3>
                 <InfiniteScroll
                   dataLength={data1.length} //This is important field to render the next data
@@ -298,17 +317,22 @@ class Home extends Component {
                   loader={<h4>Loading...</h4>}
                   endMessage={<p></p>}>
                   {data2.map(item2 => (
-                    <div key={item2.id} class="clearfloatitem">
-                      <a href={`/newsdetail/${item2.id}`}><img src="images/iphone.jpg" alt="" /></a> <a href="#" class="title">{item2.title}</a>
-                      <p>{item2.description}</p>
-                    </div>
+
+                    <a href={`/newsdetail/${item2.id}`}>
+                      <div key={item2.id} className="clearfloatitem">
+                        <img src="images/iphone.jpg" alt="" /> {item2.title}
+                        <p>{item2.description}</p>
+                      </div>
+                    </a>
+
+
                   ))}
 
 
 
                 </InfiniteScroll>
               </div>
-              <div class="clearfloat">
+              <div className="clearfloat">
                 <h3><a href="#">Du Lịch</a></h3>
                 <InfiniteScroll
                   dataLength={data1.length} //This is important field to render the next data
@@ -317,10 +341,14 @@ class Home extends Component {
                   loader={<h4>Loading...</h4>}
                   endMessage={<p></p>}>
                   {data3.map(item3 => (
-                    <div key={item3.id} class="clearfloatitem">
-                      <a href={`/newsdetail/${item3.id}`}><img src="images/iphone.jpg" alt="" /></a> <a href="#" class="title">{item3.title}</a>
-                      <p>{item3.description}</p>
-                    </div>
+
+                    <a href={`/newsdetail/${item3.id}`}>
+                      <div key={item3.id} className="clearfloatitem">
+                        <img src="images/iphone.jpg" alt="" />{item3.title}
+                        <p>{item3.description}</p>
+                      </div>
+                    </a>
+
                   ))}
 
 
@@ -339,22 +367,28 @@ class Home extends Component {
 
               {dataall.map(d => (
 
+                <a href={`/newsdetail/${d.id}`}>
+                  <div key={d.id}>
+                    <a href="#"><img src="img/side-ad.png" alt="" className="ad" /></a>
+                    <a href="#"><img src="img/side-ad.png" alt="" className="ad-right" /></a>
+                    <a href="#"><img src="img/side-ad.png" alt="" className="ad" /></a>
+                    <a href="#"><img src="img/side-ad.png" alt="" className="ad-right" /></a>
 
-                <div key={d.id}>
-                  <h2 class="heading-blue"></h2>
-                  <img src="img/wayne.jpg" alt="" />
-                  <h3><a href={`/newsdetail/${d.id}`}>{d.title}</a></h3>
-                  <p><a href={`/newsdetail/${d.id}`}>Read More &raquo;</a></p>
-                  <h2 class="heading">Celebrity Sightings</h2>
-                  <img src="img/casey.jpg" alt="" class="ad" /> <img src="img/hobo.jpg" alt="" class="ad-right" />
-                </div>
+                    <h2 className="heading-blue"></h2>
+                    <img src="img/wayne.jpg" alt="" />
+                    <h3>{d.title}</h3>
+                    <p>Read More &raquo;</p>
+                    <h2 className="heading">Celebrity Sightings</h2>
+                    <img src="img/casey.jpg" alt="" className="ad" /> <img src="img/hobo.jpg" alt="" className="ad-right" />
+                  </div>
+                </a>
               ))}
 
             </InfiniteScroll>
           </div>
 
         </div>
-       
+
         <Footer />
 
       </div>

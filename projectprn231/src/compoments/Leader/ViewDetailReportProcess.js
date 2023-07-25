@@ -94,6 +94,7 @@ class ViewDetailReportProcess extends Component {
                 .then((result) => {
                     toast.success("Accept Task successfull. Congratulation!!!")
                     this.refreshList();
+                    window.location.href="/manager/viewReportProcess"
                 }, (error) => {
                     toast.error("Accept task failed. Try Again!!!")
                 })
@@ -142,12 +143,14 @@ class ViewDetailReportProcess extends Component {
 
                                 <div className="form-group">
                                     <label className="control-label">Content: </label>
-                                    <div className="App">
-                                        <CKEditor
-                                            editor={ClassicEditor}
-                                            data={Content}
-                                        />
-                                    </div>
+                                   
+                                        <div className="App">
+                                            <CKEditor
+                                                editor={ClassicEditor}
+                                                data={Content != null ? Content : ""}
+                                            />
+                                        </div>
+                                    
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Image Cover: </label>
