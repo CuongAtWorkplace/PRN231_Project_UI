@@ -32,8 +32,8 @@ class Header extends Component {
             IsLogin: false,
             PhotoFileName: '',
             search: '',
-            count: 0, 
-            Advertis: {}, 
+            count: 0,
+            Advertis: {},
             PhotoPath: 'https://localhost:7248/Photos/',
 
 
@@ -43,7 +43,7 @@ class Header extends Component {
             fullname: '',
             noti: false,
             checkEmail: false,
-            checkLogin:true,
+            checkLogin: true,
             count: 0
         }
     }
@@ -116,7 +116,7 @@ class Header extends Component {
             }
         } catch (error) {
 
-        }  
+        }
     }
 
     CheckExist() {
@@ -124,10 +124,10 @@ class Header extends Component {
             const token = localStorage.getItem('token');
             if (token != null && token != '') {
                 const decodedToken = jwtDecode(token);
-                fetch("https://localhost:7248/api/User/GetUserByEmail?email="+decodedToken.email+"&fullname="+decodedToken.name, {
+                fetch("https://localhost:7248/api/User/GetUserByEmail?email=" + decodedToken.email + "&fullname=" + decodedToken.name, {
                     method: 'POST',
                     headers: {
-                        
+
                     },
                 })
                     .then(response => response.json())
@@ -137,7 +137,7 @@ class Header extends Component {
             }
         } catch (error) {
 
-        }  
+        }
 
         // try {
         //     const name = localStorage.getItem('nameFb');
@@ -145,12 +145,12 @@ class Header extends Component {
         //     fetch("https://localhost:7248/api/User/GetUserByEmail?email="+email+"&fullname="+name, {
         //             method: 'POST',
         //             headers: {
-                        
+
         //             },
         //         })
         //             .then(response => response.json())
         //             .then(data => {
-                        
+
         //             });
         // } catch(error) {
 
@@ -165,7 +165,7 @@ class Header extends Component {
         this.setState({ showModalSignUp: false })
 
         this.setState({ IsLogin: false })
-        window.location.href="/";
+        window.location.href = "/";
 
     };
 
@@ -186,7 +186,7 @@ class Header extends Component {
     };
 
     handleLogin = async () => {
-        const { email, password,} = this.state;
+        const { email, password, } = this.state;
         try {
             const response = await fetch('https://localhost:7248/api/Login', {
                 method: 'POST',
@@ -201,14 +201,14 @@ class Header extends Component {
                 const data = await response.json();
                 const token = data.token;
                 localStorage.setItem('token', token);
-                
+
                 const decodedToken = jwtDecode(token);
                 localStorage.setItem('id', decodedToken.id);
                 localStorage.setItem('roleid', decodedToken.roleid);
 
                 this.setState({ nameUser: decodedToken.fullname });
                 this.setState({ showModal: false, IsLogin: true })
-                this.setState({checkLogin : true});
+                this.setState({ checkLogin: true });
 
                 if (decodedToken.roleid == 2) {
                     window.location.href = "/";
@@ -218,7 +218,7 @@ class Header extends Component {
                 }
             } else {
                 console.log('Đăng nhập thất bại');
-                this.setState({checkLogin : false});
+                this.setState({ checkLogin: false });
             }
         } catch (error) {
             console.log('Lỗi gọi API', error);
@@ -228,7 +228,7 @@ class Header extends Component {
 
     checkEmailExist = () => {
         const { email } = this.state;
-    
+
         fetch(`https://localhost:7248/api/User/GetUserByEmail?email=${email}`)
             .then(response => response.json())
             .then(data => {
@@ -241,7 +241,7 @@ class Header extends Component {
     }
     handleSignUp = async () => {
         this.checkEmailExist();
-    
+
         if (this.state.checkEmail == false) {
             const { email, password, fullname, address, phone } = this.state;
             try {
@@ -259,7 +259,7 @@ class Header extends Component {
                     this.setState({ showModal: true });
                     this.setState({ noti: true });
 
-                } 
+                }
             } catch (error) {
                 // Xử lý lỗi gọi API
                 console.log('Lỗi gọi API', error);
@@ -267,20 +267,16 @@ class Header extends Component {
             }
         } else {
             this.setState({ showModalSignUp: true });
-            
+
         }
     };
     handleCall = () => {
-       
-       
         this.handleSignUp();
-    
-       
-      };
-    
+    };
+
     handleSignUp2 = async () => {
         this.checkEmailExist();
-    
+
         if (this.state.checkEmail == false) {
             const { email, password, fullname, address, phone } = this.state;
             try {
@@ -298,14 +294,14 @@ class Header extends Component {
                     this.setState({ showModal: true });
                     this.setState({ noti: true });
 
-                } 
+                }
             } catch (error) {
                 // Xử lý lỗi gọi API
                 console.log('Lỗi gọi API', error);
             }
         } else {
-            this.setState({ showModalSignUp: true ,checkEmail: false});
-            
+            this.setState({ showModalSignUp: true, checkEmail: false });
+
         }
     };
 
@@ -334,7 +330,7 @@ class Header extends Component {
         }
     }
     render() {
-        const {checkLogin, fullname, address, checkEmail, phone, PhotoFileName, noti, showModalSignUp, IsLogin, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal, Advertis, PhotoPath } = this.state;
+        const { checkLogin, fullname, address, checkEmail, phone, PhotoFileName, noti, showModalSignUp, IsLogin, NewsHome, ListGenre, NewsHomeByDate, DataWeather, currentTime, NewsId, nameUser, email, password, showModal, Advertis, PhotoPath } = this.state;
 
 
         return (
@@ -376,12 +372,12 @@ class Header extends Component {
                     <div id="logo"> <a href="#"><img src="img/wireframe/logo.png" alt="" /></a> </div>
                     <div id="ad"> <img src="img/ad-blank.png" alt="" /> </div>
                 </div>
-                
+
                 <a href="https://daihoc.fpt.edu.vn/">
                     <div className="container" style={{ marginLeft: '300px' }}>
                         <img width={900} height={100} src={PhotoPath + Advertis.image}></img>
                     </div>
-                </a>    
+                </a>
                 <div id="nav">
                     {ListGenre.slice(0, 5).map(gen =>
                         <ul key={gen.id}>
@@ -409,7 +405,7 @@ class Header extends Component {
                             <div className="login_wrapper">
                                 <div className="row">
                                     <div>
-                                        
+
                                         <GoogleOAuthProvider clientId="186729364333-sfd6o0oe4ud91dllo9t4s2p834kjj53e.apps.googleusercontent.com">
                                             <GoogleLogin
                                                 onSuccess={credentialResponse => {
@@ -419,7 +415,7 @@ class Header extends Component {
                                                         tokenFromSocial: credentialResponse.credential
                                                     })
                                                     localStorage.setItem('token', credentialResponse.credential);
-                                                    window.location.href="/";
+                                                    window.location.href = "/";
                                                 }}
                                                 onError={() => {
                                                     console.log('Login Failed');
@@ -427,7 +423,7 @@ class Header extends Component {
                                             />
                                         </GoogleOAuthProvider>
                                     </div>
-                                    <div  className="form-group">
+                                    <div className="form-group">
                                         {/* <LoginSocialFacebook
                                             appId="1230730321091573"
                                             onResolve={(response) => {
@@ -454,7 +450,7 @@ class Header extends Component {
                                     {noti == true &&
                                         <b>Đăng Kí Thành Công</b>
                                     }
-                                     {checkLogin == false &&
+                                    {checkLogin == false &&
                                         <b>Email Hoặc Mật Khẩu Không Chính Xác</b>
                                     }
                                     <div class="formsix-pos">

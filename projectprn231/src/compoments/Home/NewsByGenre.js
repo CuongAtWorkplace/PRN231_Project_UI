@@ -23,6 +23,7 @@ class NewsByGenre extends Component {
             page1:1,
             hasMore: true,
             hasMore1:true,
+            PhotoPath: 'https://localhost:7248/Photos/',
         }
     }
 
@@ -102,7 +103,7 @@ class NewsByGenre extends Component {
         localStorage.removeItem('token');
     };
     render() {
-        const { NewsHome, ListGenre, NewsHomeByDate, dataList,NewsByGenre,data,hasMore ,hasMore1} = this.state;
+        const { NewsHome, ListGenre, NewsHomeByDate, dataList,NewsByGenre,data,hasMore ,hasMore1, PhotoPath} = this.state;
       
         return (
             <div className="App">
@@ -118,20 +119,21 @@ class NewsByGenre extends Component {
                     >
                             {dataList.map(news =>
                             <div key={news.key}>
-                                <div class="row p-2 bg-white border rounded">
-                                    <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="https://i.imgur.com/QpjAiHq.jpg" /></div>
+                                <a href={`/newsdetail/${news.id}`}>
+                                  <div class="row p-2 bg-white border rounded">
+                                    <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src={PhotoPath + news.image} /></div>
                                     <div class="col-md-9 mt-1">
-                                        <h5> <a href={`/newsdetail/${news.id}`}>{news.title}</a> </h5>
-                                        <p class="">{news.description}<br /><br /></p>
+                                      <h5> {news.title} </h5>
+                                      <p class="">{news.description}<br /><br /></p>
                                     </div>
-
-                                </div>
+                                  </div>
+                                </a>
                             </div>
 
                         )}
                              </InfiniteScroll>
                     </div>
-                     <div id="sidebars">
+                     {/* <div id="sidebars">
                     <InfiniteScroll
                      dataLength={data.length} //This is important field to render the next data
                      next={this.fetchData}
@@ -158,7 +160,7 @@ class NewsByGenre extends Component {
                        ) )}
                   
                     </InfiniteScroll>
-                      </div>
+                      </div> */}
 
                 </div>
                 <Footer/>
