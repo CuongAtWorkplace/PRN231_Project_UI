@@ -161,12 +161,12 @@ export class UserDetail extends Component {
                                                 <h4 class="text-right">Thông Tin Tài Khoản</h4>
                                             </div>
                                             <div class="row mt-2">
-                                                <div class="col-md-12"><label class="labels">Tên</label><input type="text" class="form-control" required="" placeholder="Họ và tên" onChange={this.handleFullNameChange} value={fullname} /></div>
+                                                <div class="col-md-12"><label class="labels">Tên</label><input type="text" class="form-control" required="" placeholder={userdetail.fullName} onChange={this.handleFullNameChange} value={fullname} /></div>
                                             </div>
                                             <div class="row mt-3">
-                                                <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control" placeholder=" Địa chỉ email" required="" onChange={this.handleEmailChange} value={userdetail.email} /></div>
-                                                <div class="col-md-12"><label class="labels">Số Điện Thoại</label><input type="text" class="form-control" placeholder=" Số điện thoại" required="" onChange={this.handlePhoneChange} value={phone} /></div>
-                                                <div class="col-md-12"><label class="labels">Địa Chỉ</label><input type="text" class="form-control" placeholder=" Địa chỉ " required="" onChange={this.handleAddressChange} value={address} /></div>
+                                                <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control" placeholder={userdetail.email} required="" onChange={this.handleEmailChange} value={email} /></div>
+                                                <div class="col-md-12"><label class="labels">Số Điện Thoại</label><input type="text" class="form-control" placeholder={userdetail.phone} required="" onChange={this.handlePhoneChange} value={phone} /></div>
+                                                <div class="col-md-12"><label class="labels">Địa Chỉ</label><input type="text" class="form-control" placeholder={userdetail.address} required="" onChange={this.handleAddressChange} value={address} /></div>
                                                 <div class="col-md-12"><label class="labels">Mật Khẩu </label><input type="password" class="form-control" placeholder=" Mật khẩu " required="" onChange={this.handlePasswordChange} value={password} /></div>
                                             </div>
                                             {/* <div class="row mt-3">

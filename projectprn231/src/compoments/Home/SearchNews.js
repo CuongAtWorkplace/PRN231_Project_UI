@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom/cjs/react-router-dom";
 import jwtDecode from 'jwt-decode';
 import InfiniteScroll from "react-infinite-scroll-component";
 import Header from "./Header";
+import Footer from "./Footer";
 class SearchNews extends Component {
     constructor(props) {
         super(props);
@@ -21,6 +22,7 @@ class SearchNews extends Component {
             page1:1,
             hasMore: true,
             hasMore1:true,
+            PhotoPath:'https://localhost:7248/Photos/',
         }
     }
     
@@ -97,7 +99,7 @@ class SearchNews extends Component {
     // };
     
     render() {
-        const { dataList,NewsByGenre,data,hasMore ,hasMore1} = this.state;
+        const { dataList,NewsByGenre,data,hasMore ,hasMore1, PhotoPath} = this.state;
       
         return (
             <div >
@@ -114,7 +116,7 @@ class SearchNews extends Component {
                             {dataList.map(news =>
                             <div key={news.key}>
                                 <div class="row p-2 bg-white border rounded">
-                                    <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="https://i.imgur.com/QpjAiHq.jpg" /></div>
+                                    <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src={PhotoPath + news.image} /></div>
                                     <div class="col-md-9 mt-1">
                                         <h5> <a href={`/newsdetail/${news.id}`}>{news.title}</a> </h5>
                                         <p class="">{news.description}<br /><br /></p>
@@ -126,7 +128,7 @@ class SearchNews extends Component {
                         )}
                              </InfiniteScroll>
                     </div>
-                     <div id="sidebars">
+                     {/* <div id="sidebars">
                     <InfiniteScroll
                      dataLength={data.length} //This is important field to render the next data
                      next={this.fetchData}
@@ -153,103 +155,11 @@ class SearchNews extends Component {
                        ) )}
                   
                     </InfiniteScroll>
-                      </div>
+                      </div> */}
 
                 </div>
-                <div id="extras">
-                    <div id="recommended">
-                        <h2 class="heading">Recommended Stories</h2>
-                        <ul>
-
-                            <li><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit &raquo;</a></li>
-                            <li><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit &raquo;</a></li>
-                            <li><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit &raquo;</a></li>
-                            <li class="last"><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit &raquo;</a></li>
-                        </ul>
-                    </div>
-                    <div id="programs">
-                        <h2 class="heading">What's On Tonight</h2>
-                        <img src="img/rick.jpg" alt="" /> <img src="img/cbc.png" alt="" />
-                    </div>
-                    <div id="cartoon">
-                        <h2 class="heading">Humour</h2>
-                        <img src="img/cartoon.jpg" alt="" />
-                    </div>
-                </div>
-                <div id="footer">
-                    <ul>
-                        <li>&copy;2010 <a href="#">Name Here</a></li>
-                        <li>|</li>
-                        <li><a href="#">FAQ</a></li>
-                        <li>|</li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li>|</li>
-                        <li><a href="#">Careers</a></li>
-                        <li>|</li>
-                        <li><a href="#">Advertise</a></li>
-                        <li>|</li>
-                        <li><a href="#">Sitemap</a></li>
-                        <li>|</li>
-                        <li>Designed by <a href="http://www.skyrocketlabs.com/">Skyrocket Labs</a></li>
-                    </ul>
-                </div>
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-
-
-                                <div class="login_wrapper">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
-                                            <a href="#" class="btn btn-primary facebook"> <span>Login with Facebook</span> <i class="fa fa-facebook"></i> </a>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
-                                            <a href="#" class="btn btn-primary google-plus"> Login  with Google <i class="fa fa-google-plus"></i> </a>
-                                        </div>
-                                    </div>
-                                    <h2>or</h2>
-                                    <div class="formsix-pos">
-                                        <div class="form-group i-email">
-                                            <input type="email" class="form-control" required="" id="email2" value={this.state.email}
-                                                onChange={this.handleEmailChange} placeholder="Email Address *" />
-                                        </div>
-                                    </div>
-                                    <div class="formsix-e">
-                                        <div class="form-group i-password">
-                                            <input type="password" class="form-control" required="" id="password2" value={this.state.password}
-                                                onChange={this.handlePasswordChange} placeholder="Password *" />
-                                        </div>
-                                    </div>
-                                    <div class="login_remember_box">
-                                        <label class="control control--checkbox">Remember me
-                                            <input type="checkbox" />
-                                            <span class="control__indicator"></span>
-                                        </label>
-                                        <a href="#" class="forget_password">
-                                            Forgot Password
-                                        </a>
-                                    </div>
-                                    <div class="login_btn_wrapper">
-                                        <a href="#" class="btn btn-primary login_btn"> Login </a>
-                                        <button type="submit" onClick={this.handleLogin} class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
-                                    </div>
-                                    <div class="login_message">
-                                        <p>Don&rsquo;t have an account ? <a href="#"> Sign up </a> </p>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
+               <Footer/>
+               
             </div>
         )
     }

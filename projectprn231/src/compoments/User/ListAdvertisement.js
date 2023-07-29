@@ -10,6 +10,7 @@ export class ListAdvertisement extends Component {
             userdetail: {},
             userid: null,
             OrderList: [],
+            PhotoPath: 'https://localhost:7248/Photos/',
         }
     }
 
@@ -25,7 +26,7 @@ export class ListAdvertisement extends Component {
 
     componentDidMount() {
         const token = localStorage.getItem("token");
-
+        var id = localStorage.getItem('id');
 
         if (token != null) {
 
@@ -33,17 +34,20 @@ export class ListAdvertisement extends Component {
 
             const userid = decodedToken.id;
             this.setState({ userid }, () => {
-
                 this.refreshOrderList();
             });
+        }
 
-            // this.setState({nameUser : decodedToken.FullName});
+        if (id != null || id != '') {
+            this.setState({
+                userid: id
+            })
         }
 
     }
 
     render() {
-        const { OrderList } = this.state;
+        const { OrderList, PhotoPath } = this.state;
 
         return (
             <div>
@@ -70,7 +74,7 @@ export class ListAdvertisement extends Component {
                                     <div>
                                         <div class="row p-2 bg-white border rounded">
 
-                                            <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="https://i.imgur.com/QpjAiHq.jpg" /></div>
+                                            <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src={PhotoPath + item.image} /></div>
                                             <div class="col-md-9 mt-1">
                                                 <h5> <a href="#">{item.title}</a> </h5>
                                                 <p class="">{item.description}<br /><br /></p>
